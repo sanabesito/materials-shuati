@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工程材料A · 刷题台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23f97316' font-family='Arial'%3E%E9%92%A2%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1220; --bg2:#0d1626; --card:#152338; --card2:#1a2b45;
+  --line:rgba(148,163,184,.14); --text:#e8eef8; --muted:#8aa0bd;
+  --accent:#f97316; --accent2:#fb923c; --gold:#fbbf24; --ok:#34d399; --err:#f87171;
+  --radius:16px; --radius-s:10px;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(249,115,22,.08), transparent 60%),
+    radial-gradient(900px 400px at -10% 10%, rgba(59,130,246,.06), transparent 55%),
+    var(--bg);
+  color:var(--text); min-height:100vh; font-size:15px; line-height:1.65;
+}
+h1,h2,h3,.serif{font-family:"Noto Serif SC","Noto Sans SC",serif}
+::selection{background:rgba(249,115,22,.35)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(148,163,184,.25);border-radius:8px}
+
+/* ===== 顶部栏 ===== */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
+  display:flex;align-items:center;gap:12px;padding:0 18px;
+  background:rgba(10,18,32,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+.brand-badge{
+  width:38px;height:38px;border-radius:11px;flex:none;
+  background:linear-gradient(135deg,#f97316,#b45309);
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;color:#fff;
+  box-shadow:0 4px 14px rgba(249,115,22,.4);
+}
+.brand-name{font-family:"Noto Serif SC",serif;font-weight:700;font-size:17px;letter-spacing:.5px}
+.brand-sub{font-size:10.5px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.topbar .stats-pill{
+  margin-left:auto;display:flex;gap:16px;align-items:center;
+  font-size:12.5px;color:var(--muted);
+}
+.topbar .stats-pill b{color:var(--accent2);font-size:14px}
+@media(max-width:640px){.topbar .stats-pill{display:none}}
+
+/* ===== 桌面侧栏 ===== */
+.sidebar{
+  position:fixed;left:0;top:60px;bottom:0;width:236px;z-index:90;
+  background:var(--bg2);border-right:1px solid var(--line);
+  padding:20px 14px;overflow-y:auto;display:none;
+}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:12px;
+  color:var(--muted);font-size:14.5px;font-weight:500;margin-bottom:3px;
+  transition:all .18s;cursor:pointer;text-decoration:none;
+}
+.nav-item svg{width:19px;height:19px;flex:none;opacity:.85}
+.nav-item:hover{background:rgba(249,115,22,.08);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(249,115,22,.18),rgba(249,115,22,.08));color:var(--accent2);font-weight:700}
+.nav-sec{font-size:11px;color:var(--muted);letter-spacing:2px;padding:14px 14px 6px;opacity:.7}
+.sidebar .side-foot{margin-top:22px;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+.side-foot p{font-size:11.5px;color:var(--muted);line-height:1.7}
+
+/* ===== 主内容 ===== */
+.main{margin:60px auto 0;padding:26px 22px 90px;max-width:1080px;min-height:calc(100vh - 60px)}
+@media(min-width:1024px){.main{margin-left:236px;max-width:1180px}}
+.view{display:none;animation:fadeIn .28s ease}
+.view.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;overflow:hidden;border-radius:20px;padding:44px 40px;
+  background:
+    linear-gradient(120deg,rgba(249,115,22,.13),transparent 42%),
+    linear-gradient(160deg,#14253f,#0d1a2e);
+  border:1px solid var(--line);box-shadow:var(--shadow);
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(148,163,184,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.06) 1px,transparent 1px);
+  background-size:34px 34px;mask-image:radial-gradient(600px 300px at 30% 30%,#000 20%,transparent 75%);
+  -webkit-mask-image:radial-gradient(600px 300px at 30% 30%,#000 20%,transparent 75%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;
+  background:rgba(249,115,22,.14);border:1px solid rgba(249,115,22,.3);
+  color:var(--accent2);font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(26px,4.6vw,40px);font-weight:900;letter-spacing:1px;line-height:1.25}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,#f97316,#fbbf24);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);margin-top:12px;max-width:620px;font-size:14.5px}
+.hero-actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;
+  font-size:14.5px;font-weight:700;transition:all .18s;
+}
+.btn-primary{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;box-shadow:0 8px 22px rgba(249,115,22,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(249,115,22,.5)}
+.btn-ghost{background:rgba(148,163,184,.09);border:1px solid var(--line);color:var(--text)}
+.btn-ghost:hover{background:rgba(148,163,184,.16)}
+.hero-stats{display:flex;gap:28px;margin-top:30px;flex-wrap:wrap}
+.hstat b{display:block;font-family:"Noto Serif SC",serif;font-size:26px;font-weight:900;color:var(--accent2)}
+.hstat span{font-size:12.5px;color:var(--muted)}
+
+/* ===== 区块标题 ===== */
+.sec-title{display:flex;align-items:baseline;gap:12px;margin:36px 0 16px}
+.sec-title h2{font-size:21px;font-weight:900;letter-spacing:.5px}
+.sec-title span{font-size:12.5px;color:var(--muted)}
+
+/* ===== 章节卡片 ===== */
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.ch-card{
+  position:relative;border-radius:var(--radius);padding:20px 18px;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);transition:all .2s;overflow:hidden;
+}
+.ch-card:hover{transform:translateY(-3px);border-color:rgba(249,115,22,.45);box-shadow:var(--shadow)}
+.ch-num{
+  font-family:"Noto Serif SC",serif;font-weight:900;font-size:30px;line-height:1;
+  background:linear-gradient(135deg,#f97316,#fb923c);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;opacity:.9;
+}
+.ch-title{font-weight:700;font-size:16px;margin:12px 0 4px}
+.ch-note{font-size:12.5px;color:var(--muted);line-height:1.6;min-height:38px}
+.ch-meta{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:12px;color:var(--muted)}
+.ch-bar{height:5px;border-radius:99px;background:rgba(148,163,184,.15);margin-top:12px;overflow:hidden}
+.ch-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f97316,#fbbf24);transition:width .4s}
+.ch-card.feat{
+  grid-column:span 2;background:linear-gradient(130deg,rgba(249,115,22,.16),var(--card) 55%);
+  border-color:rgba(249,115,22,.35);
+}
+@media(max-width:640px){.ch-grid{grid-template-columns:1fr 1fr;gap:10px}.ch-card{padding:15px 13px}.ch-card.feat{grid-column:span 2}.ch-title{font-size:14.5px}.ch-note{font-size:11.5px;min-height:auto}}
+
+/* ===== 章节页 ===== */
+.ch-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.ch-head h2{font-size:24px;font-weight:900}
+.ch-head .back{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.ch-head .back:hover{color:var(--text);background:var(--card2)}
+.q-list{display:flex;flex-direction:column;gap:10px}
+.q-row{
+  display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:13px;
+  background:var(--card);border:1px solid var(--line);cursor:pointer;transition:all .18s;
+}
+.q-row:hover{border-color:rgba(249,115,22,.4);transform:translateX(3px)}
+.q-row .qid{font-family:"Noto Serif SC",serif;font-weight:700;color:var(--accent2);width:34px;flex:none}
+.q-row .qpre{flex:1;color:var(--text);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.q-row .qtype{font-size:11px;padding:3px 9px;border-radius:7px;flex:none}
+.qt-single{background:rgba(59,130,246,.15);color:#7cb2ff}
+.qt-multi{background:rgba(249,115,22,.15);color:var(--accent2)}
+.qt-fill{background:rgba(52,211,153,.14);color:var(--ok)}
+.q-row .qstate{width:22px;height:22px;border-radius:99px;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.qstate.done{background:rgba(52,211,153,.2);color:var(--ok)}
+.qstate.wrong{background:rgba(248,113,113,.2);color:var(--err)}
+.qstate.none{background:rgba(148,163,184,.12);color:var(--muted)}
+
+/* ===== 题目卡片 ===== */
+.quiz-wrap{max-width:780px;margin:0 auto}
+.quiz-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.quiz-top .qtype{font-size:12px;padding:5px 12px;border-radius:99px;font-weight:700}
+.qcard{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;box-shadow:var(--shadow);
+}
+.qcard .qtext{font-size:17px;line-height:1.75;font-weight:500;white-space:pre-wrap}
+.qcard .qtext b{color:var(--accent2)}
+.opts{display:flex;flex-direction:column;gap:11px;margin-top:22px}
+.opt{
+  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;
+  background:var(--card2);border:1.5px solid var(--line);cursor:pointer;transition:all .16s;
+  font-size:15px;line-height:1.6;
+}
+.opt:hover{border-color:rgba(249,115,22,.5)}
+.opt .k{
+  width:26px;height:26px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;
+  background:rgba(148,163,184,.12);font-weight:700;font-size:13px;color:var(--muted);
+}
+.opt.sel{border-color:var(--accent);background:rgba(249,115,22,.1)}
+.opt.sel .k{background:var(--accent);color:#fff}
+.opt.correct{border-color:var(--ok);background:rgba(52,211,153,.1)}
+.opt.correct .k{background:var(--ok);color:#06281c}
+.opt.wrong{border-color:var(--err);background:rgba(248,113,113,.1)}
+.opt.wrong .k{background:var(--err);color:#fff}
+.fillbox{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.fillbox input{
+  flex:1;min-width:220px;padding:13px 16px;border-radius:11px;font-size:16px;
+  background:var(--card2);border:1.5px solid var(--line);color:var(--text);outline:none;
+}
+.fillbox input:focus{border-color:var(--accent)}
+.qfoot{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.qfoot .btn{padding:10px 18px;font-size:13.5px;border-radius:10px}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:11px;background:var(--card2);border:1px solid var(--line);color:var(--muted);transition:all .15s;flex:none}
+.icon-btn:hover{color:var(--accent2);border-color:rgba(249,115,22,.4)}
+.icon-btn.on{color:var(--gold);border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.1)}
+.quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.quiz-progress .bar{flex:1;height:6px;border-radius:99px;background:rgba(148,163,184,.14);overflow:hidden}
+.quiz-progress .bar i{display:block;height:100%;background:linear-gradient(90deg,#f97316,#fbbf24);border-radius:99px;transition:width .3s}
+.quiz-progress span{font-size:12.5px;color:var(--muted);flex:none}
+.explain{
+  display:none;margin-top:20px;padding:18px;border-radius:12px;background:rgba(59,130,246,.07);
+  border:1px solid rgba(59,130,246,.25);
+}
+.explain.show{display:block;animation:fadeIn .25s}
+.explain h4{color:#7cb2ff;font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.explain p{font-size:14px;color:var(--text);line-height:1.8;white-space:pre-wrap}
+.verdict{display:none;margin-top:18px;padding:14px 18px;border-radius:12px;font-weight:700;font-size:14.5px}
+.verdict.show{display:flex;align-items:center;gap:10px;animation:fadeIn .25s}
+.verdict.right{background:rgba(52,211,153,.13);border:1px solid rgba(52,211,153,.3);color:var(--ok)}
+.verdict.wrong{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);color:var(--err)}
+.empty{
+  text-align:center;padding:70px 20px;color:var(--muted);
+}
+.empty .big{font-size:44px;margin-bottom:12px;opacity:.5}
+
+/* ===== 速记卡 ===== */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.flip{
+  position:relative;height:200px;perspective:1000px;cursor:pointer;
+}
+.flip-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s}
+.flip.flipped .flip-in{transform:rotateY(180deg)}
+.flip-face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;justify-content:center;
+  border:1px solid var(--line);
+}
+.flip-front{background:var(--card);font-size:16px;font-weight:700;text-align:center;line-height:1.8}
+.flip-front::before{content:"知识点";position:absolute;top:12px;left:14px;font-size:10.5px;color:var(--muted);letter-spacing:2px}
+.flip-back{background:linear-gradient(150deg,#1a2b45,#152338);transform:rotateY(180deg);font-size:13.5px;color:#cbd8ea;line-height:1.8}
+.flip-back b{color:var(--accent2)}
+.flip-face::after{content:"点击翻转";position:absolute;bottom:12px;right:14px;font-size:10px;color:var(--muted);opacity:.7}
+
+/* ===== 思维导图 ===== */
+.mind-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.mind-tab{padding:8px 15px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s}
+.mind-tab:hover{color:var(--text)}
+.mind-tab.active{background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(249,115,22,.08));color:var(--accent2);border-color:rgba(249,115,22,.4);font-weight:700}
+#mindChart{width:100%;min-height:560px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 16px;overflow:auto}
+.mtree{}
+.mnode{display:flex;align-items:flex-start;gap:9px;margin:5px 0}
+.mnode .dot{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px;background:var(--accent)}
+.mnode.d1 .dot{background:#f97316;box-shadow:0 0 0 4px rgba(249,115,22,.18)}
+.mnode.d2 .dot{background:#38bdf8}
+.mnode.d3 .dot{background:#a78bfa}
+.mnode.d4 .dot{background:#34d399}
+.mnode .label{font-size:14px;color:var(--text);line-height:1.6;font-weight:500;padding:3px 10px;border-radius:8px;background:var(--card2);border:1px solid var(--line);cursor:pointer;transition:all .15s}
+.mnode .label:hover{border-color:rgba(249,115,22,.45);color:var(--accent2)}
+.mnode.d0 .label{background:linear-gradient(135deg,rgba(249,115,22,.25),rgba(249,115,22,.08));border-color:rgba(249,115,22,.4);font-weight:800;font-size:15.5px;color:var(--text)}
+.mnode.d1 .label{font-weight:700}
+.mnode .toggle{width:18px;height:18px;border-radius:6px;flex:none;margin-top:8px;display:flex;align-items:center;justify-content:center;background:rgba(148,163,184,.1);font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;line-height:1}
+.mnode .toggle:hover{background:rgba(249,115,22,.2);color:var(--accent2)}
+.mchildren{margin-left:26px;border-left:1px solid rgba(148,163,184,.2);padding-left:12px}
+.mchildren.collapsed{display:none}
+
+/* ===== 提纲 ===== */
+.outline-ch{margin-bottom:26px}
+.outline-ch>h3{font-size:17px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.outline-ch>h3 .n{color:var(--accent2);font-family:"Noto Serif SC",serif}
+.outline-items{display:flex;flex-direction:column;gap:8px}
+.outline-item{display:flex;gap:12px;padding:13px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:13.5px;line-height:1.7}
+.outline-item .t{flex:none;font-weight:700;color:var(--accent2);width:130px}
+.outline-item .c{color:#c6d3e6}
+@media(max-width:640px){.outline-item{flex-direction:column;gap:4px}.outline-item .t{width:auto}}
+
+/* ===== 统计 ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.stat-card{padding:20px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line)}
+.stat-card h4{font-size:13.5px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.stat-card .bar{height:7px;border-radius:99px;background:rgba(148,163,184,.15);overflow:hidden}
+.stat-card .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f97316,#fbbf24)}
+.stat-card .pct{font-family:"Noto Serif SC",serif;font-weight:900;font-size:20px;color:var(--accent2)}
+.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.ov{text-align:center;padding:22px 10px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line)}
+.ov b{display:block;font-family:"Noto Serif SC",serif;font-size:30px;font-weight:900;color:var(--text)}
+.ov b.hot{color:var(--accent2)}
+.ov span{font-size:12px;color:var(--muted);margin-top:4px}
+@media(max-width:640px){.overview{grid-template-columns:1fr 1fr}}
+
+/* ===== 底部tabbar（移动） ===== */
+.tabbar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;height:64px;
+  display:none;background:rgba(10,18,32,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+.tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);font-size:10.5px;cursor:pointer;border-radius:10px;transition:color .15s}
+.tabbar .tab svg{width:23px;height:23px}
+.tabbar .tab.active{color:var(--accent2);font-weight:700}
+@media(max-width:900px){
+  .tabbar{display:flex}
+  .main{padding-bottom:96px}
+  .sidebar{display:none}
+}
+@media(min-width:901px){.sidebar{display:block}}
+
+/* ===== Toast ===== */
+#toast{
+  position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);z-index:999;
+  background:#1c2b47;border:1px solid var(--line);color:var(--text);padding:11px 22px;border-radius:99px;
+  font-size:13.5px;opacity:0;pointer-events:none;transition:all .3s;box-shadow:var(--shadow);white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:901px){#toast{bottom:40px}}
+
+/* ===== 打字机/高亮 ===== */
+kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-radius:6px;font-size:12.5px;font-family:inherit}
+.mode-tag{font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.14);color:var(--gold);font-weight:700;letter-spacing:1px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#/home">
+    <div class="brand-badge">材</div>
+    <div>
+      <div class="brand-name">工程材料A · 刷题台</div>
+      <div class="brand-sub">MATERIALS ENGINEERING</div>
+    </div>
+  </a>
+  <div class="stats-pill"><span>题库 <b id="tpTotal">0</b> 题</span><span>已刷 <b id="tpDone">0</b></span><span>正确率 <b id="tpAcc">0%</b></span></div>
+</header>
+
+<aside class="sidebar">
+  <div class="nav-sec">学习</div>
+  <a class="nav-item" data-nav="#/home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>首页</a>
+  <a class="nav-item" data-nav="#/random"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg>随机刷题</a>
+  <a class="nav-item" data-nav="#/chapters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>章节刷题</a>
+  <a class="nav-item" data-nav="#/cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>速记卡</a>
+  <div class="nav-sec">资料</div>
+  <a class="nav-item" data-nav="#/mind"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l3 9M16 7l-3 9M8.5 6H15.5"/></svg>思维导图</a>
+  <a class="nav-item" data-nav="#/outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16M4 9h16M4 14h16M4 19h10"/><circle cx="8" cy="14" r="1.5" fill="currentColor" stroke="none"/></svg>知识提纲</a>
+  <div class="nav-sec">我的</div>
+  <a class="nav-item" data-nav="#/wrong"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>错题本 <span id="navWrong" style="margin-left:auto;font-size:11px;background:rgba(248,113,113,.2);color:var(--err);padding:1px 8px;border-radius:99px">0</span></a>
+  <a class="nav-item" data-nav="#/fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20 4.5 12.5A5.2 5.2 0 0 1 12 6.8a5.2 5.2 0 0 1 7.5 5.7L12 20z"/></svg>收藏 <span id="navFav" style="margin-left:auto;font-size:11px;background:rgba(251,191,36,.18);color:var(--gold);padding:1px 8px;border-radius:99px">0</span></a>
+  <a class="nav-item" data-nav="#/stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>学习统计</a>
+  <div class="side-foot">
+    <p><b style="color:var(--accent2)">工程材料A</b> 课程刷题台<br>基于 14 份课件 + 2 套期中真题整理<br>涵盖热处理 · 合金钢 · 不锈钢 · 工具钢等核心考点</p>
+  </div>
+</aside>
+
+<main class="main" id="main">
+
+  <!-- ===== 视图：首页 ===== -->
+  <section class="view" id="view-home">
+    <div class="hero">
+      <span class="hero-tag">MATERIALS ENGINEERING A · 期中冲刺</span>
+      <h1>工程材料<em>A</em> 刷题台</h1>
+      <p>基于课程全套课件与 2021/2022 期中真题整理的智能刷题工具。覆盖钢的分类编号、合金化原理、热处理工艺、机器零件用钢、工具钢、不锈钢等全部核心考点，边刷边记，快速掌握要点。</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="go('#/random')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg>
+          开始随机刷题
+        </button>
+        <button class="btn btn-ghost" onclick="go('#/chapters')">按章节学习</button>
+        <button class="btn btn-ghost" onclick="go('#/mind')">思维导图速览</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><b id="hpTotal">0</b><span>总题数</span></div>
+        <div class="hstat"><b id="hpDone">0</b><span>已刷题数</span></div>
+        <div class="hstat"><b id="hpAcc">0%</b><span>总正确率</span></div>
+        <div class="hstat"><b id="hpCards">0</b><span>速记知识点</span></div>
+      </div>
+    </div>
+
+    <div class="sec-title"><h2>章节刷题</h2><span>点击章节进入练习</span></div>
+    <div class="ch-grid" id="homeChGrid"></div>
+
+    <div class="sec-title"><h2>期中真题专练</h2><span>结合 2021/2022 两套期中试卷整理</span></div>
+    <div class="ch-grid">
+      <div class="ch-card feat" onclick="go('#/chapter/c12')">
+        <div class="ch-num">真</div>
+        <div class="ch-title">期中真题专练</div>
+        <div class="ch-note">淬透性 vs 淬硬性 · GCr15 千分尺工艺路线 · 20CrMnTi 齿轮工艺 · 回火硬度分析 · 屈氏体与回火屈氏体</div>
+        <div class="ch-meta"><span id="hpZhen" style="color:var(--gold)">0</span><span>题 · 含两套原卷改编</span></div>
+        <div class="ch-bar"><i style="width:0%" id="hpZhenBar"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 视图：章节列表 ===== -->
+  <section class="view" id="view-chapters">
+    <div class="ch-head"><button class="back" onclick="go('#/home')">← 返回</button><h2>章节刷题</h2></div>
+    <div class="ch-grid" id="chGrid"></div>
+  </section>
+
+  <!-- ===== 视图：章节题目列表 ===== -->
+  <section class="view" id="view-chapter">
+    <div class="ch-head" id="chHead"></div>
+    <div class="q-list" id="qList"></div>
+  </section>
+
+  <!-- ===== 视图：刷题 ===== -->
+  <section class="view" id="view-quiz">
+    <div class="quiz-wrap">
+      <div class="quiz-top">
+        <button class="back" id="quizBack">← 退出</button>
+        <span class="mode-tag" id="quizModeTag">章节练习</span>
+        <span class="qtype qt-single" id="quizType" style="margin-left:auto">单选题</span>
+      </div>
+      <div class="quiz-progress" id="quizProg"></div>
+      <div class="qcard">
+        <div class="qtext" id="quizQ"></div>
+        <div class="opts" id="quizOpts"></div>
+        <div class="fillbox" id="quizFill" style="display:none">
+          <input id="fillInput" placeholder="输入答案后点击作答" autocomplete="off">
+          <button class="btn btn-primary" onclick="submitFill()">作答</button>
+        </div>
+        <div class="verdict" id="quizVerdict"></div>
+        <div class="explain" id="quizExplain">
+          <h4>答案解析</h4>
+          <p id="quizExplainText"></p>
+        </div>
+        <div class="qfoot">
+          <button class="btn btn-ghost" id="quizPrev" onclick="navQuiz(-1)">上一题</button>
+          <button class="btn btn-primary" id="quizSubmit" onclick="submitQuiz()">提交答案</button>
+          <button class="btn btn-ghost" id="quizNext" onclick="navQuiz(1)">下一题</button>
+          <span style="flex:1"></span>
+          <button class="icon-btn" id="quizFav" onclick="toggleFav()" title="收藏"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20 4.5 12.5A5.2 5.2 0 0 1 12 6.8a5.2 5.2 0 0 1 7.5 5.7L12 20z"/></svg></button>
+          <button class="icon-btn" id="quizWrong" onclick="toggleWrong()" title="标记错题"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 视图：速记卡 ===== -->
+  <section class="view" id="view-cards">
+    <div class="ch-head"><h2>速记卡</h2><button class="back" style="margin-left:auto" onclick="go('#/chapters')">全部速记卡</button></div>
+    <p style="color:var(--muted);font-size:13.5px;margin-bottom:18px">点击卡片翻转查看答案 · 核心考点速记</p>
+    <div class="card-grid" id="cardGrid"></div>
+  </section>
+
+  <!-- ===== 视图：思维导图 ===== -->
+  <section class="view" id="view-mind">
+    <div class="ch-head"><h2>思维导图</h2></div>
+    <div class="mind-tabs" id="mindTabs"></div>
+    <div id="mindChart"></div>
+  </section>
+
+  <!-- ===== 视图：提纲 ===== -->
+  <section class="view" id="view-outline">
+    <div class="ch-head"><h2>知识提纲</h2></div>
+    <div id="outlineBody"></div>
+  </section>
+
+  <!-- ===== 视图：错题本 ===== -->
+  <section class="view" id="view-wrong">
+    <div class="ch-head"><h2>错题本</h2><button class="back" id="btnWrongReplay" onclick="wrongReplay()">重刷全部错题</button></div>
+    <div class="q-list" id="wrongList"></div>
+  </section>
+
+  <!-- ===== 视图：收藏 ===== -->
+  <section class="view" id="view-fav">
+    <div class="ch-head"><h2>收藏</h2></div>
+    <div class="q-list" id="favList"></div>
+  </section>
+
+  <!-- ===== 视图：统计 ===== -->
+  <section class="view" id="view-stats">
+    <div class="ch-head"><h2>学习统计</h2></div>
+    <div class="overview">
+      <div class="ov"><b id="stTotal">0</b><span>总题数</span></div>
+      <div class="ov"><b id="stDone">0</b><span>已刷题数</span></div>
+      <div class="ov"><b class="hot" id="stAcc">0%</b><span>总正确率</span></div>
+      <div class="ov"><b id="stWrong">0</b><span>错题数</span></div>
+    </div>
+    <div class="sec-title"><h2>章节正确率</h2></div>
+    <div class="stat-grid" id="statGrid"></div>
+  </section>
+
+</main>
+
+<!-- 底部Tabbar（移动端） -->
+<nav class="tabbar" id="tabbar">
+  <div class="tab" data-tab="#/home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>首页</div>
+  <div class="tab" data-tab="#/random"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg>刷题</div>
+  <div class="tab" data-tab="#/chapters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>章节</div>
+  <div class="tab" data-tab="#/wrong"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>错题</div>
+  <div class="tab" data-tab="#/stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>统计</div>
+</nav>
+
+<div id="toast"></div>
+
+<script>const BANK={"chapters": [{"id": "c1", "title": "绪论与材料基础", "note": "材料要素 · 材料分类 · 先进材料", "questions": [{"id": "c1q1", "type": "single", "orig": true, "q": "材料的四大基本要素是指（ ）。", "options": ["成分与结构、合成与加工、性质、使用效能", "成分、结构、性能、价格", "强度、塑性、韧性、硬度", "金属、陶瓷、高分子、复合材料"], "answer": "A", "explain": "材料的四大基本要素：成分与结构、合成与加工、性质、使用效能，构成材料科学与工程的基本要素。"}, {"id": "c1q2", "type": "single", "orig": true, "q": "师昌绪提出的材料五要素模型是在四要素基础上增加了（ ）。", "options": ["结构", "性能", "成分", "使用效能"], "answer": "A", "explain": "师昌绪提出五要素模型：成分、合成/加工、结构、性质和使用效能，其中组成/结构并非同义词。"}, {"id": "c1q3", "type": "single", "orig": true, "q": "材料科学与工程可分为材料科学和材料工程两部分，材料科学主要研究（ ）。", "options": ["材料的组织、结构与性能的关系", "材料制备过程中的工艺和工程技术问题", "材料的价格与成本", "材料的市场营销"], "answer": "A", "explain": "材料科学研究材料的组织、结构与性能的关系，探索自然规律；材料工程研究制备工艺和工程技术问题。"}, {"id": "c1q4", "type": "single", "orig": true, "q": "20世纪70年代，人们把（ ）誉为当代文明的三大支柱。", "options": ["信息、材料和能源", "材料、能源和生物", "信息、生物和新材料", "钢铁、水泥和塑料"], "answer": "A", "explain": "20世纪70年代人们把信息、材料和能源誉为当代文明的三大支柱。"}, {"id": "c1q5", "type": "single", "orig": true, "q": "结构材料是指（ ）。", "options": ["以力学性能为主，制造受力构件所用材料", "利用独特物理化学性质的材料", "人工合成的高分子材料", "用于信息技术的半导体材料"], "answer": "A", "explain": "结构材料以力学性能为主，用于制造受力构件；功能材料主要利用独特的物理、化学性质或生物功能。"}, {"id": "c1q6", "type": "single", "orig": true, "q": "传统材料又称基础材料，其特点不包括（ ）。", "options": ["量大面广", "矿产资源消耗大户", "制备过程中污染严重", "性能一定优于新型材料"], "answer": "D", "explain": "传统材料量大面广、消耗矿产资源和污染严重；新型材料性能优异且有应用前景。"}, {"id": "c1q7", "type": "single", "orig": true, "q": "材料的性质是指材料对载荷、电、磁、光、热的反应，一般可分为（ ）。", "options": ["力学性能、物理性能、化学性能", "强度、硬度、韧性、塑性", "导电性、导热性、磁性", "抗拉强度、屈服强度、疲劳强度"], "answer": "A", "explain": "材料性质一般分为力学性能、物理性能和化学性能。"}, {"id": "c1q8", "type": "multi", "orig": true, "q": "下列关于材料的说法正确的有（ ）。", "options": ["一种材料往往既是结构材料又是功能材料，如铁、铜、铝", "材料是物质，但食物和药物一般不算材料", "先进材料是先进技术的先导", "传统材料与新型材料之间有明确的界限"], "answer": "ABC", "explain": "材料往往兼具结构材料与功能材料双重身份；食物、药物一般不算材料；先进材料是先进技术的先导；传统材料与新型材料之间没有明显界限。"}, {"id": "c1q9", "type": "single", "orig": true, "q": "从材料发展历史看，自（ ）现代炼钢技术出现以后，金属材料的重要性急剧增加。", "options": ["19世纪中叶", "17世纪", "20世纪中叶", "21世纪"], "answer": "A", "explain": "自19世纪中叶现代炼钢技术出现后，金属材料重要性急剧增加，直至21世纪上半叶仍占重要位置。"}, {"id": "c1q10", "type": "single", "orig": true, "q": "按物质结构分类，材料可分为（ ）。", "options": ["金属材料、无机非金属材料、高分子材料和复合材料", "结构材料和功能材料", "传统材料和新型材料", "机械工程材料和电工材料"], "answer": "A", "explain": "按物质结构分为金属材料、无机非金属材料（陶瓷、硅酸盐）、高分子材料及不同类型材料组成的复合材料。"}, {"id": "c1q11", "type": "single", "orig": true, "q": "下列属于新型材料重点发展方向的是（ ）。", "options": ["纳米材料及制备技术", "普通碳素结构钢", "水泥", "铸铁"], "answer": "A", "explain": "先进材料发展重点包括信息功能材料、能源材料、生物材料、纳米材料等；普通碳钢、水泥属于传统材料。"}]}, {"id": "c2", "title": "钢的分类及编号", "note": "钢的分类 · Q235/45钢 · 合金钢编号 · 不锈钢编号", "questions": [{"id": "c2q1", "type": "single", "orig": true, "q": "钢是含碳量在（ ）之间的铁碳合金，为保证塑性韧性，含碳量一般不超过1.7%。", "options": ["0.04%～2.3%", "0.02%～0.8%", "0.1%～1.0%", "0.5%～4.3%"], "answer": "A", "explain": "钢的含碳量范围为0.04%~2.3%，一般不超过1.7%。"}, {"id": "c2q2", "type": "single", "orig": true, "q": "按质量分类，优质钢的P、S含量要求是（ ）。", "options": ["P、S均≤0.035%", "P≤0.045%，S≤0.050%", "P≤0.035%，S≤0.030%", "P、S均≤0.025%"], "answer": "A", "explain": "普通钢P≤0.045%、S≤0.050%；优质钢P、S均≤0.035%；高级优质钢P≤0.035%、S≤0.030%。"}, {"id": "c2q3", "type": "single", "orig": true, "q": "低碳钢的含碳量范围是（ ）。", "options": ["C≤0.25%", "0.25%＜C≤0.60%", "C＞0.60%", "C≤0.10%"], "answer": "A", "explain": "低碳钢C≤0.25%；中碳钢0.25%＜C≤0.60%；高碳钢C＞0.60%。"}, {"id": "c2q4", "type": "single", "orig": true, "q": "按化学成分分类，合金元素总含量大于10%的钢属于（ ）。", "options": ["高合金钢", "中合金钢", "低合金钢", "超合金钢"], "answer": "A", "explain": "低合金钢合金元素总量≤5%，中合金钢5%~10%，高合金钢＞10%。"}, {"id": "c2q5", "type": "single", "orig": true, "q": "Q235牌号中的“Q”和数字235分别表示（ ）。", "options": ["屈服点及屈服点数值235MPa", "抗拉强度及数值235MPa", "含碳量0.235%", "硬度235HB"], "answer": "A", "explain": "Q代表钢材的屈服点，数字表示屈服点数值（MPa），Q235即屈服点为235MPa的碳素结构钢。"}, {"id": "c2q6", "type": "single", "orig": true, "q": "Q235AF表示（ ）。", "options": ["A级沸腾钢", "B级镇静钢", "A级半镇静钢", "B级特殊镇静钢"], "answer": "A", "explain": "F表示沸腾钢，A为质量等级，Q235AF表示A级沸腾钢；Z和TZ镇静钢可不标符号。"}, {"id": "c2q7", "type": "single", "orig": true, "q": "优质碳素结构钢牌号“45”表示（ ）。", "options": ["平均碳含量为0.45%", "平均碳含量为4.5%", "含碳量45%", "屈服强度450MPa"], "answer": "A", "explain": "两位数字表示平均碳含量（以万分之几计），45钢平均碳含量0.45%。"}, {"id": "c2q8", "type": "single", "orig": true, "q": "合金结构钢牌号“40Cr”中，Cr含量约为（ ）。", "options": ["小于1.50%", "1.50%～2.49%", "2.50%～3.49%", "0.4%"], "answer": "A", "explain": "合金元素平均含量小于1.50%时牌号中仅标明元素，不标含量，40Cr含Cr约1%左右。"}, {"id": "c2q9", "type": "single", "orig": true, "q": "轴承钢牌号“GCr15”中，15表示（ ）。", "options": ["平均含铬量为1.50%（以千分之几计）", "含碳量为1.5%", "含镍量1.5%", "屈服强度150MPa"], "answer": "A", "explain": "G为“滚”字拼音字首，铬含量以千分之几计，GCr15表示平均含铬量1.50%的轴承钢。"}, {"id": "c2q10", "type": "single", "orig": true, "q": "碳素工具钢“T8”中的数字8表示（ ）。", "options": ["平均含碳量0.8%（以千分之几计）", "含碳量8%", "含钨量8%", "硬度HRC8"], "answer": "A", "explain": "T代表碳素工具钢，数字表示平均含碳量（以千分之几计），T8含碳约0.8%。"}, {"id": "c2q11", "type": "single", "orig": true, "q": "合金工具钢牌号“9SiCr”中碳含量约（ ），表示方法为（ ）。", "options": ["0.9%，以千分之几表示", "9%，以百分之几表示", "0.09%，以万分之几表示", "1.9%，以千分之几表示"], "answer": "A", "explain": "合金工具钢平均碳含量＜1.0%时以千分之几表示，9SiCr含碳约0.9%。"}, {"id": "c2q12", "type": "single", "orig": true, "q": "平均含铬量为0.60%的低铬合金工具钢，其牌号表示为（ ）。", "options": ["Cr06", "Cr6", "0Cr6", "Cr60"], "answer": "A", "explain": "低铬合金工具钢（平均含铬量＜1.00%）在含铬量前加数字“0”，Cr06表示含铬0.60%。"}, {"id": "c2q13", "type": "single", "orig": true, "q": "高速工具钢W18Cr4V中一般不标明含碳量，其含碳量约为（ ）。", "options": ["0.73%～0.83%", "1.8%", "0.18%", "4%"], "answer": "A", "explain": "W18Cr4V含碳0.73%~0.83%，高速钢牌号一般不标含碳量。"}, {"id": "c2q14", "type": "single", "orig": true, "q": "按GB/T 20878规定，含碳量上限为0.08%的铬镍不锈钢，其含碳量数字表示为（ ）。", "options": ["06", "08", "80", "16"], "answer": "A", "explain": "碳含量上限不大于0.10%时以其上限的3/4表示：0.08%×3/4≈0.06%，以06表示。"}, {"id": "c2q15", "type": "single", "orig": true, "q": "平均碳含量为0.45%的易切削钢，其牌号表示为（ ）。", "options": ["Y45", "45Y", "Y45Ca", "易45"], "answer": "A", "explain": "Y代表易切削钢，两位数字表示平均含碳量（万分之几），Y45即平均含碳0.45%的易切削钢。"}, {"id": "c2q16", "type": "single", "orig": true, "q": "高级优质钢一般在牌号尾部加“A”以示区别，如30CrMnSiA，新标准中该字母（ ）。", "options": ["已删除，但同一牌号化学成分调整为原带A的化学成分", "保留并继续使用", "改为加E", "改为加H"], "answer": "A", "explain": "GB/T 3077-2015新标准删除所有带“A”的牌号，但同一牌号化学成分调整为原带A的化学成分。"}, {"id": "c2q17", "type": "single", "orig": true, "q": "按金相组织分类，亚共析钢退火状态的组织是（ ）。", "options": ["铁素体＋珠光体", "珠光体", "珠光体＋渗碳体", "莱氏体"], "answer": "A", "explain": "退火状态：亚共析钢（铁素体+珠光体）、共析钢（珠光体）、过共析钢（珠光体+渗碳体）、莱氏体钢。"}, {"id": "c2q18", "type": "multi", "orig": true, "q": "关于钢的编号方法，下列说法正确的有（ ）。", "options": ["45钢平均碳含量0.45%", "GCr15表示平均含铬量1.50%的轴承钢", "T8Mn表示较高含锰量的碳素工具钢", "Q355为低合金高强度结构钢，2018版以Q355代替Q345"], "answer": "ABCD", "explain": "四种说法均正确：45钢含碳0.45%；GCr15含铬1.50%；T8Mn含锰较高；Q355代替Q345。"}, {"id": "c2q19", "type": "single", "orig": true, "q": "下列属于特殊性能钢的是（ ）。", "options": ["不锈钢、耐热钢、耐磨钢、低温用钢", "调质钢、弹簧钢", "渗碳钢、轴承钢", "桥梁钢、船用钢"], "answer": "A", "explain": "特殊性能钢包括不锈钢、耐热钢、电热合金钢、耐磨钢、低温用钢、电工用钢等。"}]}, {"id": "c3", "title": "钢的合金化基础", "note": "合金元素 · 强化机制 · 元素对相变影响 · 回火脆性", "questions": [{"id": "c3q1", "type": "single", "orig": true, "q": "合金元素是指（ ）。", "options": ["为了合金化的目的而特定在钢中加入含量在一定范围的化学元素", "冶炼时由原材料带入的化学元素", "钢中的全部杂质元素", "铁碳二元系中的碳"], "answer": "A", "explain": "合金元素是为合金化目的特意加入的；冶炼带入的为杂质元素。"}, {"id": "c3q2", "type": "single", "orig": true, "q": "下列属于奥氏体（A）形成元素的是（ ）。", "options": ["C、N、Cu、Mn、Ni、Co", "Cr、V、Si、Al、Ti、Mo", "W、Zr、Nb、Ta", "S、P、O、H"], "answer": "A", "explain": "扩大A相区的元素（A形成元素）：C、N、Cu、Mn、Ni、Co；缩小A相区的元素（F形成元素）：Cr、V、Si、Al、Ti、Mo、W等。"}, {"id": "c3q3", "type": "single", "orig": true, "q": "下列属于非碳化物形成元素的是（ ）。", "options": ["Ni、Si、Co、Al、Cu", "Zr、Nb、Ti、V", "W、Mo、Cr、Mn", "Fe、C、N"], "answer": "A", "explain": "非碳化物形成元素：Ni、Si、Co、Al、Cu、N、P、S等；碳化物形成元素：Fe、Mn、Cr、W、Mo、V、Nb、Zr、Ti。"}, {"id": "c3q4", "type": "single", "orig": true, "q": "钢中碳化物形成能力由强到弱的顺序是（ ）。", "options": ["Ti、Zr、Nb、V、Mo、W、Cr、Mn、Fe", "Fe、Mn、Cr、W、Mo、V、Nb、Zr、Ti", "Ni、Si、Co、Al、Cu", "Cr、Ni、Mn、Si"], "answer": "A", "explain": "碳化物形成能力：Ti、Zr、Nb、V、Mo、W、Cr、Mn、Fe由强到弱；Ni、Si等位于Fe右侧，不形成碳化物。"}, {"id": "c3q5", "type": "single", "orig": true, "q": "固溶强化是指（ ）。", "options": ["固溶体材料随溶质含量提高其强度、硬度提高而塑性、韧性下降的现象", "通过细化晶粒提高强度", "通过第二相粒子弥散分布强化", "通过位错密度增加强化"], "answer": "A", "explain": "固溶强化：溶质原子造成晶格畸变，增大位错运动阻力，使强度硬度提高、塑性韧性下降。"}, {"id": "c3q6", "type": "single", "orig": true, "q": "钢的四种基本强化机制不包括（ ）。", "options": ["织构强化", "固溶强化", "晶界（细晶）强化", "第二相强化"], "answer": "A", "explain": "四种强化机制：固溶强化、晶界（细晶）强化、第二相强化（沉淀+弥散）、位错强化。"}, {"id": "c3q7", "type": "single", "orig": true, "q": "细化晶粒提高强度的方法称为（ ），其突出优点是可以（ ）。", "options": ["晶界强化，同时改善塑性和韧性", "位错强化，同时提高硬度", "固溶强化，同时提高耐蚀性", "沉淀强化，同时提高红硬性"], "answer": "A", "explain": "晶界（细晶）强化不仅提高强度，还能改善塑性韧性，是钢合金化的重要着眼点。"}, {"id": "c3q8", "type": "single", "orig": true, "q": "细化晶粒的常用方法是向钢中加入（ ）等元素形成难熔第二相质点，阻碍奥氏体晶界移动。", "options": ["Al、Nb、V、Ti", "Ni、Co、Cu", "Mn、Si", "S、P"], "answer": "A", "explain": "加入Al、Nb、V、Ti形成难熔第二相质点（如AlN、TiC），钉扎奥氏体晶界，细化晶粒。"}, {"id": "c3q9", "type": "single", "orig": true, "q": "弥散强化中常加入的强碳化物形成元素是（ ）。", "options": ["V、Ti、W、Mo、Nb", "Ni、Cu、Co", "Si、Al、Mn", "S、P、B"], "answer": "A", "explain": "弥散强化以碳化物作强化相，需加入V、Ti、W、Mo、Nb等强碳化物形成元素，防止碳化物聚集长大。"}, {"id": "c3q10", "type": "single", "orig": true, "q": "位错强化的本质是（ ）。", "options": ["增加位错密度，阻碍位错运动", "减少位错数量", "消除晶体缺陷", "提高位错迁移率"], "answer": "A", "explain": "位错密度高时位错易相互交割形成割阶、缠结，阻碍进一步塑性变形，从而提高强度。"}, {"id": "c3q11", "type": "single", "orig": true, "q": "扩大奥氏体相区的元素加入后（ ）。", "options": ["A4升高、A3降低，奥氏体相区扩大", "A3升高、A4降低", "共析温度升高", "S点右移"], "answer": "A", "explain": "扩大A相区元素（C、N、Cu、Mn、Ni、Co）：A4↑、A3↓、A相区扩大；缩小A相区元素（Cr、V、Mo、W、Ti、Al、Si）：A3↑、A4↓。"}, {"id": "c3q12", "type": "single", "orig": true, "q": "所有合金元素均使（ ），使含碳量相同的碳钢和合金钢组织不同。", "options": ["共析点S左移", "共析点S右移", "E点右移", "共析温度升高"], "answer": "A", "explain": "所有合金元素均使S点左移；扩大A相区元素使A3、A1降低，缩小A相区元素使A3、A1升高。"}, {"id": "c3q13", "type": "single", "orig": true, "q": "加入大量扩大A相区元素可使室温下获得稳定的单相奥氏体组织，即（ ）。", "options": ["奥氏体钢（如1Cr18Ni9Ti类）", "铁素体钢", "珠光体钢", "马氏体钢"], "answer": "A", "explain": "大量扩大A相区元素→室温单相A（奥氏体钢）；大量缩小A相区元素→室温单相F（铁素体钢）。"}, {"id": "c3q14", "type": "single", "orig": true, "q": "合金钢加热时不易过热（组织不易粗大），其主要原因是（ ）。", "options": ["合金元素（除Mn、P外）阻止奥氏体晶粒长大", "合金元素促进晶粒长大", "加热温度更低", "保温时间更短"], "answer": "A", "explain": "合金元素（除Mn、P外）阻止A晶粒长大：Ti、Nb、V强烈阻止，W、Mo、Cr起一定阻碍作用。"}, {"id": "c3q15", "type": "single", "orig": true, "q": "提高淬透性为目的的常用合金元素只有五种，即（ ）。", "options": ["Cr、Mn、Si、Ni、B", "W、Mo、V、Ti、Nb", "Al、Cu、Co、P", "C、N、O、H、S"], "answer": "A", "explain": "提高淬透性常用元素：Cr、Mn、Si、Ni、B，合金化原则“多元少量”。"}, {"id": "c3q16", "type": "single", "orig": true, "q": "合金元素溶入奥氏体后使C曲线右移，其结果是（ ）。", "options": ["临界冷却速度降低，淬透性提高", "临界冷却速度提高，淬透性降低", "马氏体点升高", "淬硬性提高"], "answer": "A", "explain": "合金元素（除Co外）降低原子扩散速度，使奥氏体稳定性增加，C曲线右移，Vk降低，淬透性提高。"}, {"id": "c3q17", "type": "single", "orig": true, "q": "碳化物形成元素Cr、Mo、W、V溶入奥氏体后，不仅使C曲线右移，还会（ ）。", "options": ["使其分解成两个“鼻子”", "消除C曲线", "使鼻尖温度升高", "使C曲线左移"], "answer": "A", "explain": "Mo、W、V、Ti强烈推迟P转变，Mn、Cr推迟B转变更明显，使C曲线分成两个“鼻子”。"}, {"id": "c3q18", "type": "single", "orig": true, "q": "合金元素溶入奥氏体后使Ms、Mf点（ ），淬火后残余奥氏体（ ）。", "options": ["降低，增多", "升高，增多", "降低，减少", "不变，不变"], "answer": "A", "explain": "合金元素（Mn、Cr、Ni、Mo、W、Si）使Ms、Mf点降低，残余奥氏体增多。"}, {"id": "c3q19", "type": "single", "orig": true, "q": "钢的二次硬化现象是指（ ）。", "options": ["含Ti、V、Nb、Mo、W较高含量的合金钢淬火后在500～600℃回火析出特殊碳化物使硬度提高", "回火温度升高硬度一直升高", "淬火时硬度升高", "冷处理时硬度升高"], "answer": "A", "explain": "二次硬化：500~600℃回火时沉淀析出特殊碳化物（VC、W2C、Mo2C等），使强度硬度提高。"}, {"id": "c3q20", "type": "single", "orig": true, "q": "第一类回火脆性和第二类回火脆性的消除办法分别是（ ）。", "options": ["第一类不可消除（避开温度范围），第二类回火后快冷即可", "第一类回火后快冷，第二类不可消除", "加入W、Mo可消除第一类", "二者都只能靠避开温度范围"], "answer": "A", "explain": "第一类（250~350℃）不可逆、无法消除只能避开；第二类（500~650℃缓冷）可逆，回火后快冷或加W约1%、Mo约0.5%防止。"}, {"id": "c3q21", "type": "multi", "orig": true, "q": "关于合金元素的作用，正确的有（ ）。", "options": ["Mn、Si提高淬透性", "Al、Nb、V、Ti细化晶粒", "W、Mo防止第二类回火脆性", "Co是唯一降低淬透性的元素"], "answer": "ABCD", "explain": "Mn、Si、Cr、Ni、B提高淬透性；Al、Nb、V、Ti细化晶粒；W（约1%）、Mo（约0.5%）防二类回火脆性；除Co外其他合金元素都提高淬透性。"}, {"id": "c3q22", "type": "single", "orig": true, "q": "渗碳体中Fe原子可被合金元素替代形成合金渗碳体，如（ ）。", "options": ["(Fe,Mn)3C、(Fe,Cr)3C", "Fe3N", "Al2O3", "TiC"], "answer": "A", "explain": "合金元素含量低时置换Fe3C中Fe原子，形成(Fe,Mn)3C、(Fe,Cr)3C等合金渗碳体。"}, {"id": "c3q23", "type": "single", "orig": true, "q": "强碳化物形成元素（如Ti、V）形成的碳化物属于（ ），具有高硬度、高熔点。", "options": ["简单密排结构的间隙相（MX型、M2X型）", "复杂密排结构碳化物", "合金渗碳体", "金属间化合物"], "answer": "A", "explain": "当rc/rMe＜0.59时形成简单密排结构间隙相，如TiC、VC、WC、W2C等，硬度熔点高（可达3000℃）。"}, {"id": "c3q24", "type": "single", "orig": true, "q": "钢中加入合金元素提高淬透性的前提是（ ）。", "options": ["淬火加热时合金元素溶入奥氏体中", "合金元素以碳化物形式存在", "合金元素形成夹杂物", "合金元素降低淬火温度"], "answer": "A", "explain": "合金元素只有淬火加热时溶入A中才能提高淬透性。"}, {"id": "c3q25", "type": "single", "orig": true, "q": "马氏体时效钢中加入Ti和Mo形成Ni3Ti、Ni3Mo理想强化相，属于（ ）强化机制。", "options": ["沉淀强化", "固溶强化", "细晶强化", "位错强化"], "answer": "A", "explain": "马氏体时效钢通过合金化加淬火时效造成理想沉淀相（Ni3Ti、Ni3Mo），实现沉淀强化。"}, {"id": "c3q26", "type": "fill", "orig": true, "q": "奥氏体晶粒度分为___级，___级最粗，___级最细。", "answer": "8；1；8", "explain": "奥氏体晶粒度通常分为8级，1级最粗，8级最细。", "options": []}, {"id": "c3q27", "type": "fill", "orig": true, "q": "碳钢的缺点是：①碳钢的___低；②碳钢的___比合金钢低。", "answer": "淬透性；强度", "explain": "碳钢淬透性低、强度比合金钢低，故需合金化改善。", "options": []}]}, {"id": "c4", "title": "构件用钢", "note": "S热脆 · P冷脆 · Q235/Q355 · 焊接性", "questions": [{"id": "c4q1", "type": "single", "orig": true, "q": "构件用钢是指（ ），又称工程用钢。", "options": ["用于制造各种大型金属结构（如桥梁、船舶、屋架、锅炉及压力容器等）的钢", "制造机器零件的钢", "制造工具的钢", "制造轴承的钢"], "answer": "A", "explain": "构件用钢（工程用钢）用于桥梁、船舶、屋架、锅炉及压力容器等大型金属结构。"}, {"id": "c4q2", "type": "single", "orig": true, "q": "钢中常存杂质硫（S）的主要危害是（ ）。", "options": ["形成低熔点共晶，发生热脆（裂）", "引起冷脆", "提高疲劳强度", "细化晶粒"], "answer": "A", "explain": "S与Fe形成低熔点共晶FeS，产生热脆；P固溶于铁素体引起冷脆，但P可提高大气抗腐蚀性能。"}, {"id": "c4q3", "type": "single", "orig": true, "q": "钢中常存杂质磷（P）的主要危害是（ ）。", "options": ["固溶于铁素体，产生冷脆", "形成低熔点共晶产生热脆", "降低焊接性能", "提高韧性"], "answer": "A", "explain": "P固溶于铁素体，显著降低低温韧性（冷脆），但可提高钢在大气中的抗腐蚀性能，并改善切削加工性。"}, {"id": "c4q4", "type": "single", "orig": true, "q": "构件用钢力学性能的三大特点是（ ）。", "options": ["屈服现象、冷脆现象、时效现象", "蠕变、松弛、疲劳", "弹性、塑性、韧性", "强度、硬度、耐磨性"], "answer": "A", "explain": "构件用钢力学性能三大特点：屈服现象、冷脆现象、时效现象。"}, {"id": "c4q5", "type": "single", "orig": true, "q": "评定材料冷脆倾向大小的指标是（ ）。", "options": ["冷脆转变温度Tk", "冲击韧性αk", "断裂韧性KIC", "疲劳极限"], "answer": "A", "explain": "冷脆转变温度Tk是评定冷脆倾向的指标，Tk越低，冷脆倾向越小。"}, {"id": "c4q6", "type": "single", "orig": true, "q": "为防止构件钢冷脆，必须要求（ ）。", "options": ["低的Tk，保证在最低工作温度下使用安全", "高的Tk", "高的含磷量", "高的强度"], "answer": "A", "explain": "防止冷脆要求低的Tk；磷含量高会显著提高Tk。"}, {"id": "c4q7", "type": "single", "orig": true, "q": "普通碳素结构钢Q235常以（ ）状态供货，一般不经热处理强化。", "options": ["热轧", "淬火", "退火", "正火"], "answer": "A", "explain": "普碳钢常以热轧状态供货，一般不经热处理强化。"}, {"id": "c4q8", "type": "single", "orig": true, "q": "低合金高强度结构钢（普低钢）的含碳量和合金元素总量一般为（ ）。", "options": ["含C量＜0.20%，合金元素＜3%", "含C量0.4%～0.6%，合金元素5%", "含C量0.6%以上", "含C量1%以上"], "answer": "A", "explain": "普低钢含C量＜0.20%，合金元素总量＜3%，是低碳低合金结构钢。"}, {"id": "c4q9", "type": "single", "orig": true, "q": "2018版低合金高强度结构钢标准以（ ）代替Q345。", "options": ["Q355", "Q390", "Q420", "Q235"], "answer": "A", "explain": "GB/T 1591-2018以Q355代替Q345强度级别。"}, {"id": "c4q10", "type": "single", "orig": true, "q": "构件用钢对焊接性能的要求是（ ）。", "options": ["低碳、低合金，保证良好焊接性", "高碳、高合金", "高含硫量", "高含磷量"], "answer": "A", "explain": "构件钢要求低碳、低合金以保证良好焊接性能；S、P是焊接的有害元素。"}, {"id": "c4q11", "type": "multi", "orig": true, "q": "关于构件用钢，下列说法正确的有（ ）。", "options": ["大部分构件在热轧状态下使用", "碳素钢含碳量在0.0218%～2.11%之间", "S、P是有害杂质但可改善切削加工性能", "汽车大梁常用低合金高强度钢"], "answer": "ABCD", "explain": "构件钢大多热轧使用；碳素钢含碳0.0218%~2.11%；S、P有害但可改善切削性；汽车用钢常用低合金高强度钢。"}, {"id": "c4q12", "type": "fill", "orig": true, "q": "普通碳素结构钢牌号中，Q代表___，数字表示___。", "answer": "屈服点；屈服点数值（MPa）", "explain": "Q为“屈”字拼音字首，数字表示最低屈服强度数值（MPa）。", "options": []}]}, {"id": "c5", "title": "机器零件用钢", "note": "调质钢 · 弹簧钢 · 渗碳钢 · 轴承钢 · 低温钢", "questions": [{"id": "c5q1", "type": "single", "orig": true, "q": "机器零件用钢的使用状态是（ ）。", "options": ["淬火＋回火态，即强化态", "热轧态", "铸态", "退火态"], "answer": "A", "explain": "零件用钢在淬火+回火（强化态）下使用，以力学性能为主、工艺性能为辅。"}, {"id": "c5q2", "type": "single", "orig": true, "q": "影响零件用钢力学性能的主要因素包括（ ）。", "options": ["含碳量、回火温度、合金元素种类和数量", "冶炼方法、浇注方法", "轧制方向、表面质量", "热处理炉型"], "answer": "A", "explain": "影响零件用钢力学性能的主要因素：含C量、回火温度、合金元素的种类和数量。"}, {"id": "c5q3", "type": "single", "orig": true, "q": "调质钢是指（ ）而使用的结构钢。", "options": ["经过淬火＋高温回火（调质处理）", "淬火＋低温回火", "正火", "退火"], "answer": "A", "explain": "调质钢经淬火+高温回火（调质处理）使用，组织为回火索氏体，综合力学性能好。"}, {"id": "c5q4", "type": "single", "orig": true, "q": "调质钢的含碳量一般在（ ），属于中碳钢。", "options": ["0.3%～0.5%", "0.1%～0.25%", "0.6%～0.9%", "1.0%以上"], "answer": "A", "explain": "调质钢含碳0.3%~0.5%（中碳），保证强度和塑韧性的配合。"}, {"id": "c5q5", "type": "single", "orig": true, "q": "调质钢的主加元素（Mn、Si、Cr、Ni、B等）的主要作用是（ ）。", "options": ["提高淬透性并强化铁素体", "细化晶粒", "提高红硬性", "提高耐蚀性"], "answer": "A", "explain": "调质钢主加元素Mn、Si、Cr、Ni、B提高淬透性、强化F；辅加W、Mo、V、Ti细化晶粒、提高回火稳定性。"}, {"id": "c5q6", "type": "single", "orig": true, "q": "调质钢中加入W、Mo的主要作用是（ ）。", "options": ["防止第二类回火脆性", "提高淬透性", "细化奥氏体晶粒", "提高耐磨性"], "answer": "A", "explain": "调质钢中W、Mo防止第二类回火脆性；V、Ti细化晶粒；提高回火稳定性。"}, {"id": "c5q7", "type": "single", "orig": true, "q": "常用中淬透性调质钢是（ ）。", "options": ["35CrMo、42CrMo", "40、45钢", "20CrMnTi", "GCr15"], "answer": "A", "explain": "中淬透性调质钢：Cr-Mo钢（35CrMo、42CrMo）、Cr-Mn钢、Cr-Mn-Si钢、Cr-Ni钢等。"}, {"id": "c5q8", "type": "single", "orig": true, "q": "弹簧钢含碳量：碳素弹簧钢为（ ），合金弹簧钢为（ ）。", "options": ["0.6%～0.9%；0.45%～0.7%", "0.3%～0.5%；0.1%～0.25%", "1.0%以上；0.8%", "0.2%以下；0.3%"], "answer": "A", "explain": "弹簧钢需要高弹性极限和疲劳极限：碳钢0.6%~0.9%C；合金弹簧钢0.45%~0.7%C（合金元素使S点左移）。"}, {"id": "c5q9", "type": "single", "orig": true, "q": "最常用的合金弹簧钢是（ ）。", "options": ["60Si2Mn", "40Cr", "20CrMnTi", "GCr15"], "answer": "A", "explain": "60Si2Mn是最常用的合金弹簧钢；50CrV淬透性更高。"}, {"id": "c5q10", "type": "single", "orig": true, "q": "弹簧钢最终热处理工艺是（ ），组织为（ ）。", "options": ["淬火＋中温回火；回火屈氏体", "淬火＋高温回火；回火索氏体", "淬火＋低温回火；回火马氏体", "正火；珠光体"], "answer": "A", "explain": "弹簧钢淬火+中温回火（350~500℃）得到回火屈氏体，具有高弹性极限和屈强比。"}, {"id": "c5q11", "type": "single", "orig": true, "q": "弹簧热处理后进行（ ）可显著改善疲劳性能。", "options": ["喷丸强化", "渗碳", "氮化", "冷处理"], "answer": "A", "explain": "喷丸强化提高弹簧表面质量，显著改善疲劳性能。"}, {"id": "c5q12", "type": "single", "orig": true, "q": "渗碳钢一般为（ ），以保证心部足够的塑性和韧性。", "options": ["低碳钢（0.1%～0.25%C）", "中碳钢", "高碳钢", "高合金钢"], "answer": "A", "explain": "渗碳钢含碳0.1%~0.25%（低碳），保证心部塑韧性以抵抗冲击载荷。"}, {"id": "c5q13", "type": "single", "orig": true, "q": "最常用的渗碳钢是（ ），用于制造高速重载齿轮。", "options": ["20CrMnTi", "40Cr", "60Si2Mn", "GCr15"], "answer": "A", "explain": "20CrMnTi是典型渗碳钢，用于汽车高速重载齿轮等。"}, {"id": "c5q14", "type": "single", "orig": true, "q": "渗碳钢的渗碳温度一般为（ ）。", "options": ["930℃", "550℃", "1050℃", "700℃"], "answer": "A", "explain": "渗碳温度一般930℃，需奥氏体晶粒长大倾向小以利于渗碳后直接淬火。"}, {"id": "c5q15", "type": "single", "orig": true, "q": "渗碳淬火+低温回火后，渗碳件表层组织为（ ），硬度一般为（ ）。", "options": ["细针状回火高碳马氏体＋粒状碳化物＋少量残余奥氏体；58～64HRC", "回火索氏体；30HRC", "珠光体；20HRC", "贝氏体；40HRC"], "answer": "A", "explain": "渗碳淬火低温回火后表层为细针状回火高碳马氏体+粒状碳化物+少量残余奥氏体，58~64HRC；心部低碳马氏体或F+T，35~45HRC。"}, {"id": "c5q16", "type": "single", "orig": true, "q": "20CrMnTi钢制造齿轮的工艺路线是（ ）。", "options": ["下料→锻造→正火→切削加工→渗碳→淬火→低温回火→精加工", "下料→锻造→退火→淬火→高温回火", "下料→锻造→正火→调质→精加工", "下料→轧制→球化退火→淬火"], "answer": "A", "explain": "20CrMnTi齿轮：下料→锻造→正火①→切削加工→渗碳②→淬火③→低温回火④→精加工。"}, {"id": "c5q17", "type": "single", "orig": true, "q": "滚动轴承钢GCr15的含碳量约为（ ），属于（ ）。", "options": ["0.95%～1.15%；过共析钢", "0.3%～0.5%；中碳钢", "0.1%～0.25%；低碳钢", "0.6%；亚共析钢"], "answer": "A", "explain": "轴承钢含碳0.95%~1.15%，属过共析钢，保证高强度、高硬度和耐磨性。"}, {"id": "c5q18", "type": "single", "orig": true, "q": "GCr15钢中Cr的主要作用是（ ）。", "options": ["提高淬透性和耐蚀性，改善碳化物分布", "提高红硬性", "细化晶粒", "降低淬火温度"], "answer": "A", "explain": "Cr（0.40%~1.65%）提高淬透性和耐蚀性，形成合金渗碳体减少过热倾向；超过1.65%会使残余A增加，降低硬度和尺寸稳定性。"}, {"id": "c5q19", "type": "single", "orig": true, "q": "滚动轴承钢GCr15最终热处理工艺是（ ）。", "options": ["淬火（830～860℃）＋低温回火（180～240℃）", "淬火＋高温回火", "正火", "球化退火"], "answer": "A", "explain": "GCr15最终热处理：淬火830~860℃+低温回火180~240℃，得到高碳针状回火M+粒状碳化物+少量残余A，硬度62~66HRC。"}, {"id": "c5q20", "type": "single", "orig": true, "q": "GCr15轴承钢淬火后常进行冷处理（-60～-80℃），其目的是（ ）。", "options": ["消除残余奥氏体，稳定组织，提高尺寸精度", "提高淬透性", "细化晶粒", "消除网状碳化物"], "answer": "A", "explain": "冷处理为较彻底消除残余A与内应力、稳定组织、提高尺寸精度。"}, {"id": "c5q21", "type": "single", "orig": true, "q": "GCr15轴承钢制造轴承的工艺路线中，若锻造后出现网状碳化物，则球化退火前应先（ ）。", "options": ["正火以消除网状碳化物", "再结晶退火", "扩散退火", "调质处理"], "answer": "A", "explain": "网状碳化物在球化退火时不易消除，需先在球化退火前正火消除。"}, {"id": "c5q22", "type": "single", "orig": true, "q": "GCr15钢球化退火的适宜加热温度约为（ ）。", "options": ["790℃", "850℃", "930℃", "650℃"], "answer": "A", "explain": "GCr15球化退火加热温度780~810℃，790℃被认为最适宜。"}, {"id": "c5q23", "type": "single", "orig": true, "q": "滚动轴承钢GCr15制造精密量具、冷冲模等，其淬火加热温度为（ ）。", "options": ["830～860℃", "930℃", "1050℃", "600℃"], "answer": "A", "explain": "GCr15淬火加热温度830~860℃；过高过热晶粒长大、韧性疲劳强度下降，过低Cr和C溶解不够硬度不足。"}, {"id": "c5q24", "type": "multi", "orig": true, "q": "关于机器零件用钢，下列说法正确的有（ ）。", "options": ["调质钢组织为回火索氏体，综合力学性能好", "弹簧钢淬火+中温回火得回火屈氏体", "渗碳钢含碳0.1%～0.25%", "轴承钢是过共析钢"], "answer": "ABCD", "explain": "调质钢回火S；弹簧钢回火T；渗碳钢低碳；轴承钢过共析。均正确。"}, {"id": "c5q25", "type": "single", "orig": true, "q": "低温用钢为改善低温韧性，常加入（ ），其中（ ）效果最明显。", "options": ["Mn、Ni；Ni", "Cr、Mo；Mo", "W、V；V", "Cu、Al；Al"], "answer": "A", "explain": "Mn、Ni对低温韧性有利，Ni最明显；V、Ti、Nb、Al可细化晶粒改善低温韧性。"}, {"id": "c5q26", "type": "single", "orig": true, "q": "具有面心立方结构的材料（如奥氏体钢）在低温下（ ）。", "options": ["韧性良好，不易脆化", "韧性差，易脆化", "强度急剧下降", "发生相变"], "answer": "A", "explain": "面心立方结构（奥氏体钢、Al、Cu等）低温韧性良好，在低温下不易脆化。"}, {"id": "c5q27", "type": "single", "orig": true, "q": "调质钢经调质后获得回火索氏体，其性能特点是（ ）。", "options": ["强度高、塑性和韧性好，综合力学性能优良", "硬度极高、耐磨", "红硬性好", "耐蚀性好"], "answer": "A", "explain": "回火索氏体具有良好的综合力学性能，强度高、塑性和韧性好。"}, {"id": "c5q28", "type": "single", "orig": true, "q": "42CrMo钢制造汽缸螺栓的工艺过程为（ ）。", "options": ["下料→锻造→正火→粗加工→调质→精加工", "下料→锻造→渗碳→淬火→回火", "下料→球化退火→淬火→低温回火", "下料→正火→喷丸→精磨"], "answer": "A", "explain": "42CrMo汽缸螺栓：下料→锻造→正火→粗加工→调质→精加工，调质获得回火索氏体满足性能要求。"}]}, {"id": "c6", "title": "工具钢", "note": "刃具钢 · 高速钢 · 硬质合金 · 模具钢 · 量具钢", "questions": [{"id": "c6q1", "type": "single", "orig": true, "q": "工具钢按用途分为（ ）。", "options": ["刃具钢、模具钢、量具钢", "冷作模具钢、热作模具钢", "碳素工具钢、合金工具钢、高速钢", "结构钢、轴承钢"], "answer": "A", "explain": "工具钢按用途分：刃具、模具、量具；按化学成分分：碳素工具钢、合金工具钢、高速工具钢。"}, {"id": "c6q2", "type": "single", "orig": true, "q": "工具钢的基本特征是（ ）。", "options": ["高硬度、高耐磨、红硬性、尺寸稳定性", "高强度、高塑性", "耐蚀性、抗氧化性", "高淬透性"], "answer": "A", "explain": "工具钢特征：高硬度（高碳0.65%~1.55%高碳M）、高耐磨（碳化物）、红硬性、尺寸稳定性。"}, {"id": "c6q3", "type": "single", "orig": true, "q": "红硬性（热硬性）是指（ ）。", "options": ["钢在高温下（500～600℃）保持高硬度（60HRC左右）的能力", "钢在低温下保持硬度的能力", "淬火后达到的最高硬度", "钢抵抗回火软化的能力"], "answer": "A", "explain": "红硬性即高温下保持高硬度的能力，是高速切削刀具必备性能。"}, {"id": "c6q4", "type": "single", "orig": true, "q": "碳素工具钢的含碳量为（ ）。", "options": ["0.65%～1.35%", "0.3%～0.5%", "0.1%～0.25%", "1.5%以上"], "answer": "A", "explain": "碳素工具钢含碳0.65%~1.35%，成本低但淬透性低、无热硬性，用于低速切削工具。"}, {"id": "c6q5", "type": "single", "orig": true, "q": "碳素工具钢T8中“8”表示平均含碳量为（ ）。", "options": ["0.8%", "8%", "0.08%", "80%"], "answer": "A", "explain": "T+数字，数字表示平均含碳量（千分之几），T8含碳约0.8%。"}, {"id": "c6q6", "type": "single", "orig": true, "q": "碳素工具钢的预先热处理是（ ），最终热处理是（ ）。", "options": ["球化退火；淬火＋低温回火（180～200℃）", "正火；淬火＋高温回火", "退火；正火", "调质；低温回火"], "answer": "A", "explain": "碳素工具钢预先球化退火（降低硬度＜217HBS便于切削），最终淬火+低温回火180~200℃得回火M+细粒状渗碳体+少量残余A。"}, {"id": "c6q7", "type": "single", "orig": true, "q": "若锻造组织不良（出现网状碳化物），碳素工具钢球化退火前应先（ ）。", "options": ["正火消除网状碳化物", "扩散退火", "再结晶退火", "调质处理"], "answer": "A", "explain": "出现网状碳化物缺陷时，球化退火之前先正火处理以消除网状碳化物。"}, {"id": "c6q8", "type": "single", "orig": true, "q": "低合金刃具钢（如9SiCr）是在碳素工具钢基础上加入（ ）等元素发展起来的。", "options": ["Si、Mn、Cr、W、Mo、V", "Ni、Cu、Co", "S、P、O", "B、N、H"], "answer": "A", "explain": "低合金刃具钢加入Si、Mn、Cr、W、Mo、V等提高淬透性、回火稳定性和耐磨性，克服碳素刃具钢缺点。"}, {"id": "c6q9", "type": "single", "orig": true, "q": "低合金刃具钢（如9SiCr）的工作温度一般不超过（ ），属低速切削刃具钢。", "options": ["250℃", "600℃", "1000℃", "100℃"], "answer": "A", "explain": "低合金刃具钢工作温度一般不超过250℃，否则硬度耐磨性迅速下降。"}, {"id": "c6q10", "type": "single", "orig": true, "q": "高速钢W18Cr4V具有高红硬性，其含义是（ ）。", "options": ["600℃时硬度仍大于55～60HRC", "1000℃硬度仍大于60HRC", "室温硬度大于66HRC", "淬火态硬度大于60HRC"], "answer": "A", "explain": "高速钢红硬性：600℃时硬度仍大于55~60HRC；又称“风钢”（空冷得马氏体）、“锋钢”。"}, {"id": "c6q11", "type": "single", "orig": true, "q": "高速钢W18Cr4V中W的主要作用是（ ）。", "options": ["提高红硬性和高温耐磨性，形成M6C碳化物", "提高淬透性", "细化晶粒", "提高耐蚀性"], "answer": "A", "explain": "W以M6C形式存在提高耐磨性；高温回火部分W以W2C弥散析出造成二次硬化，改善红硬性。"}, {"id": "c6q12", "type": "single", "orig": true, "q": "高速钢中1%的Mo可以取代（ ）的W的作用。", "options": ["2%", "1%", "0.5%", "4%"], "answer": "A", "explain": "Mo与W作用相似，1%Mo取代2%W的作用，含Mo高速钢韧性较好。"}, {"id": "c6q13", "type": "single", "orig": true, "q": "高速钢W18Cr4V的热处理工艺是（ ）。", "options": ["淬火（高温）＋550～570℃高温回火2～4次", "淬火＋低温回火一次", "正火", "球化退火后直接使用"], "answer": "A", "explain": "高速钢淬火（高温使合金碳化物大量溶解）后经550~570℃高温回火2~4次，消除残余A并产生二次硬化。"}, {"id": "c6q14", "type": "single", "orig": true, "q": "高速钢的淬火组织一般包含（ ）。", "options": ["马氏体60%～65%、残余奥氏体25%～30%、未溶碳化物约10%", "珠光体50%、铁素体50%", "贝氏体80%", "索氏体100%"], "answer": "A", "explain": "高速钢淬火组织：M（60~65%）+A残（25~30%）+未溶碳化物（约10%），需多次回火消除残余A。"}, {"id": "c6q15", "type": "single", "orig": true, "q": "高速钢高温回火时发生的二次硬化是由于（ ）。", "options": ["回火时析出W2C、MoC、VC等弥散碳化物", "马氏体分解", "残余奥氏体增多", "晶粒细化"], "answer": "A", "explain": "高温回火时M中析出W2C、MoC、VC弥散强化（二次硬化）；残余A在回火冷却时转变成M（二次淬火）。"}, {"id": "c6q16", "type": "single", "orig": true, "q": "高速钢淬火加热前需预热，主要原因是（ ）。", "options": ["高速钢导热性差，加热温度又高，预热可降低变形开裂倾向", "提高淬透性", "减少残余奥氏体", "细化晶粒"], "answer": "A", "explain": "高速钢导热性差、加热温度高，预热可降低变形开裂倾向、缩短高温保温时间、减少氧化脱碳。"}, {"id": "c6q17", "type": "single", "orig": true, "q": "钨钴类硬质合金（YG类）的组成是（ ），主要用于加工（ ）。", "options": ["WC粉末＋Co粘结剂；铸铁、非铁合金、塑料", "TiC、WC和Co；合金钢、耐热钢", "WC、VC；高速钢", "TiN涂层；不锈钢"], "answer": "A", "explain": "YG类（钨钴类）由WC粉末和Co制成，随Co含量增加韧性增加、硬度和耐磨性下降，加工铸铁、非铁合金等。"}, {"id": "c6q18", "type": "single", "orig": true, "q": "钨钴钛类硬质合金（YT类）主要用于加工（ ）。", "options": ["合金钢、耐热钢", "铸铁", "塑料", "铝合金"], "answer": "A", "explain": "YT类（钨钴钛）以TiC、WC和Co制成，热硬性高但韧性较低，加工合金钢、耐热钢等。"}, {"id": "c6q19", "type": "single", "orig": true, "q": "冷作模具钢的工作温度一般（ ），其性能要求主要是（ ）。", "options": ["＜250℃；高硬度、耐磨性、抗弯强度和韧性", "300~400℃；热疲劳抗力", "500~800℃；红硬性", "室温；耐蚀性"], "answer": "A", "explain": "冷作模具钢在常温下工作（＜250℃），要求高硬度耐磨性、高抗弯强度和足够韧性；典型钢种Cr12、Cr12MoV。"}, {"id": "c6q20", "type": "single", "orig": true, "q": "热作模具钢（如5CrMnMo）的工作特点是（ ），主要失效形式是（ ）。", "options": ["交替加热冷却产生交变热应力；热疲劳、变形、磨损、开裂", "常温冲压；磨损", "高速切削；卷刃", "高温氧化；烧蚀"], "answer": "A", "explain": "热作模具钢使用温度300~400℃（热挤压模500~800℃），交替加热冷却产生交变热应力，主要失效形式为热疲劳、变形、磨损、开裂。"}, {"id": "c6q21", "type": "single", "orig": true, "q": "量具钢的性能要求是（ ）。", "options": ["高硬度（58～64HRC）、高尺寸稳定性、耐磨、热处理变形小", "红硬性", "耐蚀性", "高强度"], "answer": "A", "explain": "量具钢要求高硬度58~64HRC、高尺寸稳定性（组织稳定性）、优良切削磨削性能、热处理变形小。"}, {"id": "c6q22", "type": "single", "orig": true, "q": "精度要求较高的量具（如块规、塞规）常选用（ ）。", "options": ["Cr2、CrMn、CrWMn、GCr15", "T10A、T11A", "40Cr", "20CrMnTi"], "answer": "A", "explain": "高精度量具选用Cr2、CrMn、CrWMn、GCr15；形状简单精度不高的用T10A、T11A、T12A；腐蚀条件下用40Cr13、95Cr18。"}, {"id": "c6q23", "type": "single", "orig": true, "q": "量具钢热处理的特点是（ ）。", "options": ["球化退火、淬火＋低温回火、冷处理、长时间低温时效", "淬火＋高温回火", "正火", "渗碳处理"], "answer": "A", "explain": "量具钢热处理：球化退火（或去应力退火、调质）→淬火+低温回火（下限温度淬火）→冷处理→长时间低温时效，消除内应力降低M正方度。"}, {"id": "c6q24", "type": "multi", "orig": true, "q": "关于工具钢，下列说法正确的有（ ）。", "options": ["碳素工具钢淬透性低、无红硬性", "高速钢又称“风钢”，空冷也可得到马氏体", "硬质合金硬度可达87～93HRA，热硬性达1000℃", "Cr12、Cr12MoV是典型的冷作模具钢"], "answer": "ABCD", "explain": "四种说法均正确。"}, {"id": "c6q25", "type": "single", "orig": true, "q": "高速钢牌号W6Mo5Cr4V2中，含钨量约为（ ），含钼量约为（ ）。", "options": ["6%；5%", "5%；6%", "4%；2%", "2%；4%"], "answer": "A", "explain": "W6Mo5Cr4V2含W约6%、Mo约5%、Cr约4%、V约2%，是Mo系高速钢。"}, {"id": "c6q26", "type": "fill", "orig": true, "q": "工具钢基体淬火组织为___＋均匀细小碳化物；球化组织为___基体上分布均匀细小粒状碳化物。", "answer": "细小高碳马氏体；铁素体", "explain": "工具钢基体组织：淬火态为细小高碳M+均匀细小碳化物，球化态为F基体上分布均匀细小粒状碳化物。", "options": []}]}, {"id": "c7", "title": "不锈钢", "note": "腐蚀与钝化 · 马氏体/铁素体/奥氏体不锈钢", "questions": [{"id": "c7q1", "type": "single", "orig": true, "q": "不锈钢按腐蚀速度分类，腐蚀速度（ ）者称为“完全耐蚀”。", "options": ["＜0.01mm/年", "＜0.1mm/年", "＜1mm/年", "＜0.001mm/年"], "answer": "A", "explain": "不锈钢腐蚀速度＜0.01mm/年为“完全耐蚀”，＜0.1mm/年为“耐蚀”；绝对不腐蚀的钢不存在。"}, {"id": "c7q2", "type": "single", "orig": true, "q": "不锈钢的耐蚀性主要依靠（ ）。", "options": ["表面形成致密的Cr2O3钝化膜", "表面镀锌", "表面渗碳", "高的强度"], "answer": "A", "explain": "不锈钢耐蚀靠表面致密钝化膜（Cr2O3、Al2O3、SiO2），Mo、Cu可加剧钝化效果。"}, {"id": "c7q3", "type": "single", "orig": true, "q": "按n/8规律，钢中加入Cr形成固溶体提高电极电位，最低含铬量约为（ ），考虑C形成碳化物，实际加Cr量最小为（ ）。", "options": ["11.7%；13%", "8%；10%", "15%；17%", "5%；8%"], "answer": "A", "explain": "n/8规律：最低含Cr量11.7%，钢中有C会形成碳化物消耗Cr，故加Cr量最小为13%。"}, {"id": "c7q4", "type": "single", "orig": true, "q": "奥氏体不锈钢晶间腐蚀的产生原因是（ ），温度区间是（ ）。", "options": ["晶界析出Cr23C6使周边基体贫Cr；450～850℃", "晶界析出TiC；1000℃", "点蚀；常温", "应力腐蚀；含Cl-介质"], "answer": "A", "explain": "450~850℃保温或缓冷时晶界析出Cr23C6，周边基体贫Cr产生腐蚀电池，引起晶间腐蚀。"}, {"id": "c7q5", "type": "single", "orig": true, "q": "防止奥氏体不锈钢晶间腐蚀的措施不包括（ ）。", "options": ["提高含碳量", "降低C含量至＜0.03%", "加入Ti、Nb形成稳定碳化物", "采用稳定化处理"], "answer": "A", "explain": "防晶间腐蚀：降低C%＜0.03%、加Ti/Nb形成TiC/NbC、形成A+F双相组织、稳定化处理；提高含碳量会加剧晶间腐蚀。"}, {"id": "c7q6", "type": "single", "orig": true, "q": "奥氏体不锈钢应力腐蚀开裂（SCC）易在（ ）介质中产生，可加入（ ）元素改善。", "options": ["含Cl-离子；Si（2%～4%）", "氧化性酸；Cr", "中性盐；Ni", "强碱；Mo"], "answer": "A", "explain": "奥氏体不锈钢应力腐蚀开裂易在含Cl-介质中产生，加入Si（2%~4%）并降低P、Sb、Bi、As含量可改善。"}, {"id": "c7q7", "type": "single", "orig": true, "q": "奥氏体不锈钢抗点蚀主要加入（ ）元素，其原理是（ ）。", "options": ["Mo；与Cl形成MoCl2化合物保护膜阻止Cl-穿过钝化膜", "Cr；形成Cr2O3", "Ni；提高电极电位", "Ti；细化晶粒"], "answer": "A", "explain": "主加Mo元素：Mo与Cl形成MoCl2化合物保护膜，防止Cl-离子穿过钝化膜。"}, {"id": "c7q8", "type": "single", "orig": true, "q": "马氏体不锈钢（如20Cr13、40Cr13）的热处理工艺是（ ）。", "options": ["淬火＋回火（一般高温回火）", "固溶处理", "正火", "球化退火"], "answer": "A", "explain": "马氏体不锈钢淬火+回火；高硬度耐磨场合用低温回火；有回火脆性，回火后快冷；400~600℃回火易出现应力腐蚀开裂。"}, {"id": "c7q9", "type": "single", "orig": true, "q": "铁素体不锈钢的含碳量和含铬量一般为（ ）。", "options": ["碳＜0.25%、Cr 13%～30%", "碳1.0%、Cr 5%", "碳0.5%、Cr 8%", "碳0.02%、Cr 40%"], "answer": "A", "explain": "铁素体不锈钢：碳＜0.25%、Cr 13%~30%，室温到高温（约1000℃）均为单相δ铁素体，耐蚀性优于马氏体钢。"}, {"id": "c7q10", "type": "single", "orig": true, "q": "铁素体不锈钢的475℃脆性是指（ ）。", "options": ["400～525℃长时间加热或缓冷，塑韧性下降、强度升高", "475℃淬火开裂", "475℃晶粒长大", "475℃氧化"], "answer": "A", "explain": "475℃脆性：400~525℃长时间加热或此区间缓冷，F中Cr有序化生成富Cr的BCC相，塑韧性下降强度升高；700~800℃加热快冷可消除。"}, {"id": "c7q11", "type": "single", "orig": true, "q": "奥氏体不锈钢的固溶处理温度一般为（ ），其作用是（ ）。", "options": ["1050～1150℃水淬；碳化物溶于奥氏体提高耐蚀性", "500℃；消除应力", "930℃；渗碳", "790℃；球化"], "answer": "A", "explain": "奥氏体不锈钢固溶处理1050~1150℃保温水淬，使碳化物溶入A获得单相A，提高耐蚀性。"}, {"id": "c7q12", "type": "single", "orig": true, "q": "奥氏体不锈钢稳定化处理（850～880℃）适用于（ ），其作用是（ ）。", "options": ["含Ti、Nb的18-8钢；消除晶间腐蚀", "马氏体不锈钢；提高硬度", "铁素体不锈钢；消除475℃脆性", "双相钢；提高强度"], "answer": "A", "explain": "稳定化处理：固溶处理后850~880℃保温空冷或炉冷，Cr23C6完全溶解保留TiC、NbC，消除晶间腐蚀倾向。"}, {"id": "c7q13", "type": "single", "orig": true, "q": "18-8型奥氏体不锈钢的典型牌号是（ ）。", "options": ["06Cr19Ni10（304类）", "20Cr13", "10Cr17", "95Cr18"], "answer": "A", "explain": "06Cr19Ni10（原0Cr18Ni9，含C≤0.08%）为典型Cr18Ni8型奥氏体不锈钢（304类）。"}, {"id": "c7q14", "type": "single", "orig": true, "q": "奥氏体型不锈钢约占不锈钢总产量的（ ）。", "options": ["70%", "30%", "50%", "90%"], "answer": "A", "explain": "奥氏体型不锈钢约占不锈钢总产量的70%，用量最大。"}, {"id": "c7q15", "type": "single", "orig": true, "q": "双相不锈钢的组织特征是（ ）。", "options": ["奥氏体＋铁素体（F占40%～60%）", "单一奥氏体", "马氏体＋铁素体", "珠光体＋渗碳体"], "answer": "A", "explain": "双相不锈钢在A不锈钢基础上增加Cr、减少Ni，固溶处理得A+F双相组织（F约40~60%）。"}, {"id": "c7q16", "type": "multi", "orig": true, "q": "关于不锈钢，下列说法正确的有（ ）。", "options": ["不锈钢并不是不腐蚀，只是腐蚀速度较慢", "Cr、Al、Si可形成致密钝化膜提高耐蚀性", "奥氏体不锈钢在氧化性介质中耐蚀性好，在盐酸中耐蚀性差", "马氏体不锈钢有回火脆性，回火后应快冷"], "answer": "ABCD", "explain": "四种说法均正确。"}, {"id": "c7q17", "type": "single", "orig": true, "q": "镍铬（Ni-Cr）不锈钢在（ ）介质中的耐蚀性最好。", "options": ["氧化性介质", "非氧化性介质（如盐酸）", "强碱", "熔盐"], "answer": "A", "explain": "Ni-Cr不锈钢在氧化性介质中耐蚀性很好，但在非氧化性介质（如盐酸）中耐蚀性差。"}, {"id": "c7q18", "type": "fill", "orig": true, "q": "不锈钢按其正火组织可分为___型、___型、___型、双相型和沉淀硬化型五大类。", "answer": "马氏体；铁素体；奥氏体", "explain": "不锈钢按正火组织分：马氏体型、铁素体型、奥氏体型、双相型、沉淀硬化型。", "options": []}]}, {"id": "c8", "title": "耐热钢及高温合金", "note": "热稳定钢 · 热强钢 · 抗氧化与蠕变", "questions": [{"id": "c8q1", "type": "single", "orig": true, "q": "耐热钢是（ ）的钢种。", "options": ["高温下具有高的热化学稳定性和热强性", "低温下高强度", "常温下耐蚀", "高温下耐磨损"], "answer": "A", "explain": "耐热钢：高温下具有高的热化学稳定性（抗氧化和耐腐蚀）和热强性的钢种。"}, {"id": "c8q2", "type": "single", "orig": true, "q": "热稳定钢是指（ ），热强钢是指（ ）。", "options": ["高温下抗氧化或抗高温介质腐蚀而不破坏的钢种；高温下具有一定抗氧化能力并具有足够强度而不产生大量变形或断裂的钢种", "高温下高强度钢；常温抗氧化钢", "耐低温钢；耐腐蚀钢", "耐磨钢；耐冲击钢"], "answer": "A", "explain": "热稳定钢（如炉底板、炉栅）抗氧化；热强钢（如高温螺栓、涡轮叶片）高温下足够强度。"}, {"id": "c8q3", "type": "single", "orig": true, "q": "提高钢抗氧化性的有效合金元素是（ ），可形成致密氧化膜。", "options": ["Cr、Al、Si", "Ni、Cu、Co", "Mn、P", "W、Mo"], "answer": "A", "explain": "Cr2O3、Al2O3、SiO2氧化膜致密牢固，可防止Fe、O原子扩散；金属表面渗Cr、Al、Si也有效。"}, {"id": "c8q4", "type": "single", "orig": true, "q": "金属热强性（蠕变极限、持久强度）表征材料（ ）。", "options": ["高温长期载荷下抵抗缓慢塑性变形和断裂的能力", "低温强度", "瞬时强度", "硬度"], "answer": "A", "explain": "蠕变极限表征高温长期载荷下对缓慢塑性变形（蠕变）的抗力，以σ0.2/1000表示。"}, {"id": "c8q5", "type": "single", "orig": true, "q": "提高金属热强性的主要途径是（ ）。", "options": ["固溶强化、沉淀强化、晶界强化", "冷加工硬化", "渗碳", "表面淬火"], "answer": "A", "explain": "热强性通过固溶强化、沉淀强化（析出强化相）、晶界强化实现，使钢在更高温度保持较高强度。"}, {"id": "c8q6", "type": "single", "orig": true, "q": "铁素体基热强钢（α-Fe基）和奥氏体基热强钢（γ-Fe基）相比，（ ）。", "options": ["奥氏体基热强钢使用温度更高", "铁素体基热强钢使用温度更高", "二者使用温度相同", "铁素体基热强钢强度更高"], "answer": "A", "explain": "奥氏体基（γ-Fe基）热强钢如Cr-Ni奥氏体耐热钢，使用温度高于铁素体基热强钢。"}, {"id": "c8q7", "type": "fill", "orig": true, "q": "耐热钢分为___和___两大类；高温合金按基体可分为铁基、___基和钴基高温合金。", "answer": "热稳定钢；热强钢；镍", "explain": "耐热钢分热稳定钢（抗氧化）和热强钢；高温合金分铁基、镍基、钴基。", "options": []}]}, {"id": "c9", "title": "固态相变理论", "note": "相变驱动力 · 界面与应变能 · 扩散型/非扩散型", "questions": [{"id": "c9q1", "type": "single", "orig": true, "q": "固态相变的驱动力是（ ）。", "options": ["新旧两相之间的自由能差", "外加应力", "温度梯度", "浓度梯度"], "answer": "A", "explain": "固态相变的驱动力：新、旧两相之间的自由能差；相变由形核和长大两个基本过程组成。"}, {"id": "c9q2", "type": "single", "orig": true, "q": "固态相变与液态结晶相比，其相变阻力（ ）。", "options": ["更大，因存在界面能和弹性应变能", "更小", "相同", "为零"], "answer": "A", "explain": "固态相变存在界面能增加和额外弹性应变能（比体积差、共格应变能），相变阻力大、相变困难。"}, {"id": "c9q3", "type": "single", "orig": true, "q": "相界面上原子排列完全匹配、同时位于两相晶格结点上的界面称为（ ）。", "options": ["共格界面", "半共格界面", "非共格界面", "大角晶界"], "answer": "A", "explain": "共格界面：两相界面原子排列完全匹配；失配度δ增大时产生位错形成半共格界面；δ很大时形成非共格界面。"}, {"id": "c9q4", "type": "single", "orig": true, "q": "按相变过程中原子迁移情况，珠光体转变属于（ ），马氏体转变属于（ ），贝氏体转变属于（ ）。", "options": ["扩散型；非扩散型；半扩散型", "非扩散型；扩散型；扩散型", "半扩散型；扩散型；非扩散型", "扩散型；半扩散型；非扩散型"], "answer": "A", "explain": "扩散型：原子长距离扩散（珠光体、奥氏体转变）；非扩散型：切变、成分不变（马氏体转变）；半扩散型：Fe切变+C扩散（贝氏体转变）。"}, {"id": "c9q5", "type": "single", "orig": true, "q": "母相晶体缺陷（如位错、晶界）对相变的作用是（ ）。", "options": ["促进形核及相变", "抑制相变", "无影响", "使相变温度升高"], "answer": "A", "explain": "晶体缺陷处晶格畸变、自由能高，促进形核及相变，故晶粒细化可促进相变。"}, {"id": "c9q6", "type": "single", "orig": true, "q": "固态相变时新相/母相界面上原子强制匹配产生的应变能称为（ ）。", "options": ["共格应变能", "比容差应变能", "界面能", "畸变能"], "answer": "A", "explain": "共格/半共格界面强制匹配产生共格应变能；因新相与母相比容不同受母相约束产生比容差应变能Es。"}, {"id": "c9q7", "type": "fill", "orig": true, "q": "固态相变的特点包括：相变阻力大、需要___、新相沿特定方向长大、晶体缺陷促进相变、常形成___等。", "answer": "过冷度（驱动力）；过渡相", "explain": "固态相变阻力大需要较大过冷度，易形成过渡相（中间亚稳相）。", "options": []}]}, {"id": "c10", "title": "钢的热处理", "note": "A化 · TTT/CCT · M转变 · 退火/正火/淬火/回火 · 表面热处理", "questions": [{"id": "c10q1", "type": "single", "orig": true, "q": "钢的热处理是指（ ）。", "options": ["将钢在固态下加热、保温、冷却，改变内部组织从而获得所需性能的工艺", "钢的冶炼过程", "钢的轧制过程", "钢的铸造过程"], "answer": "A", "explain": "热处理：在固态下通过加热、保温、冷却改变钢的内部组织，获得所需性能。"}, {"id": "c10q2", "type": "single", "orig": true, "q": "奥氏体化过程包括（ ）。", "options": ["相界形核→扩散长大→残余渗碳体溶解→奥氏体成分均匀化", "形核→长大→共析转变", "加热→保温→冷却", "退火→正火→淬火"], "answer": "A", "explain": "奥氏体化四步：奥氏体形核（相界形核）→扩散长大→残余Fe3C溶解→A成分均匀化。"}, {"id": "c10q3", "type": "single", "orig": true, "q": "共析钢奥氏体等温转变曲线（TTT曲线）鼻尖处的温度约为（ ）。", "options": ["550℃", "650℃", "450℃", "723℃"], "answer": "A", "explain": "共析钢TTT曲线鼻尖（孕育期最短）约550℃；A1为723℃。"}, {"id": "c10q4", "type": "single", "orig": true, "q": "珠光体、索氏体、托氏体的本质区别在于（ ）。", "options": ["片层间距（粗细）不同", "相组成不同", "含碳量不同", "晶体结构不同"], "answer": "A", "explain": "P（A1~650℃粗片）、S（650~600℃细片）、T（600~550℃极细片，电镜下可见）三者都是F+Fe3C片层组织，仅粗细不同。"}, {"id": "c10q5", "type": "single", "orig": true, "q": "马氏体是（ ），晶体结构为（ ）。", "options": ["碳在α-Fe中的过饱和固溶体；体心正方", "铁素体；体心立方", "碳在γ-Fe中的固溶体；面心立方", "渗碳体；正交"], "answer": "A", "explain": "马氏体是碳在α-Fe中的过饱和固溶体，体心正方（c/a＞1正方度）；当含碳量＜0.25%时正方度趋近1，近似体心立方。"}, {"id": "c10q6", "type": "single", "orig": true, "q": "板条马氏体（位错马氏体）形成于（ ）钢，针状马氏体（孪晶马氏体）形成于（ ）钢。", "options": ["低碳（＜0.25%C）；高碳（＞1.0%C）", "高碳；低碳", "中碳；低碳", "合金钢；碳钢"], "answer": "A", "explain": "低碳钢淬火得板条（位错）M；高碳钢得针状（孪晶）M；中碳钢为二者混合。"}, {"id": "c10q7", "type": "single", "orig": true, "q": "马氏体的硬度主要取决于（ ）。", "options": ["含碳量", "合金元素含量", "淬火介质", "冷却速度"], "answer": "A", "explain": "M硬度主要取决于含碳量，碳含量越高硬度越高，但当含碳量＞0.6%后硬度增加趋缓。"}, {"id": "c10q8", "type": "single", "orig": true, "q": "马氏体转变的特点不包括（ ）。", "options": ["有扩散、成分变化", "无扩散、切变", "转变不完全、有残余奥氏体", "转变在Ms～Mf范围进行"], "answer": "A", "explain": "马氏体转变无扩散（Fe、C都不扩散）、切变完成，转变不完全留有残余A，在Ms~Mf之间进行。"}, {"id": "c10q9", "type": "single", "orig": true, "q": "上贝氏体（550～350℃）的形态特征是（ ），下贝氏体（350℃～Ms）的形态特征是（ ）。", "options": ["羽毛状；竹叶状", "竹叶状；羽毛状", "板条状；针状", "球状；片状"], "answer": "A", "explain": "上B呈羽毛状、强度塑性低无实用价值；下B呈竹叶状，综合机械性能好。"}, {"id": "c10q10", "type": "single", "orig": true, "q": "低温回火（150～250℃）的组织为（ ），主要用于（ ）。", "options": ["回火马氏体；高硬度耐磨工件（工具、轴承、渗碳件）", "回火索氏体；结构件", "回火屈氏体；弹簧", "珠光体；毛坯"], "answer": "A", "explain": "低温回火得回火M（M+细粒碳化物），用于工具钢、轴承钢、渗碳件等要求高硬度耐磨的工件。"}, {"id": "c10q11", "type": "single", "orig": true, "q": "中温回火（350～500℃）的组织为（ ），主要用于（ ）。", "options": ["回火屈氏体；弹簧", "回火索氏体；轴类", "回火马氏体；刀具", "贝氏体；齿轮"], "answer": "A", "explain": "中温回火得回火T（F+极细粒碳化物），具有高弹性极限和屈强比，用于弹簧。"}, {"id": "c10q12", "type": "single", "orig": true, "q": "调质处理是指（ ），获得的组织是（ ）。", "options": ["淬火＋高温回火（500～650℃）；回火索氏体", "淬火＋低温回火；回火马氏体", "淬火＋中温回火；回火屈氏体", "正火＋高温回火；索氏体"], "answer": "A", "explain": "调质=淬火+高温回火（500~650℃），得回火S，综合力学性能好，广泛用于机器零件。"}, {"id": "c10q13", "type": "single", "orig": true, "q": "完全退火的加热温度是（ ），适用于（ ）。", "options": ["Ac3＋30～50℃；亚共析钢", "Ac1＋30～50℃；过共析钢", "Accm＋30～50℃；过共析钢", "Ac3；共析钢"], "answer": "A", "explain": "完全退火Ac3+30~50℃炉冷，用于亚共析钢；过共析钢用球化退火（Ac1+30~50℃）。"}, {"id": "c10q14", "type": "single", "orig": true, "q": "球化退火的加热温度是（ ），目的是（ ）。", "options": ["Ac1＋30～50℃；使渗碳体球化，降低硬度便于切削，为淬火作准备", "Ac3＋30～50℃；细化晶粒", "Accm＋30～50℃；消除网状碳化物", "500℃；去应力"], "answer": "A", "explain": "球化退火Ac1+30~50℃，用于共析/过共析钢（工具钢、轴承钢），得球状珠光体。"}, {"id": "c10q15", "type": "single", "orig": true, "q": "扩散退火（均匀化退火）的加热温度是（ ），特点是（ ）。", "options": ["Ac3或Accm＋150～300℃，保温时间长（10h以上）", "Ac1＋30℃，保温短", "500～600℃", "再结晶温度以上100～150℃"], "answer": "A", "explain": "扩散退火在Ac3/Acm+150~300℃长时间保温（10h以上）消除枝晶偏析，成本高，用于优质钢锭。"}, {"id": "c10q16", "type": "single", "orig": true, "q": "正火与退火的主要区别是（ ）。", "options": ["正火空冷、冷速较快，组织更细，强度和硬度较高", "正火炉冷", "退火空冷", "二者完全相同"], "answer": "A", "explain": "正火空冷（冷速较快），得到较细组织（S型组织），强度硬度比退火高；退火炉冷。"}, {"id": "c10q17", "type": "single", "orig": true, "q": "过共析钢正火的加热温度是（ ），其目的是（ ）。", "options": ["Accm＋30～50℃；消除网状二次渗碳体，为球化退火作准备", "Ac1＋30～50℃；球化", "Ac3＋30～50℃；细化晶粒", "500℃；去应力"], "answer": "A", "explain": "过共析钢正火Accm+30~50℃空冷消除网状Fe3CⅡ，以利球化退火。"}, {"id": "c10q18", "type": "single", "orig": true, "q": "亚共析钢淬火加热温度为（ ），过共析钢淬火加热温度为（ ）。", "options": ["Ac3＋30～50℃；Ac1＋30～50℃", "Ac1＋30～50℃；Ac3＋30～50℃", "Ac3；Accm", "Accm；Ac3"], "answer": "A", "explain": "亚共析钢淬火Ac3+30~50℃（获得细M避免F+P软点）；过共析钢淬火Ac1+30~50℃（保留粒状Fe3C提高耐磨，过热过高使M粗大、A残多、变形脆性倾向大）。"}, {"id": "c10q19", "type": "single", "orig": true, "q": "水作为淬火介质的缺点是（ ）。", "options": ["淬冷能力强但易产生变形开裂、表面有软点", "冷却能力弱", "成本高", "有毒"], "answer": "A", "explain": "水淬冷能力强（低温区冷却能力大），但高温区冷速快易造成变形开裂、表面软点；油高温冷却能力小，用于合金钢。"}, {"id": "c10q20", "type": "single", "orig": true, "q": "分级淬火是指（ ）。", "options": ["工件淬入Ms点附近的盐浴中停留均温后取出空冷", "在水中淬火后再转入油中冷却", "在盐浴中等温获得下贝氏体", "直接在空气中冷却"], "answer": "A", "explain": "分级淬火：在Ms附近盐浴中停留均温后空冷，减少热应力和组织应力，适用于小件。"}, {"id": "c10q21", "type": "single", "orig": true, "q": "等温淬火是指（ ），得到的组织是（ ），性能特点是（ ）。", "options": ["在稍高于Ms的温度等温；下贝氏体；综合力学性能好、应力小、变形小", "在Ms以下等温；马氏体", "在水中急冷；马氏体", "在A1以下等温；珠光体"], "answer": "A", "explain": "等温淬火：在稍高于Ms温度盐浴中等温得下B，综合性能好，变形小，不需回火。"}, {"id": "c10q22", "type": "single", "orig": true, "q": "淬透性是指（ ），淬硬性是指（ ）。", "options": ["钢在淬火时获得淬硬层深度的能力；钢在正常淬火条件下马氏体能达到的最高硬度", "最高硬度；淬硬层深度", "表面硬度；心部硬度", "淬火变形量；淬火开裂倾向"], "answer": "A", "explain": "淬透性=淬硬层深度（表面至半马氏体区），与C曲线位置有关；淬硬性（硬化能力）=M能达到的最高硬度，主要取决于含碳量。"}, {"id": "c10q23", "type": "single", "orig": true, "q": "提高钢淬透性的合金元素是（ ），唯一降低淬透性的元素是（ ）。", "options": ["除Co以外的合金元素；Co", "Cr、Mn；Ni", "Si、Al；B", "Mo、W；V"], "answer": "A", "explain": "除Co外，其他合金元素（溶入A中）都提高淬透性，使C曲线右移、临界冷却速度降低。"}, {"id": "c10q24", "type": "single", "orig": true, "q": "45钢水淬临界淬透直径约为16mm，油淬约为8mm；40Cr油淬临界淬透直径约为20mm，这说明（ ）。", "options": ["淬透性比较必须在相同冷却条件下进行，40Cr淬透性高于45钢", "水淬比油淬淬透性高", "45钢淬透性高于40Cr", "临界淬透直径与钢种无关"], "answer": "A", "explain": "临界淬透直径D0表示钢的淬透性，但须在冷却条件相同时才可比：45钢D0水=16mm、D0油=8mm；40Cr D0油=20mm，故40Cr淬透性高。"}, {"id": "c10q25", "type": "single", "orig": true, "q": "感应加热表面淬火中，高频（250～300kHz）淬硬层深度约为（ ），中频（2500～8000Hz）约为（ ）。", "options": ["0.5～2mm；2～10mm", "2～10mm；0.5～2mm", "10～15mm；0.5mm", "0.1mm；20mm"], "answer": "A", "explain": "高频电流频率高、集肤效应强，淬硬层浅0.5~2mm；中频2~10mm；工频（50Hz）10~15mm。"}, {"id": "c10q26", "type": "single", "orig": true, "q": "渗碳处理的工艺特点是（ ），渗碳后表面组织为（ ）。", "options": ["930℃渗碳；缓冷表层为P＋网状Fe3CⅡ，淬火＋低温回火后为回火M＋粒状碳化物", "550℃渗碳；氮化物", "1050℃渗碳；马氏体", "700℃渗碳；珠光体"], "answer": "A", "explain": "渗碳930℃增碳，缓冷后表层P+网状Fe3CⅡ、心部F+P；淬火+低温回火（160~180℃）后表层M回+颗粒碳化物+残余A。"}, {"id": "c10q27", "type": "single", "orig": true, "q": "渗氮处理的特点是（ ）。", "options": ["温度低（500～570℃）、变形小、表面硬度极高（HV1000～2000）、不需再热处理", "温度高、变形大", "表面硬度低", "只用于碳钢"], "answer": "A", "explain": "渗氮500~570℃，表面形成氮化物硬度极高，压应力使疲劳强度高，变形小，不需再热处理；常用38CrMoAl钢。"}, {"id": "c10q28", "type": "single", "orig": true, "q": "化学热处理的基本过程是（ ）。", "options": ["渗剂分解→表面吸收→内部扩散", "加热→保温→冷却", "形核→长大→均匀化", "吸附→脱附→蒸发"], "answer": "A", "explain": "化学热处理三过程：介质（渗剂）分解→表面吸收活性原子→内部扩散。"}, {"id": "c10q29", "type": "multi", "orig": true, "q": "关于淬火方法，下列说法正确的有（ ）。", "options": ["单液淬火操作简单，但易产生变形开裂", "双液淬火（水淬油冷）适用于复杂件、大型件", "分级淬火适用于小件", "等温淬火获得下贝氏体，综合性能好"], "answer": "ABCD", "explain": "四种淬火方法的特点均描述正确。"}, {"id": "c10q30", "type": "single", "orig": true, "q": "马氏体钢淬火后回火的目的不包括（ ）。", "options": ["提高淬透性", "消除内应力", "稳定组织、获得所需性能", "降低脆性"], "answer": "A", "explain": "回火降低淬火内应力、稳定组织、调整性能；淬透性由化学成分决定，回火不影响。"}, {"id": "c10q31", "type": "single", "orig": true, "q": "第一类回火脆性出现在（ ）温度范围，特点是（ ）。", "options": ["250～350℃；不可逆，只能避开", "500～650℃；可逆，回火后快冷可消除", "400～600℃；不可逆", "150～250℃；可逆"], "answer": "A", "explain": "第一类回火脆性250~350℃，不可逆，任何方法不能消除，只能避开此温度范围回火。"}, {"id": "c10q32", "type": "single", "orig": true, "q": "第二类回火脆性出现在（ ）温度范围，防止办法是（ ）。", "options": ["500～650℃缓冷；回火后快冷或加入W约1%、Mo约0.5%", "250～350℃；避开", "150℃；冷处理", "700℃；炉冷"], "answer": "A", "explain": "第二类回火脆性500~650℃缓冷产生，可逆：回火后快冷、或钢中加W、Mo（0.5%~1%）防止。"}, {"id": "c10q33", "type": "fill", "orig": true, "q": "常用热处理工艺中，退火采用___冷却，正火采用___冷却，淬火采用___冷却。", "answer": "炉冷；空冷；大于临界冷速的急冷", "explain": "退火炉冷、正火空冷、淬火急冷（水冷/油冷等）。", "options": []}, {"id": "c10q34", "type": "single", "orig": true, "q": "奥氏体晶粒度8级中，1级和8级分别表示（ ）。", "options": ["最粗；最细", "最细；最粗", "最粗；中等", "无差别"], "answer": "A", "explain": "奥氏体晶粒度分8级：1级最粗、8级最细；本质晶粒度表示钢加热时奥氏体晶粒长大的倾向。"}, {"id": "c10q35", "type": "single", "orig": true, "q": "淬硬性（硬化能力）主要取决于钢的（ ）。", "options": ["含碳量", "合金元素种类", "淬火介质", "零件尺寸"], "answer": "A", "explain": "淬硬性主要取决于M的含碳量，碳越高淬火后硬度越高。"}, {"id": "c10q36", "type": "fill", "orig": true, "q": "表面淬火方法有感应加热表面淬火、___加热表面淬火和___加热表面淬火。", "answer": "火焰；激光", "explain": "表面淬火方法：感应加热、火焰加热、激光加热表面淬火。", "options": []}, {"id": "c10q37", "type": "fill", "orig": true, "q": "碳氮共渗（氰化）按温度分中温（700～800℃）和低温（500～600℃）两种，其渗层组织为___。", "answer": "细针回火马氏体＋粒状碳氮化合物＋少量残余奥氏体", "explain": "碳氮共渗后淬火低温回火，渗层为细针回火M+粒状碳氮化物+少量残余A。", "options": []}]}, {"id": "c11", "title": "有色金属及其合金", "note": "铝合金 · 时效强化 · 铜合金 · 钛合金 · 轴承合金", "questions": [{"id": "c11q1", "type": "single", "orig": true, "q": "铝合金的强化方式中，通过固溶处理（淬火）获得过饱和固溶体，再经时效析出沉淀相实现强化的方法称为（ ）。", "options": ["时效强化（沉淀强化）", "固溶强化", "细晶强化", "位错强化"], "answer": "A", "explain": "时效强化：固溶淬火得过饱和固溶体，室温或加热保温使第二相弥散析出，强度硬度提高。"}, {"id": "c11q2", "type": "single", "orig": true, "q": "铝合金时效处理中，自然时效是指（ ），人工时效是指（ ）。", "options": ["室温下自发强化；在加热温度下进行时效", "加热强化；室温强化", "淬火强化；回火强化", "冷变形强化；退火强化"], "answer": "A", "explain": "自然时效：淬火后在室温放置自发强化；人工时效：加热到某一温度（如150~170℃）保温时效。"}, {"id": "c11q3", "type": "single", "orig": true, "q": "Al-4%Cu合金时效过程中，产生时效强化的实质是（ ）。", "options": ["第二相从过饱和不稳定的单相α固溶体中析出长大，与母相共格，使晶格畸变", "晶粒细化", "位错增殖", "固溶体成分均匀化"], "answer": "A", "explain": "时效实质：第二相（θ′等）从过饱和α中析出并与母相保持共格关系，造成晶格畸变，阻碍位错运动。"}, {"id": "c11q4", "type": "single", "orig": true, "q": "铝合金按加工方法分为（ ）。", "options": ["变形铝合金和铸造铝合金", "硬铝和防锈铝", "铝硅系和铝铜系", "可时效强化和不可时效强化"], "answer": "A", "explain": "铝合金分变形铝合金（塑性好，适于压力加工）和铸造铝合金（适于铸造）。"}, {"id": "c11q5", "type": "single", "orig": true, "q": "下列不属于有色金属特点的是（ ）。", "options": ["强度一定高于钢铁材料", "具有特殊性能如导电性、耐蚀性等", "是工业中的重要材料", "包括铝、铜、钛、镁等"], "answer": "A", "explain": "有色金属具有导电导热、耐蚀、轻等特殊性能，但强度一般低于钢铁，是重要工业材料。"}, {"id": "c11q6", "type": "single", "orig": true, "q": "轴承合金（如巴氏合金）的组织要求是（ ）。", "options": ["软基体上分布硬质点", "硬基体上分布软质点", "单一固溶体", "全部金属间化合物"], "answer": "A", "explain": "轴承合金要求软基体+硬质点组织：软基体保证磨合性，硬质点承受载荷耐磨。"}, {"id": "c11q7", "type": "multi", "orig": true, "q": "关于铝合金热处理，下列说法正确的有（ ）。", "options": ["淬火（固溶处理）加热到固溶线以上，快冷获得过饱和固溶体", "淬火后铝合金强度硬度不高，塑性好", "时效温度越高，达到峰值硬度的时间越短", "过时效会降低强度"], "answer": "ABCD", "explain": "铝合金淬火得单一过饱和α固溶体，强度不高塑性好；时效析出强化相提高强度；时效温度越高峰值越快；过时效后强化相聚集长大，强度降低。"}, {"id": "c11q8", "type": "single", "orig": true, "q": "铜合金中，黄铜是（ ），青铜是（ ）。", "options": ["铜锌合金；铜锡合金（或含其他元素）", "铜锡合金；铜锌合金", "纯铜；铜镍合金", "铜铝合金；铜铍合金"], "answer": "A", "explain": "黄铜=Cu-Zn合金；青铜原指Cu-Sn合金，现泛指除黄铜、白铜以外的铜合金。"}, {"id": "c11q9", "type": "single", "orig": true, "q": "钛合金按退火组织分为α型、β型和（ ）型三类。", "options": ["α＋β", "γ", "δ", "ε"], "answer": "A", "explain": "钛合金按退火组织分α型、β型、α+β型，α+β型应用最广（如TC4）。"}, {"id": "c11q10", "type": "fill", "orig": true, "q": "铝合金中___是铸造铝合金的基础成分，因其共晶点低、流动性好。", "answer": "硅（Si）", "explain": "Si固溶度低（1.65%），Al-Si系合金共晶点低易于铸造，是铸造铝合金的基础成分。", "options": []}]}, {"id": "c12", "title": "期中真题专练", "note": "2021/2022期中卷 · 淬透性 · GCr15千分尺 · 20CrMnTi齿轮", "questions": [{"id": "c12q1", "type": "single", "orig": true, "q": "【真题】淬透性和淬硬性的区别在于（ ）。", "options": ["淬透性指淬硬层深度（获得马氏体层深的能力），淬硬性指马氏体能达到的最高硬度", "淬透性指最高硬度，淬硬性指淬硬层深度", "两者含义完全相同", "淬透性取决于含碳量，淬硬性取决于合金元素"], "answer": "A", "explain": "淬透性=钢在淬火时获得淬硬层深度（表面至半马氏体区）的能力，取决于C曲线位置（合金元素）；淬硬性=正常淬火条件下马氏体能达到的最高硬度，取决于含碳量。"}, {"id": "c12q2", "type": "single", "orig": true, "q": "【真题】影响钢的淬透性、淬硬性及淬透层深度的因素，下列说法正确的是（ ）。", "options": ["淬透性取决于奥氏体化学成分和晶粒度（C曲线位置），淬硬性取决于含碳量，淬透层深度还受零件尺寸和冷却介质影响", "淬透性和淬硬性都只取决于含碳量", "淬透层深度只取决于零件尺寸", "合金元素对淬透性无影响"], "answer": "A", "explain": "淬透性：合金元素（除Co外）溶入A使C曲线右移、Vk降低→淬透性提高；晶粒越粗大淬透性越高。淬硬性：含碳量越高硬度越高。淬透层深度：受钢的淬透性和冷却条件、零件尺寸共同影响。"}, {"id": "c12q3", "type": "single", "orig": true, "q": "【真题】45钢经调质处理后硬度为240HB，若再进行180℃回火，是否可以使其硬度提高？（ ）", "options": ["不能提高。180℃回火温度低于调质的高温回火温度，回火索氏体中的碳化物已充分析出，低温回火不再有新转变，硬度基本不变甚至略降", "可以提高，低温回火必然提高硬度", "可以提高，因为回火温度越低硬度越高", "不确定"], "answer": "A", "explain": "调质=淬火+高温回火（500~650℃），已得回火S。再180℃回火低于原回火温度，组织不再发生显著转变，硬度不能提高（组织已稳定）。"}, {"id": "c12q4", "type": "single", "orig": true, "q": "【真题】42CrMo钢经调质处理后硬度为240HB，若再进行200℃回火，是否可以使其硬度提高？为什么？（ ）", "options": ["不能提高。高温回火已完成M分解和碳化物聚集，240HB对应回火索氏体组织稳定，200℃低温回火不会使硬度升高", "能提高，因低温回火析出细碳化物", "能提高，因回火温度降低硬度必升", "不能确定"], "answer": "A", "explain": "调质态组织为回火S，已稳定；低于原回火温度的再回火不会提高硬度。"}, {"id": "c12q5", "type": "single", "orig": true, "q": "【真题】42CrMo钢经淬火、低温回火后硬度为55HRC，若再进行600℃回火，是否会降低其硬度？为什么？（ ）", "options": ["会显著降低。600℃为高温回火，回火马氏体分解、碳化物聚集长大、位错密度下降，硬度从55HRC降至约240HB", "不会降低，高温回火提高硬度", "会先升高再降低", "硬度不变"], "answer": "A", "explain": "低温回火态为回火M（55HRC）；600℃高温回火使M分解为F+粒状碳化物（回火S），硬度大幅下降。"}, {"id": "c12q6", "type": "single", "orig": true, "q": "【真题】45钢经淬火、中温回火后硬度为45HRC，若再进行600℃回火，是否会降低其硬度？为什么？（ ）", "options": ["会降低。中温回火态为回火屈氏体（45HRC），600℃高温回火转变为回火索氏体，硬度降至240HB左右", "不会降低", "会升高", "先降后升"], "answer": "A", "explain": "回火温度越高，组织越接近平衡态（回火T→回火S），强度硬度越低、塑韧性越高。"}, {"id": "c12q7", "type": "single", "orig": true, "q": "【真题】用GCr15钢制造千分尺的工艺路线为：锻造→球化退火①→机械加工→淬火②→冷处理（-70～-80℃）③→低温回火④→精磨→（110～120℃）×36h时效⑤→研磨→（110～120℃）×3h时效⑥。其中球化退火①的目的和结果是（ ）。", "options": ["降低硬度便于切削加工，为淬火作组织准备；得到球状珠光体（F基体+均匀细粒状碳化物）", "消除网状碳化物", "提高淬透性", "获得回火索氏体"], "answer": "A", "explain": "轴承钢球化退火（780~810℃，790℃最宜）目的：降低硬度便于切削加工，为淬火作组织准备；得球状珠光体。"}, {"id": "c12q8", "type": "single", "orig": true, "q": "【真题】GCr15千分尺工艺路线中，淬火②的目的和结果是（ ）。", "options": ["获得高硬度高耐磨的马氏体组织，得到高碳针状马氏体＋粒状碳化物＋少量残余奥氏体", "细化晶粒", "消除应力", "提高韧性"], "answer": "A", "explain": "GCr15淬火（830~860℃）获得高碳针状马氏体+粒状碳化物+少量残余A，硬度62~66HRC，保证量具高硬度耐磨。"}, {"id": "c12q9", "type": "single", "orig": true, "q": "【真题】GCr15千分尺工艺路线中，冷处理（-70～-80℃）③的作用是（ ）。", "options": ["消除残余奥氏体，稳定尺寸", "提高淬透性", "细化晶粒", "提高红硬性"], "answer": "A", "explain": "冷处理使残余A继续转变为M，稳定组织、提高尺寸稳定性，这对精密量具尤为重要。"}, {"id": "c12q10", "type": "single", "orig": true, "q": "【真题】GCr15千分尺工艺路线中，低温回火④的作用是（ ）。", "options": ["消除淬火应力、稳定组织，保持高硬度", "提高硬度", "提高韧性", "消除网状碳化物"], "answer": "A", "explain": "低温回火（180~240℃）消除淬火应力、稳定组织，保持高硬度（62~66HRC）和高耐磨性。"}, {"id": "c12q11", "type": "single", "orig": true, "q": "【真题】GCr15千分尺工艺路线中，（110～120℃）×36h时效⑤的目的和结果是（ ）。", "options": ["消除磨削应力、稳定组织，使尺寸稳定", "提高硬度", "球化渗碳体", "消除网状碳化物"], "answer": "A", "explain": "稳定化时效（110~120℃长时间）消除磨削应力，进一步稳定组织和尺寸精度。"}, {"id": "c12q12", "type": "single", "orig": true, "q": "【真题】GCr15千分尺工艺路线中，如果锻造后有网状碳化物存在，则在球化退火前需进行什么处理？作用是什么？（ ）", "options": ["先正火。正火加热到Accm以上使网状碳化物溶入奥氏体，空冷消除网状碳化物，以利球化退火", "先扩散退火", "先淬火", "先调质"], "answer": "A", "explain": "网状碳化物在球化退火时不易消除，须先正火（Accm+30~50℃空冷）消除，为球化退火作准备。"}, {"id": "c12q13", "type": "single", "orig": true, "q": "【真题】用20CrMnTi钢制造高速重载齿轮，工艺路线为：下料→锻造→正火①→切削加工→渗碳②→淬火③→低温回火④→精加工。其中正火①的目的是（ ）。", "options": ["改善锻造组织、消除内应力、调整硬度便于切削加工，并使晶粒细化", "提高硬度", "渗碳", "球化"], "answer": "A", "explain": "正火改善锻后组织、消除内应力、调整切削加工性并细化晶粒，为渗碳作准备。"}, {"id": "c12q14", "type": "single", "orig": true, "q": "【真题】20CrMnTi齿轮工艺路线中，渗碳②的目的和结果是（ ）。", "options": ["表面增碳至0.8%～1.05%，使表层获得高碳层，缓冷后表层为珠光体＋网状碳化物，心部为铁素体＋珠光体", "表面减碳", "表面氮化", "表面淬火"], "answer": "A", "explain": "渗碳（930℃）使表层增碳（约0.8~1.05%C），缓冷后表层P+网状Fe3CⅡ、心部F+P。"}, {"id": "c12q15", "type": "single", "orig": true, "q": "【真题】20CrMnTi齿轮工艺路线中，淬火③＋低温回火④后的组织和性能是（ ）。", "options": ["表层为细针状回火高碳马氏体＋粒状碳化物＋少量残余奥氏体（58～64HRC），心部为低碳马氏体或铁素体＋屈氏体（35～45HRC），表层硬而耐磨、心部强韧", "整体回火索氏体", "整体珠光体", "整体贝氏体"], "answer": "A", "explain": "渗碳淬火低温回火：表层细针回火高碳M+粒状碳化物+少量残余A（58~64HRC）耐磨；心部低碳M或F+T（35~45HRC）强韧，实现“外硬内韧”。"}, {"id": "c12q16", "type": "single", "orig": true, "q": "【真题】简述20CrMnTi钢的化学成分特点，正确的是（ ）。", "options": ["含碳0.17%～0.23%（低碳）保证心部强韧；Cr、Mn提高淬透性；Ti细化晶粒、防止渗碳过热", "含碳0.45%中碳", "不含Ti", "含碳1.0%"], "answer": "A", "explain": "20CrMnTi含碳约0.2%（低碳），主加Cr、Mn提高淬透性，辅加Ti细化晶粒、阻止渗碳时晶粒长大。"}, {"id": "c12q17", "type": "single", "orig": true, "q": "【真题】区分下列名词：屈氏体和回火屈氏体。正确的是（ ）。", "options": ["屈氏体是过冷奥氏体在600～550℃等温转变的产物（F＋Fe3C极细片层，淬火组织），回火屈氏体是淬火马氏体中温回火（350～500℃）的产物（F基体上分布极细粒状碳化物）", "两者完全相同", "屈氏体是回火产物", "回火屈氏体是等温转变产物"], "answer": "A", "explain": "屈氏体（托氏体T）：A过冷至600~550℃等温转变的F+Fe3C极细片层组织；回火屈氏体：M在350~500℃回火形成的F+极细粒状碳化物。来源、形貌、性能都不同。"}, {"id": "c12q18", "type": "single", "orig": true, "q": "【真题】钢的淬透性主要取决于（ ），淬硬性主要取决于（ ）。", "options": ["C曲线的位置（奥氏体稳定性/合金元素）；马氏体的含碳量", "零件尺寸；冷却介质", "回火温度；保温时间", "表面状态；加热速度"], "answer": "A", "explain": "淬透性由C曲线位置决定（合金元素溶入A使曲线右移）；淬硬性由M含碳量决定。"}, {"id": "c12q19", "type": "single", "orig": true, "q": "【真题】影响淬透层深度的因素是（ ）。", "options": ["钢的淬透性、冷却介质（淬火烈度）和零件尺寸", "仅含碳量", "仅回火温度", "仅表面粗糙度"], "answer": "A", "explain": "淬透层深度=钢的淬透性（内在）+冷却介质冷却能力+零件尺寸（外在条件）综合结果。"}, {"id": "c12q20", "type": "single", "orig": true, "q": "【真题】42CrMo钢经调质处理后硬度为240HB，其组织为（ ）。", "options": ["回火索氏体", "回火马氏体", "回火屈氏体", "珠光体"], "answer": "A", "explain": "调质=淬火+高温回火→回火索氏体，硬度约240HB，综合力学性能好。"}, {"id": "c12q21", "type": "single", "orig": true, "q": "【真题】量具钢GCr15制造千分尺采用冷处理+时效的原因是其要求（ ）。", "options": ["高尺寸稳定性（组织稳定）", "高红硬性", "高耐蚀性", "高淬透性"], "answer": "A", "explain": "量具要求尺寸稳定：冷处理除残余A+时效消除磨削应力，防止使用中尺寸变化。"}, {"id": "c12q22", "type": "single", "orig": true, "q": "【真题】20CrMnTi渗碳齿轮心部硬度35～45HRC的组织是（ ）。", "options": ["低碳马氏体或铁素体＋屈氏体", "回火索氏体", "珠光体＋渗碳体", "贝氏体"], "answer": "A", "explain": "心部依淬透性不同为F+T或低碳M，硬度35~45HRC，αk≥60J/cm²。"}, {"id": "c12q23", "type": "multi", "orig": true, "q": "【真题】下列关于回火分析正确的是（ ）。", "options": ["调质态（回火S）再低温回火不能提高硬度", "低温回火态再高温回火硬度显著降低", "中温回火态再高温回火硬度降低", "回火温度越高，强度硬度越低，塑韧性越高"], "answer": "ABCD", "explain": "回火的一般规律：回火温度升高→强度硬度降低、塑韧性提高；再回火温度低于原回火温度组织已稳定，硬度不再提高。"}, {"id": "c12q24", "type": "fill", "orig": true, "q": "【真题】淬透性定义：钢在淬火时获得___的能力；淬硬层为工件表面至___层之间的区域。", "answer": "淬硬层深度；半马氏体", "explain": "淬透性=获得淬硬层深度（表面至半马氏体层）的能力；淬硬层指表面至半马氏体区。", "options": []}, {"id": "c12q25", "type": "single", "orig": true, "q": "【真题】影响钢淬透性的合金元素中，常用提高淬透性的五元素是（ ）。", "options": ["Cr、Mn、Si、Ni、B", "W、Mo、V、Ti、Nb", "Al、Cu、Co、P", "C、N、O、H"], "answer": "A", "explain": "提高淬透性五元素：Cr、Mn、Si、Ni、B，合金化原则“多元少量”。"}]}]};</script>
+<script>const OUTLINE=[{"id": "c1", "title": "绪论与材料基础", "items": [{"t": "材料的四要素", "c": "成分与结构、合成与加工、性质、使用效能"}, {"t": "师昌绪五要素", "c": "成分、合成/加工、结构、性质、使用效能"}, {"t": "材料分类", "c": "按物质结构：金属、无机非金属、高分子、复合材料"}, {"t": "结构/功能材料", "c": "结构材料以力学性能为主；功能材料利用特殊物理化学性质"}, {"t": "三大支柱", "c": "信息、材料、能源"}]}, {"id": "c2", "title": "钢的分类及编号", "items": [{"t": "钢的定义", "c": "0.04%~2.3%C铁碳合金，一般≤1.7%C"}, {"t": "按质量分", "c": "普通(P≤0.045/S≤0.050)、优质(≤0.035)、高级优质"}, {"t": "按成分分", "c": "低碳≤0.25%、中碳0.25~0.60%、高碳>0.60%；低合金≤5%、中合金5~10%、高合金>10%"}, {"t": "按退火组织分", "c": "亚共析F+P、共析P、过共析P+Fe3C、莱氏体钢"}, {"t": "碳素结构钢", "c": "Q235=屈服235MPa；F沸腾/b半镇静/Z镇静；Q355代替Q345"}, {"t": "优质碳素钢", "c": "45钢=0.45%C；50Mn"}, {"t": "合金结构钢", "c": "两位数字(万分之几C)+元素+含量(1.5~2.49%写2)；微量V/Ti/Al/B/RE必标"}, {"t": "工具钢编号", "c": "T8=0.8%C(千分之几)；合金工具钢<1.0%标千分(9SiCr)，Cr06低铬前加0"}, {"t": "轴承钢编号", "c": "GCr15=滚字首+Cr千分之几=1.5%Cr"}, {"t": "高速钢编号", "c": "不标碳量，如W18Cr4V；头部加C表示高碳CW6Mo5Cr4V2"}, {"t": "不锈钢编号", "c": "上限≤0.10%用3/4(0.08→06)、>0.10%用4/5(0.20→16)、超低碳三位数(0.030→022)"}]}, {"id": "c3", "title": "钢的合金化基础", "items": [{"t": "合金元素存在形式", "c": "固溶体、强化相(合金渗碳体/碳化物/金属间化合物)、非金属夹杂物(有害)"}, {"t": "A/F形成元素", "c": "A形成：C、N、Cu、Mn、Ni、Co；F形成：Cr、V、Si、Al、Ti、Mo、W"}, {"t": "碳化物形成元素", "c": "Ti、Zr、Nb、V、Mo、W、Cr、Mn、Fe；非碳化物：Ni、Si、Co、Al、Cu"}, {"t": "四种强化机制", "c": "固溶强化、晶界(细晶)强化、第二相强化(沉淀+弥散)、位错强化"}, {"t": "对相变影响", "c": "扩大A区元素降A3/A1；所有元素使S点左移；多元少量提高淬透性(Cr/Mn/Si/Ni/B)"}, {"t": "晶粒控制", "c": "除Mn、P外阻止A晶粒长大；Ti/Nb/V强烈"}, {"t": "C曲线与Ms", "c": "除Co外使C曲线右移、Vk降、淬透性↑；降Ms/Mf使残余A增多"}, {"t": "回火作用", "c": "碳化物元素推迟M分解；Ti/V/Nb/Mo/W二次硬化(500~600℃)"}, {"t": "回火脆性", "c": "一类250~350℃不可逆；二类500~650℃缓冷可逆(快冷/加W~1%、Mo~0.5%)"}]}, {"id": "c4", "title": "构件用钢", "items": [{"t": "用途", "c": "桥梁、船舶、屋架、锅炉、压力容器等大型金属结构"}, {"t": "杂质影响", "c": "S→热脆(低熔点共晶FeS)；P→冷脆(固溶F)；O、H、N有害"}, {"t": "三大特点", "c": "屈服现象、冷脆现象、时效现象"}, {"t": "冷脆转变温度", "c": "Tk越低冷脆倾向越小"}, {"t": "Q235普碳钢", "c": "热轧供货，一般不经热处理强化"}, {"t": "低合金高强度钢", "c": "C<0.20%、合金元素<3%；Q355代替Q345；焊接要求低碳低合金"}]}, {"id": "c5", "title": "机器零件用钢", "items": [{"t": "使用状态", "c": "淬火+回火(强化态)；力学性能为主工艺为辅"}, {"t": "调质钢", "c": "0.3~0.5%C；淬火+高温回火→回火S；主加Mn/Si/Cr/Ni/B提淬透性；W/Mo防二类回火脆性；40/45/40Cr/42CrMo"}, {"t": "弹簧钢", "c": "碳钢0.6~0.9%C、合金0.45~0.7%；淬火+中温回火→回火T；60Si2Mn最常用；喷丸强化"}, {"t": "渗碳钢", "c": "0.1~0.25%C；渗碳930℃+淬火+低温回火；表层58~64HRC心部35~45HRC；20CrMnTi齿轮"}, {"t": "轴承钢GCr15", "c": "0.95~1.15%C过共析、Cr0.40~1.65%；球化退火790℃→淬火830~860℃→冷处理→低温回火→时效；62~66HRC"}, {"t": "低温钢", "c": "C<0.2%；Mn/Ni改善低温韧(Ni最明显)；面心立方低温韧性好"}, {"t": "大锻件钢", "c": "锻造细晶+缓冷去应力"}]}, {"id": "c6", "title": "工具钢", "items": [{"t": "特征", "c": "高硬度(0.65~1.55%C高碳M)、高耐磨(碳化物)、红硬性、尺寸稳定"}, {"t": "碳素工具钢", "c": "T8/T10/T12；0.65~1.35%C；淬透性低无红硬性；淬火+低温回火180~200℃；球化退火预备"}, {"t": "低合金刃具钢", "c": "9SiCr、CrWMn；0.75~1.50%C；工作≤250℃；油淬/等温淬火"}, {"t": "高速钢", "c": "W18Cr4V/W6Mo5Cr4V2；600℃>55~60HRC；空冷得M(风钢)；1%Mo≈2%W；高温淬火+550~570℃回火2~4次(二次硬化+二次淬火)；分级淬火600℃<15min"}, {"t": "硬质合金", "c": "YG加工铸铁、YT加工合金钢/耐热钢；87~93HRA、1000℃热硬"}, {"t": "冷作模具钢", "c": "Cr12、Cr12MoV；<250℃；高硬度耐磨抗弯强度韧性"}, {"t": "热作模具钢", "c": "5CrMnMo；300~800℃；交变热应力→热疲劳"}, {"t": "量具钢", "c": "58~64HRC、尺寸稳定；T10A/GCr15/渗碳钢/40Cr13；冷处理+长时间低温时效"}]}, {"id": "c7", "title": "不锈钢", "items": [{"t": "耐蚀机理", "c": "Cr2O3致密钝化膜；n/8规律最低Cr11.7%，考虑C取13%"}, {"t": "腐蚀类型", "c": "一般腐蚀、晶界腐蚀、应力腐蚀(SCC)、点蚀、腐蚀疲劳"}, {"t": "马氏体不锈钢", "c": "12Cr13~40Cr13；淬火+回火；400~600℃回火应力腐蚀开裂；回火后快冷"}, {"t": "铁素体不锈钢", "c": "C<0.25%、Cr13~30%；单相δF；475℃脆性(400~525℃)与σ相脆性(550~850℃)"}, {"t": "奥氏体不锈钢", "c": "18-8型占70%；06Cr19Ni10(304)；晶间腐蚀450~850℃(Cr23C6贫Cr)→降C/加TiNb/稳定化处理850~880℃；SCC含Cl-加Si；点蚀加Mo"}, {"t": "固溶处理", "c": "1050~1150℃水淬，碳化物溶A提高耐蚀性"}]}, {"id": "c8", "title": "耐热钢及高温合金", "items": [{"t": "分类", "c": "热稳定钢(抗氧化)+热强钢(高温强度)；失效：高温强度不足+氧化腐蚀"}, {"t": "抗氧化途径", "c": "Cr2O3、Al2O3、SiO2致密氧化膜；渗Cr/Al/Si"}, {"t": "热强性指标", "c": "蠕变极限(σ0.2/1000)、持久强度、应力松弛"}, {"t": "强化途径", "c": "固溶强化、沉淀强化、晶界强化"}, {"t": "基体分类", "c": "α-Fe基热强钢、γ-Fe基热强钢(奥氏体使用温度更高)；高温合金：铁基、镍基、钴基"}]}, {"id": "c9", "title": "固态相变理论", "items": [{"t": "驱动力", "c": "新旧两相自由能差；形核+长大"}, {"t": "相变阻力", "c": "界面能+弹性应变能(共格应变能+比容差应变能)"}, {"t": "界面类型", "c": "共格(完全匹配)、半共格(有位错)、非共格"}, {"t": "相变分类", "c": "扩散型(珠光体)、非扩散型(马氏体切变)、半扩散型(贝氏体Fe切变+C扩散)"}, {"t": "其他特点", "c": "晶体缺陷促进形核；常形成过渡相(中间亚稳相)"}]}, {"id": "c10", "title": "钢的热处理", "items": [{"t": "奥氏体化", "c": "相界形核→扩散长大→残余Fe3C溶解→成分均匀化；晶粒度8级1粗8细"}, {"t": "TTT/CCT", "c": "鼻尖550℃孕育期最短；共析钢CCT无B区；Vk'≈1.5Vk"}, {"t": "珠光体转变", "c": "P(A1~650粗片)、S(650~600)、T(600~550极细)，仅粗细之分"}, {"t": "马氏体转变", "c": "碳在α-Fe过饱和固溶体(体心正方)；板条M<0.25%C、针状M>1.0%C；硬度取决于碳量；无扩散、有A残"}, {"t": "贝氏体转变", "c": "上B 550~350℃羽毛状无价值；下B 350℃~Ms竹叶状综合性能好"}, {"t": "回火", "c": "低温150~250℃→M回；中温350~500℃→T回；高温500~650℃→S回(调质)"}, {"t": "退火", "c": "完全退火Ac3+30~50(亚共析)；球化Ac1+30~50(过共析)；扩散Ac3/Acm+150~300>10h；去应力500~600℃"}, {"t": "正火", "c": "空冷；过共析Accm+30~50消除网状Fe3CⅡ；改善切削：低碳正火、中碳退火/正火、高碳球化"}, {"t": "淬火", "c": "亚共析Ac3+30~50；过共析Ac1+30~50；水/油/盐浴；单液/双液/分级(Ms附近)/等温(下B)"}, {"t": "淬透性/淬硬性", "c": "淬透性=淬硬层深度(半马氏体区)，淬硬性=最高硬度(取决于碳量)；45钢D0水16/油8mm，40Cr D0油20mm"}, {"t": "表面淬火", "c": "感应高频0.5~2mm、中频2~10mm、工频10~15mm；火焰、激光"}, {"t": "化学热处理", "c": "渗剂分解→表面吸收→内部扩散；渗碳930℃；渗氮500~570℃(38CrMoAl、HV1000~2000)；碳氮共渗"}]}, {"id": "c11", "title": "有色金属及其合金", "items": [{"t": "铝合金分类", "c": "变形铝合金+铸造铝合金"}, {"t": "强化方式", "c": "固溶强化+时效强化(淬火得过饱和固溶体→时效析出强化相)"}, {"t": "时效种类", "c": "自然时效(室温)、人工时效(加热)；过时效强度降低"}, {"t": "Al-4%Cu", "c": "时效析出共格第二相产生晶格畸变→强化"}, {"t": "铜合金", "c": "黄铜Cu-Zn、青铜Cu-Sn"}, {"t": "轴承合金", "c": "软基体+硬质点(巴氏合金)"}, {"t": "钛合金", "c": "α型、β型、α+β型(应用最广)"}]}, {"id": "c12", "title": "期中真题专练", "items": [{"t": "淬透性vs淬硬性", "c": "淬透性=淬硬层深度(半马氏体区)，取决于C曲线位置；淬硬性=最高硬度，取决于含碳量"}, {"t": "影响淬透性因素", "c": "奥氏体化学成分、晶粒度；淬透层深度还受冷却介质、零件尺寸影响"}, {"t": "回火规律", "c": "回火温度越高强度硬度越低塑韧性越高；再回火温度低于原回火温度→组织稳定硬度不提高"}, {"t": "GCr15千分尺", "c": "锻造→球化退火→机加→淬火→冷处理(-70~-80℃)→低温回火→精磨→时效110~120℃×36h→研磨→时效3h"}, {"t": "GCr15各工序目的", "c": "球化退火(降硬备淬)、淬火(高碳M高硬耐磨)、冷处理(除A残稳尺寸)、低温回火(消除应力保硬度)、时效(消除磨削应力稳尺寸)"}, {"t": "网状碳化物处理", "c": "球化退火前先正火消除网状碳化物"}, {"t": "20CrMnTi齿轮", "c": "下料→锻造→正火→切削→渗碳→淬火→低温回火→精加工；表层细针回火高碳M+粒状碳化物58~64HRC，心部低碳M/F+T 35~45HRC"}, {"t": "屈氏体vs回火屈氏体", "c": "屈氏体=过冷A 600~550℃等温转变F+Fe3C极细片层；回火屈氏体=M 350~500℃回火F+极细粒状碳化物"}]}];</script>
+<script>const MIND=[{"name": "绪论与材料基础", "children": [{"name": "材料四要素", "children": [{"name": "成分与结构"}, {"name": "合成与加工"}, {"name": "性质"}, {"name": "使用效能"}]}, {"name": "师昌绪五要素", "children": [{"name": "成分"}, {"name": "合成/加工"}, {"name": "结构"}, {"name": "性质"}, {"name": "使用效能"}]}, {"name": "材料分类", "children": [{"name": "金属材料"}, {"name": "无机非金属材料"}, {"name": "高分子材料"}, {"name": "复合材料"}]}, {"name": "结构/功能材料", "children": [{"name": "结构材料-力学性能"}, {"name": "功能材料-特殊性质"}]}]}, {"name": "钢的分类及编号", "children": [{"name": "钢的定义", "children": [{"name": "0.04%~2.3%C"}, {"name": "一般≤1.7%C"}]}, {"name": "按质量分", "children": [{"name": "普通钢 P≤0.045/S≤0.050"}, {"name": "优质钢 ≤0.035"}, {"name": "高级优质钢"}]}, {"name": "按成分分", "children": [{"name": "低碳≤0.25% / 中碳0.25~0.60 / 高碳>0.60"}, {"name": "低合金≤5% / 中合金5~10 / 高合金>10"}]}, {"name": "按退火组织分", "children": [{"name": "亚共析 F+P"}, {"name": "共析 P"}, {"name": "过共析 P+Fe3C"}, {"name": "莱氏体钢"}]}, {"name": "编号规则", "children": [{"name": "Q235-屈服235MPa"}, {"name": "45钢-0.45%C"}, {"name": "40Cr-Cr<1.5%"}, {"name": "T8-0.8%C"}, {"name": "GCr15-Cr1.5%"}, {"name": "W18Cr4V-高速钢"}, {"name": "20Cr13-不锈钢"}]}]}, {"name": "钢的合金化基础", "children": [{"name": "存在形式", "children": [{"name": "固溶体"}, {"name": "强化相-合金渗碳体/碳化物"}, {"name": "非金属夹杂物(有害)"}]}, {"name": "A/F形成元素", "children": [{"name": "A形成：C、N、Cu、Mn、Ni、Co"}, {"name": "F形成：Cr、V、Si、Al、Ti、Mo、W"}]}, {"name": "四种强化机制", "children": [{"name": "固溶强化"}, {"name": "晶界(细晶)强化"}, {"name": "第二相强化-沉淀+弥散"}, {"name": "位错强化"}]}, {"name": "对相变影响", "children": [{"name": "S点左移"}, {"name": "提高淬透性-Cr/Mn/Si/Ni/B多元少量"}, {"name": "阻止A晶粒长大(除Mn、P)"}, {"name": "C曲线右移-Ms降残余A增"}, {"name": "二次硬化500~600℃"}]}, {"name": "回火脆性", "children": [{"name": "一类250~350℃不可逆"}, {"name": "二类500~650℃缓冷可逆-加W/Mo"}]}]}, {"name": "构件用钢", "children": [{"name": "用途", "children": [{"name": "桥梁/船舶/屋架/锅炉/压力容器"}]}, {"name": "杂质影响", "children": [{"name": "S-热脆(低熔点共晶)"}, {"name": "P-冷脆(固溶F)"}]}, {"name": "三大特点", "children": [{"name": "屈服现象"}, {"name": "冷脆现象"}, {"name": "时效现象"}]}, {"name": "常用钢", "children": [{"name": "Q235普碳钢-热轧供货"}, {"name": "Q355代替Q345-低碳低合金"}]}]}, {"name": "机器零件用钢", "children": [{"name": "调质钢", "children": [{"name": "0.3~0.5%C中碳"}, {"name": "淬火+高温回火→回火S"}, {"name": "40/45/40Cr/42CrMo"}]}, {"name": "弹簧钢", "children": [{"name": "淬火+中温回火→回火T"}, {"name": "60Si2Mn最常用"}, {"name": "喷丸强化疲劳"}]}, {"name": "渗碳钢", "children": [{"name": "0.1~0.25%C低碳"}, {"name": "渗碳930℃+淬火+低温回火"}, {"name": "20CrMnTi齿轮-外硬内韧"}]}, {"name": "轴承钢GCr15", "children": [{"name": "过共析Cr1.5%"}, {"name": "球化退火790℃"}, {"name": "淬火830~860℃+低温回火62~66HRC"}, {"name": "冷处理除A残"}]}, {"name": "特殊用途钢", "children": [{"name": "低温钢-Ni改善低温韧"}, {"name": "大锻件钢-锻造细晶+缓冷"}]}]}, {"name": "工具钢", "children": [{"name": "特征", "children": [{"name": "高硬度-高碳M"}, {"name": "高耐磨-碳化物"}, {"name": "红硬性-高温保硬"}, {"name": "尺寸稳定-无A残"}]}, {"name": "碳素工具钢", "children": [{"name": "T8/T10 0.65~1.35%C"}, {"name": "淬透性低无红硬性"}, {"name": "淬火+低温回火180~200℃"}]}, {"name": "高速钢", "children": [{"name": "W18Cr4V-600℃>55~60HRC"}, {"name": "风钢-空冷得M"}, {"name": "1%Mo≈2%W"}, {"name": "高温淬火+550~570℃回火2~4次"}, {"name": "二次硬化+二次淬火"}]}, {"name": "硬质合金", "children": [{"name": "YG-加工铸铁"}, {"name": "YT-加工合金钢/耐热钢"}]}, {"name": "模具钢", "children": [{"name": "冷作Cr12/Cr12MoV-<250℃"}, {"name": "热作5CrMnMo-热疲劳"}]}, {"name": "量具钢", "children": [{"name": "58~64HRC尺寸稳定"}, {"name": "冷处理+长时间低温时效"}]}]}, {"name": "不锈钢", "children": [{"name": "耐蚀机理", "children": [{"name": "Cr2O3致密钝化膜"}, {"name": "n/8规律Cr≥13%"}]}, {"name": "腐蚀类型", "children": [{"name": "晶界腐蚀-450~850℃贫Cr"}, {"name": "应力腐蚀SCC-含Cl-"}, {"name": "点蚀-加Mo"}]}, {"name": "马氏体不锈钢", "children": [{"name": "12Cr13~40Cr13"}, {"name": "淬火+回火-回火后快冷"}]}, {"name": "铁素体不锈钢", "children": [{"name": "C<0.25% Cr13~30%"}, {"name": "475℃脆性-700~800℃消除"}, {"name": "σ相脆性550~850℃"}]}, {"name": "奥氏体不锈钢", "children": [{"name": "18-8型占70%"}, {"name": "06Cr19Ni10(304)"}, {"name": "固溶处理1050~1150℃水淬"}, {"name": "稳定化处理850~880℃"}]}]}, {"name": "耐热钢及高温合金", "children": [{"name": "分类", "children": [{"name": "热稳定钢-抗氧化"}, {"name": "热强钢-高温强度"}]}, {"name": "抗氧化", "children": [{"name": "Cr2O3/Al2O3/SiO2致密膜"}, {"name": "渗Cr/Al/Si"}]}, {"name": "热强性", "children": [{"name": "蠕变极限σ0.2/1000"}, {"name": "持久强度"}, {"name": "固溶+沉淀+晶界强化"}]}, {"name": "基体分类", "children": [{"name": "α-Fe基热强钢"}, {"name": "γ-Fe基热强钢-使用温度更高"}, {"name": "铁基/镍基/钴基高温合金"}]}]}, {"name": "固态相变理论", "children": [{"name": "驱动力", "children": [{"name": "新旧相自由能差"}, {"name": "形核+长大"}]}, {"name": "阻力", "children": [{"name": "界面能"}, {"name": "共格应变能"}, {"name": "比容差应变能"}]}, {"name": "界面", "children": [{"name": "共格-完全匹配"}, {"name": "半共格-有位错"}, {"name": "非共格"}]}, {"name": "分类", "children": [{"name": "扩散型-珠光体"}, {"name": "非扩散型-马氏体切变"}, {"name": "半扩散型-贝氏体"}]}]}, {"name": "钢的热处理", "children": [{"name": "奥氏体化", "children": [{"name": "相界形核→扩散长大→残余Fe3C溶解→成分均匀化"}, {"name": "晶粒度8级1粗8细"}]}, {"name": "过冷A转变", "children": [{"name": "珠光体P/S/T-仅粗细之分"}, {"name": "马氏体-无扩散体心正方-硬度取决于碳量"}, {"name": "贝氏体-上B羽毛/下B竹叶"}]}, {"name": "回火", "children": [{"name": "低温150~250℃-M回"}, {"name": "中温350~500℃-T回"}, {"name": "高温500~650℃-S回(调质)"}]}, {"name": "退火/正火", "children": [{"name": "完全退火Ac3+30~50"}, {"name": "球化退火Ac1+30~50"}, {"name": "正火-空冷消除网状Fe3C"}]}, {"name": "淬火", "children": [{"name": "亚共析Ac3+30~50 / 过共析Ac1+30~50"}, {"name": "单液/双液/分级/等温(下B)"}, {"name": "淬透性=淬硬层深度 淬硬性=最高硬度"}]}, {"name": "表面热处理", "children": [{"name": "感应-高频0.5~2mm/中频2~10mm/工频10~15mm"}, {"name": "渗碳930℃"}, {"name": "渗氮500~570℃"}]}]}, {"name": "有色金属及其合金", "children": [{"name": "铝合金", "children": [{"name": "变形铝+铸造铝"}, {"name": "固溶处理+时效强化"}, {"name": "自然时效/人工时效"}]}, {"name": "铜合金", "children": [{"name": "黄铜Cu-Zn"}, {"name": "青铜Cu-Sn"}]}, {"name": "钛合金", "children": [{"name": "α型/β型/α+β型"}]}, {"name": "轴承合金", "children": [{"name": "软基体+硬质点"}]}]}, {"name": "期中真题专练", "children": [{"name": "核心概念", "children": [{"name": "淬透性vs淬硬性"}, {"name": "屈氏体vs回火屈氏体"}]}, {"name": "回火分析", "children": [{"name": "调质240HB再低温回火-不提高"}, {"name": "低温回火55HRC再600℃-显著降低"}, {"name": "中温回火45HRC再600℃-降低"}]}, {"name": "GCr15千分尺", "children": [{"name": "球化退火-降硬备淬"}, {"name": "淬火-高碳M耐磨"}, {"name": "冷处理-除A残稳尺寸"}, {"name": "低温回火-消应力保硬度"}, {"name": "时效-消磨削应力"}, {"name": "网状碳化物-先正火"}]}, {"name": "20CrMnTi齿轮", "children": [{"name": "正火-改善组织便于切削"}, {"name": "渗碳930℃-表层增碳"}, {"name": "淬火+低温回火-外硬内韧"}, {"name": "表层58~64HRC心部35~45HRC"}]}]}];</script>
+
+<script>
+/* ==== 数据注入占位 ==== */
+/* ================================================================
+ * 工程材料A · 刷题台 核心逻辑
+ * ================================================================ */
+const $ = id => document.getElementById(id);
+const qMap = {};          // id -> {q, chapter}
+BANK.chapters.forEach(ch => ch.questions.forEach(q => qMap[q.id] = {q, ch}));
+
+/* ---- 本地存储 ---- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem('meca_' + k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('meca_' + k, JSON.stringify(v)); }catch(e){} }
+};
+let wrongSet = new Set(store.get('wrong', []));
+let favSet   = new Set(store.get('fav', []));
+let stats    = store.get('stats', {});   // {qid: 1|0}  1=对 0=错
+
+function saveWrong(){ store.set('wrong', [...wrongSet]); }
+function saveFav(){ store.set('fav', [...favSet]); }
+function saveStats(){ store.set('stats', stats); }
+
+/* ---- 统计辅助 ---- */
+function chStat(ch){
+  let done = 0, correct = 0;
+  ch.questions.forEach(q => {
+    if (stats[q.id] !== undefined){ done++; if (stats[q.id] === 1) correct++; }
+  });
+  return { done, correct, total: ch.questions.length, acc: done ? Math.round(correct/done*100) : 0 };
+}
+function totalStat(){
+  let done = 0, correct = 0, total = 0;
+  BANK.chapters.forEach(ch => {
+    total += ch.questions.length;
+    ch.questions.forEach(q => {
+      if (stats[q.id] !== undefined){ done++; if (stats[q.id] === 1) correct++; }
+    });
+  });
+  return { done, correct, total, acc: done ? Math.round(correct/done*100) : 0 };
+}
+function refreshBadges(){
+  const t = totalStat();
+  $('tpTotal').textContent = t.total;
+  $('tpDone').textContent = t.done;
+  $('tpAcc').textContent = t.acc + '%';
+  $('hpTotal').textContent = t.total;
+  $('hpDone').textContent = t.done;
+  $('hpAcc').textContent = t.acc + '%';
+  $('hpCards').textContent = OUTLINE.reduce((n,x)=>n+x.items.length,0);
+  const c12 = BANK.chapters.find(c=>c.id==='c12');
+  const c12s = chStat(c12);
+  $('hpZhen').textContent = c12.questions.length;
+  $('hpZhenBar').style.width = c12s.done ? Math.round(c12s.done/c12.questions.length*100)+'%' : '0%';
+  $('navWrong').textContent = wrongSet.size;
+  $('navFav').textContent = favSet.size;
+  if ($('stTotal')){ $('stTotal').textContent = t.total; $('stDone').textContent = t.done; $('stAcc').textContent = t.acc+'%'; $('stWrong').textContent = wrongSet.size; }
+}
+
+/* ---- Toast ---- */
+let toastTimer;
+function toast(msg){
+  const el = $('toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove('show'), 1800);
+}
+
+/* ---- 题型标签 ---- */
+function typeTag(t){
+  if (t === 'single') return '<span class="qtype qt-single">单选题</span>';
+  if (t === 'multi')  return '<span class="qtype qt-multi">多选题</span>';
+  return '<span class="qtype qt-fill">填空题</span>';
+}
+
+/* ---- 路由 ---- */
+const views = ['home','chapters','chapter','quiz','cards','mind','outline','wrong','fav','stats'];
+function parseHash(){
+  const h = location.hash || '#/home';
+  const parts = h.replace(/^#\//,'').split('/');
+  return { view: parts[0] || 'home', arg: parts[1] || '' };
+}
+let quizState = null;
+
+function go(hash){ location.hash = hash; }
+
+window.addEventListener('hashchange', route);
+function route(){
+  const { view, arg } = parseHash();
+  views.forEach(v => $('view-' + v).classList.remove('show'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.nav === '#/' + view));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === '#/' + view));
+  if (view === 'home') renderHome();
+  else if (view === 'chapters') renderChapters();
+  else if (view === 'chapter') renderChapter(arg);
+  else if (view === 'random'){
+    if (!quizState || quizState.mode !== 'random'){ quizState = { mode:'random', list:[], idx:0 }; }
+    renderQuiz();
+  }
+  else if (view === 'quiz') renderQuiz();
+  else if (view === 'cards') renderCards();
+  else if (view === 'mind') renderMind();
+  else if (view === 'outline') renderOutline();
+  else if (view === 'wrong') renderWrong();
+  else if (view === 'fav') renderFav();
+  else if (view === 'stats') renderStats();
+  else { location.hash = '#/home'; return; }
+  const targetView = view === 'random' ? 'quiz' : view;
+  const v = $('view-' + targetView);
+  if (v) v.classList.add('show');
+  window.scrollTo({top:0});
+  refreshBadges();
+}
+
+/* ===== 首页 ===== */
+function renderHome(){
+  const grid = $('homeChGrid'); grid.innerHTML = '';
+  BANK.chapters.forEach((ch, i) => {
+    const st = chStat(ch);
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="ch-card${ch.id==='c12'?' feat':''}" onclick="go('#/chapter/${ch.id}')">
+        <div class="ch-num">${ch.id==='c12'?'真':String(i+1).padStart(2,'0')}</div>
+        <div class="ch-title">${ch.title}</div>
+        <div class="ch-note">${ch.note}</div>
+        <div class="ch-meta"><span>${ch.questions.length} 题</span><span>${st.done}/${ch.questions.length} 已刷</span><span style="color:${st.acc>=80?'var(--ok)':st.acc>=50?'var(--gold)':'var(--err)'}">${st.acc}%</span></div>
+        <div class="ch-bar"><i style="width:${st.done?Math.round(st.done/ch.questions.length*100):0}%"></i></div>
+      </div>`);
+  });
+}
+
+/* ===== 章节列表 ===== */
+function renderChapters(){
+  const grid = $('chGrid'); grid.innerHTML = '';
+  BANK.chapters.forEach((ch, i) => {
+    const st = chStat(ch);
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="ch-card" onclick="go('#/chapter/${ch.id}')">
+        <div class="ch-num">${ch.id==='c12'?'真':String(i+1).padStart(2,'0')}</div>
+        <div class="ch-title">${ch.title}</div>
+        <div class="ch-note">${ch.note}</div>
+        <div class="ch-meta"><span>${ch.questions.length} 题</span><span>${st.done}/${ch.questions.length}</span></div>
+        <div class="ch-bar"><i style="width:${st.done?Math.round(st.done/ch.questions.length*100):0}%"></i></div>
+      </div>`);
+  });
+}
+
+/* ===== 章节题目列表 ===== */
+function renderChapter(id){
+  const ch = BANK.chapters.find(c => c.id === id);
+  if (!ch){ go('#/chapters'); return; }
+  const st = chStat(ch);
+  $('chHead').innerHTML = `
+    <button class="back" onclick="go('#/chapters')">← 章节</button>
+    <h2>${ch.title}</h2>
+    <span style="color:var(--muted);font-size:13px;margin-left:auto">${ch.questions.length} 题 · ${st.done} 已刷 · 正确率 ${st.acc}%</span>
+    <button class="btn btn-primary" style="padding:10px 18px;font-size:13.5px" onclick="startChapter('${id}')">开始练习</button>`;
+  $('qList').innerHTML = '';
+  ch.questions.forEach((q, i) => {
+    let state = 'none', mark = '';
+    if (stats[q.id] === 1){ state = 'done'; mark = '✓'; }
+    else if (stats[q.id] === 0){ state = 'wrong'; mark = '✕'; }
+    $('qList').insertAdjacentHTML('beforeend', `
+      <div class="q-row" onclick="jumpQuiz('${id}',${i})">
+        <div class="qid">${i+1}</div>
+        <div class="qpre">${q.q.slice(0,80)}${q.q.length>80?'…':''}</div>
+        ${typeTag(q.type)}
+        <div class="qstate ${state}">${mark}</div>
+      </div>`);
+  });
+}
+function jumpQuiz(chId, idx){
+  quizState = { mode:'chapter', chapterId: chId, list: BANK.chapters.find(c=>c.id===chId).questions.map(q=>q.id), idx };
+  go('#/quiz');
+}
+function startChapter(chId){
+  jumpQuiz(chId, 0);
+}
+
+/* ===== 刷题逻辑 ===== */
+let curAnswered = false, curPicked = [], curFillVal = '';
+function currentQ(){
+  const qid = quizState.list[quizState.idx];
+  return { q: qMap[qid].q, ch: qMap[qid].ch, id: qid };
+}
+function enterQuiz(){
+  curAnswered = false; curPicked = []; curFillVal = '';
+  const { q, ch } = currentQ();
+  $('quizModeTag').textContent = quizState.mode==='random' ? '随机刷题' : quizState.mode==='wrong' ? '错题重刷' : quizState.mode==='fav' ? '收藏练习' : ch.title;
+  $('quizBack').onclick = () => go(quizState.mode==='random' ? '#/random' : quizState.mode==='wrong' ? '#/wrong' : quizState.mode==='fav' ? '#/fav' : '#/chapter/' + quizState.chapterId);
+  $('quizType').textContent = q.type==='single'?'单选题':q.type==='multi'?'多选题':'填空题';
+  $('quizType').className = 'qtype ' + (q.type==='single'?'qt-single':q.type==='multi'?'qt-multi':'qt-fill');
+  $('quizProg').innerHTML = `<div class="bar"><i style="width:${(quizState.idx+1)/quizState.list.length*100}%"></i></div><span>${quizState.idx+1} / ${quizState.list.length}</span>`;
+  $('quizQ').innerHTML = q.q;
+  $('quizVerdict').className = 'verdict'; $('quizVerdict').innerHTML = '';
+  $('quizExplain').classList.remove('show');
+  $('quizFav').classList.toggle('on', favSet.has(q.id));
+  $('quizWrong').classList.toggle('on', wrongSet.has(q.id));
+  $('quizSubmit').disabled = false; $('quizSubmit').textContent = '提交答案';
+  const opts = $('quizOpts'), fill = $('quizFill');
+  if (q.type === 'fill'){
+    opts.style.display = 'none'; fill.style.display = 'flex';
+    $('fillInput').value = '';
+  } else {
+    opts.style.display = 'flex'; fill.style.display = 'none';
+    opts.innerHTML = '';
+    ['A','B','C','D'].forEach((k, i) => {
+      opts.insertAdjacentHTML('beforeend', `<div class="opt" onclick="pickOpt(${i})"><div class="k">${k}</div><div>${q.options[i]}</div></div>`);
+    });
+  }
+}
+function pickOpt(i){
+  const q = currentQ().q;
+  const els = document.querySelectorAll('#quizOpts .opt');
+  if (q.type === 'single'){ curPicked = [i]; els.forEach((el,j)=>el.classList.toggle('sel', j===i)); }
+  else {
+    const pos = curPicked.indexOf(i);
+    if (pos >= 0) curPicked.splice(pos, 1); else curPicked.push(i);
+    els[i].classList.toggle('sel');
+  }
+}
+function submitFill(){
+  const val = $('fillInput').value.trim();
+  if (!val){ toast('请先输入答案'); return; }
+  curFillVal = val; submitQuiz();
+}
+function checkAnswer(q){
+  if (q.type === 'fill'){
+    const norm = s => s.replace(/[（(]\s*[）)]/g,'').replace(/[；;、\/]/g,' ').replace(/\s+/g,' ').toLowerCase();
+    const ansParts = norm(q.answer).split(' ').filter(Boolean);
+    return ansParts.every(part => norm(curFillVal).includes(part));
+  }
+  const ansArr = q.answer.split('');
+  const pickArr = curPicked.map(i => 'ABCD'[i]);
+  if (pickArr.length !== ansArr.length) return false;
+  return ansArr.every(a => pickArr.includes(a)) && pickArr.every(p => ansArr.includes(p));
+}
+function submitQuiz(){
+  if (curAnswered) return;
+  const { q, id } = currentQ();
+  if (q.type !== 'fill' && curPicked.length === 0){ toast('请先选择答案'); return; }
+  curAnswered = true;
+  const right = checkAnswer(q);
+  stats[id] = right ? 1 : 0; saveStats();
+  if (!right) wrongSet.add(id); else wrongSet.delete(id);
+  saveWrong();
+  const vd = $('quizVerdict');
+  vd.className = 'verdict show ' + (right ? 'right' : 'wrong');
+  vd.innerHTML = (right ? '✓ 回答正确' : '✕ 回答错误') + (right ? '' : ' · 已加入错题本');
+  $('quizExplain').classList.add('show');
+  $('quizExplainText').textContent = (q.explain || '') + (q.type==='fill' ? '\n参考答案：' + q.answer : '');
+  if (q.type !== 'fill'){
+    const els = document.querySelectorAll('#quizOpts .opt');
+    const ansArr = q.answer.split('');
+    ansArr.forEach(a => els['ABCD'.indexOf(a)].classList.add('correct'));
+    curPicked.forEach(i => { if (!ansArr.includes('ABCD'[i])) els[i].classList.add('wrong'); });
+  }
+  $('quizSubmit').disabled = true; $('quizSubmit').textContent = '已作答';
+  refreshBadges();
+}
+function navQuiz(d){
+  if (!quizState) return;
+  const n = quizState.idx + d;
+  if (n < 0){ toast('已是第一题'); return; }
+  if (n >= quizState.list.length){ toast('本组已完成'); return; }
+  quizState.idx = n; enterQuiz();
+}
+function toggleFav(){
+  const { id } = currentQ();
+  if (favSet.has(id)) favSet.delete(id); else favSet.add(id);
+  saveFav(); $('quizFav').classList.toggle('on', favSet.has(id));
+  refreshBadges(); toast(favSet.has(id) ? '已收藏' : '已取消收藏');
+}
+function toggleWrong(){
+  const { id } = currentQ();
+  if (wrongSet.has(id)) wrongSet.delete(id); else wrongSet.add(id);
+  saveWrong(); $('quizWrong').classList.toggle('on', wrongSet.has(id));
+  refreshBadges(); toast(wrongSet.has(id) ? '已标记错题' : '已移出错题本');
+}
+function renderQuiz(){
+  if (!quizState){ go('#/home'); return; }
+  if (quizState.mode === 'random' && !quizState._ready){
+    quizState._ready = true;
+    const all = [];
+    BANK.chapters.forEach(ch => ch.questions.forEach(q => { if (stats[q.id] !== 1) all.push(q.id); }));
+    if (all.length === 0) all.push(...BANK.chapters.flatMap(ch=>ch.questions.map(q=>q.id)));
+    quizState.list = shuffle(all).slice(0, 20);
+    quizState.idx = 0;
+  }
+  if (quizState.mode === 'wrong' && !quizState._ready){
+    quizState._ready = true;
+    quizState.list = [...wrongSet];
+    quizState.idx = 0;
+    if (quizState.list.length === 0){ toast('错题本为空'); go('#/wrong'); return; }
+  }
+  if (quizState.mode === 'fav' && !quizState._ready){
+    quizState._ready = true;
+    quizState.list = [...favSet];
+    quizState.idx = 0;
+    if (quizState.list.length === 0){ toast('暂无收藏'); go('#/fav'); return; }
+  }
+  if (quizState.idx >= quizState.list.length) quizState.idx = quizState.list.length - 1;
+  if (quizState.idx < 0){ toast('暂无题目'); go('#/home'); return; }
+  enterQuiz();
+}
+function shuffle(a){
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function startRandom(){
+  quizState = { mode:'random', list: [], idx: 0 };
+  go('#/quiz');
+}
+function wrongReplay(){
+  if (wrongSet.size === 0){ toast('错题本为空'); return; }
+  quizState = { mode:'wrong', list:[], idx: 0 };
+  go('#/quiz');
+}
+/* ===== 速记卡 ===== */
+function renderCards(){
+  const grid = $('cardGrid'); grid.innerHTML = '';
+  OUTLINE.forEach(ch => {
+    ch.items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'flip';
+      div.innerHTML = `
+        <div class="flip-in">
+          <div class="flip-face flip-front"><div>${ch.title}</div><div style="font-size:13px;color:var(--muted);font-weight:500;margin-top:6px">${item.t}</div></div>
+          <div class="flip-face flip-back">${item.c}</div>
+        </div>`;
+      div.onclick = () => div.classList.toggle('flipped');
+      grid.appendChild(div);
+    });
+  });
+}
+
+/* ===== 思维导图（CSS树，自包含离线可用） ===== */
+function renderMind(){
+  const tabs = $('mindTabs');
+  tabs.innerHTML = '';
+  MIND.forEach((m, i) => {
+    const b = document.createElement('button');
+    b.className = 'mind-tab' + (i === 0 ? ' active' : '');
+    b.textContent = m.name;
+    b.onclick = () => { document.querySelectorAll('.mind-tab').forEach(t=>t.classList.remove('active')); b.classList.add('active'); drawMind(i); };
+    tabs.appendChild(b);
+  });
+  drawMind(0);
+}
+function drawMind(idx){
+  const el = $('mindChart');
+  if (!el) return;
+  const root = MIND[idx];
+  const hasChild = n => n.children && n.children.length > 0;
+  function nodeHtml(node, depth){
+    let html = `<div class="mnode d${Math.min(depth,4)}">`;
+    html += `<div class="dot"></div>`;
+    if (hasChild(node)){
+      html += `<span class="toggle" data-toggle="1" onclick="mtoggle(this)">−</span>`;
+    }
+    html += `<div class="label">${node.name}</div></div>`;
+    if (hasChild(node)){
+      html += `<div class="mchildren">`;
+      node.children.forEach(c => { html += nodeHtml(c, depth + 1); });
+      html += `</div>`;
+    }
+    return html;
+  }
+  el.innerHTML = `<div class="mtree">${nodeHtml(root, 0)}</div>`;
+}
+function mtoggle(el){
+  const box = el.closest('.mnode').nextElementSibling;
+  if (box && box.classList.contains('mchildren')){
+    const collapsed = box.classList.toggle('collapsed');
+    el.textContent = collapsed ? '+' : '−';
+  }
+}
+
+/* ===== 知识提纲 ===== */
+function renderOutline(){
+  const body = $('outlineBody'); body.innerHTML = '';
+  OUTLINE.forEach(ch => {
+    let html = `<div class="outline-ch"><h3><span class="n">${ch.title}</span></h3><div class="outline-items">`;
+    ch.items.forEach(item => {
+      html += `<div class="outline-item"><div class="t">${item.t}</div><div class="c">${item.c}</div></div>`;
+    });
+    html += '</div></div>';
+    body.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+/* ===== 错题本 ===== */
+function renderWrong(){
+  const list = $('wrongList'); list.innerHTML = '';
+  const ids = [...wrongSet];
+  if (ids.length === 0){
+    list.innerHTML = '<div class="empty"><div class="big">✓</div><p>错题本是空的，继续保持！</p></div>';
+    return;
+  }
+  ids.forEach(id => {
+    const { q } = qMap[id];
+    const ch = qMap[id].ch;
+    list.insertAdjacentHTML('beforeend', `
+      <div class="q-row" onclick="wrongQuizById('${id}')">
+        <div class="qid">✕</div>
+        <div class="qpre">${q.q.slice(0,80)}${q.q.length>80?'…':''}</div>
+        <span style="font-size:11px;color:var(--muted);flex:none">${ch.title}</span>
+        ${typeTag(q.type)}
+      </div>`);
+  });
+}
+function wrongQuizById(id){
+  quizState = { mode:'single', list:[id], idx:0, _single:true };
+  go('#/quiz');
+}
+function wrongReplayAll(){
+  if (wrongSet.size === 0){ toast('错题本为空'); return; }
+  quizState = { mode:'wrong', list:[], idx:0 };
+  go('#/quiz');
+}
+
+/* ===== 收藏 ===== */
+function renderFav(){
+  const list = $('favList'); list.innerHTML = '';
+  const ids = [...favSet];
+  if (ids.length === 0){
+    list.innerHTML = '<div class="empty"><div class="big">☆</div><p>还没有收藏题目</p></div>';
+    return;
+  }
+  ids.forEach(id => {
+    const { q } = qMap[id];
+    const ch = qMap[id].ch;
+    list.insertAdjacentHTML('beforeend', `
+      <div class="q-row" onclick="wrongQuizById('${id}')">
+        <div class="qid">☆</div>
+        <div class="qpre">${q.q.slice(0,80)}${q.q.length>80?'…':''}</div>
+        <span style="font-size:11px;color:var(--muted);flex:none">${ch.title}</span>
+        ${typeTag(q.type)}
+      </div>`);
+  });
+}
+
+/* ===== 统计 ===== */
+function renderStats(){
+  const grid = $('statGrid'); grid.innerHTML = '';
+  BANK.chapters.forEach(ch => {
+    const st = chStat(ch);
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="stat-card">
+        <h4><span>${ch.title}</span><span class="pct">${st.done?st.acc+'%':'—'}</span></h4>
+        <div class="bar"><i style="width:${st.done?st.acc:0}%"></i></div>
+        <p style="font-size:12px;color:var(--muted);margin-top:9px">已刷 ${st.done}/${st.total} 题 · 答对 ${st.correct}</p>
+      </div>`);
+  });
+}
+
+/* ===== 初始化 ===== */
+function init(){
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.addEventListener('click', e => { e.preventDefault(); go(n.dataset.nav); });
+  });
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => go(t.dataset.tab));
+  });
+  // 移动端打开即进入随机刷题（无 hash 时直接初始化随机模式，确保首次即刷题）
+  if (!location.hash){
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 900;
+    if (isMobile){
+      quizState = { mode:'random', list:[], idx:0 };
+      history.replaceState(null, '', '#/random');
+    } else {
+      history.replaceState(null, '', '#/home');
+    }
+  }
+  route();
+}
+init();
+</script>
+</body>
+</html>
