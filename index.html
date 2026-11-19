@@ -1990,7 +1990,10 @@ async function epRemote(item, ans){
     let score = points.reduce((s, p) => s + (p.status === 'full' ? per : p.status === 'partial' ? per / 2 : 0), 0);
     const deduction = Math.max(0, Math.min(full * 0.3, Number(parsed.deduction) || 0));
     score = Math.max(0, Math.min(full, Math.round((score - deduction) * 2) / 2));
-    const comment = String(parsed.comment || '').slice(0, 160) || '已按采分点完成评分。';
+    let comment = String(parsed.comment || '').slice(0, 160) || '已按采分点完成评分。';
+    if (score === full && points.every(p => p.status === 'full') && /补充|缺少|不足|未说明|还需要/.test(comment)) {
+      comment = '要点完整，关键概念和对比关系都答到了。';
+    }
     return { score, points, comment, source: 'AI 评分', deduction, fallback: false };
   } finally {
     clearTimeout(timer);
