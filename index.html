@@ -393,6 +393,103 @@ input{font-family:inherit}
 /* ===== 打字机/高亮 ===== */
 kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-radius:6px;font-size:12.5px;font-family:inherit}
 .mode-tag{font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.14);color:var(--gold);font-weight:700;letter-spacing:1px}
+
+/* ===== 简答默写 · AI 踩分（深色材料主题） ===== */
+.ep-page{display:flex;flex-direction:column;gap:14px}
+.ep-hero{position:relative;overflow:hidden;border-radius:22px;padding:22px 20px;color:var(--text);background:linear-gradient(135deg,rgba(249,115,22,.18),rgba(21,35,56,.96) 46%,#0f1c2e);border:1px solid rgba(249,115,22,.24);box-shadow:0 18px 40px rgba(0,0,0,.32)}
+.ep-hero::before{content:"";position:absolute;right:-60px;top:-80px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(251,146,60,.28),transparent 66%)}
+.ep-hero::after{content:"";position:absolute;left:-70px;bottom:-110px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.18),transparent 68%)}
+.ep-kicker{position:relative;z-index:1;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.ep-hero h2{position:relative;z-index:1;margin:8px 0 6px;font-size:24px;line-height:1.35;letter-spacing:-.02em;color:#fff}
+.ep-hero p{position:relative;z-index:1;margin:0;font-size:13.5px;line-height:1.7;color:var(--muted);max-width:700px}
+.ep-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px}
+@media(min-width:720px){.ep-stats{grid-template-columns:repeat(4,1fr)}}
+.ep-stat{background:rgba(10,18,32,.58);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:9px 11px}
+.ep-stat b{display:block;font-size:20px;line-height:1.2;color:var(--accent2)}
+.ep-stat span{font-size:11px;color:var(--muted)}
+.ep-panel{background:linear-gradient(180deg,var(--card),#101a2b);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.ep-chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.ep-chips::-webkit-scrollbar{display:none}
+.ep-chip{flex:0 0 auto;min-height:44px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:#0f1b2d;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.ep-chip em{font-style:normal;color:var(--muted);font-weight:500;margin-left:4px}
+.ep-chip.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a1220;border-color:transparent;box-shadow:0 6px 16px rgba(249,115,22,.22)}
+.ep-chip.on em{color:rgba(10,18,32,.65)}
+.ep-toolrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.ep-toggle{min-height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:#0f1b2d;color:var(--muted);font-size:12.5px;font-weight:600;cursor:pointer}
+.ep-toggle.on{border-color:rgba(249,115,22,.4);background:rgba(249,115,22,.1);color:var(--accent2)}
+.ep-muted{font-size:12px;color:var(--muted);margin-left:auto}
+.ep-card{border:1px solid var(--line);border-radius:16px;background:rgba(10,18,32,.5);padding:16px}
+.ep-cardhead{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.ep-badge{font-size:11.5px;line-height:1;padding:7px 9px;border-radius:999px;background:rgba(249,115,22,.12);color:var(--accent2);font-weight:700}
+.ep-badge.soft{background:rgba(148,163,184,.1);color:var(--muted);font-weight:600}
+.ep-badge.last{background:rgba(251,191,36,.12);color:var(--gold)}
+.ep-q{font-size:18px;line-height:1.7;font-weight:700;color:var(--text);margin:2px 0 8px}
+.ep-hint{font-size:12.5px;line-height:1.65;color:var(--muted);margin-bottom:10px}
+.ep-textarea{width:100%;min-height:190px;resize:vertical;border:1px solid var(--line);border-radius:12px;padding:12px 13px;font-size:16px;line-height:1.75;color:var(--text);background:#0b1626;outline:none;transition:border-color .15s,box-shadow .15s}
+.ep-textarea:focus{border-color:rgba(249,115,22,.5);box-shadow:0 0 0 3px rgba(249,115,22,.12)}
+.ep-textarea::placeholder{color:#607792}
+.ep-countrow{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:7px 2px 12px}
+.ep-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:680px){.ep-actions{grid-template-columns:2fr 1fr 1fr 1fr}}
+.ep-btn{min-height:46px;border-radius:12px;border:1px solid var(--line);font-size:14px;font-weight:700;cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}
+.ep-btn.primary{border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a1220;box-shadow:0 8px 18px rgba(249,115,22,.22)}
+.ep-btn.primary:active{transform:translateY(1px)}
+.ep-btn.ghost{background:#0f1b2d;color:var(--text)}
+.ep-btn:disabled{opacity:.6;cursor:wait}
+.ep-link{border:0;background:none;color:var(--accent2);font-size:12.5px;font-weight:600;min-height:44px;padding:0 4px;cursor:pointer}
+.ep-result{margin-top:12px}
+.ep-score{display:grid;grid-template-columns:1fr;gap:10px;padding:14px;border-radius:14px;border:1px solid rgba(249,115,22,.2);background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(21,35,56,.72))}
+@media(min-width:600px){.ep-score{grid-template-columns:auto 1fr auto;align-items:center}}
+.ep-score b{font-size:26px;color:var(--accent2);line-height:1}
+.ep-score b small{font-size:12px;color:var(--muted);font-weight:600}
+.ep-score span{font-size:12px;color:var(--muted)}
+.ep-bar{height:7px;border-radius:99px;background:rgba(148,163,184,.16);overflow:hidden}
+.ep-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.ep-source{display:inline-block;margin-top:5px;padding:3px 7px;border-radius:6px;background:rgba(249,115,22,.12);color:var(--accent2);font-size:10.5px;font-weight:700}
+.ep-comment{margin-top:10px;font-size:13px;line-height:1.7;color:#c3d0e2;background:rgba(148,163,184,.07);border-left:3px solid var(--accent);border-radius:8px;padding:10px 12px}
+.ep-points{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ep-point{border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:rgba(21,35,56,.62)}
+.ep-point.full{border-color:rgba(52,211,153,.28);background:rgba(52,211,153,.06)}
+.ep-point.partial{border-color:rgba(251,191,36,.28);background:rgba(251,191,36,.06)}
+.ep-point.none{border-color:rgba(248,113,113,.26);background:rgba(248,113,113,.05)}
+.ep-point-head{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--muted)}
+.ep-picon{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:rgba(148,163,184,.14);color:var(--muted)}
+.ep-point.full .ep-picon{background:rgba(52,211,153,.16);color:var(--ok)}
+.ep-point.partial .ep-picon{background:rgba(251,191,36,.16);color:var(--gold)}
+.ep-point.none .ep-picon{background:rgba(248,113,113,.16);color:var(--err)}
+.ep-pt{margin-left:auto;color:var(--text)}
+.ep-ptext{font-size:13px;line-height:1.65;color:var(--text);margin-top:5px}
+.ep-pnote{font-size:12px;line-height:1.55;color:var(--muted);margin-top:4px}
+.ep-refcard{border:1px solid var(--line);border-radius:14px;background:rgba(10,18,32,.5);padding:14px}
+.ep-refcard h4{font-size:13px;margin:0 0 8px;color:var(--accent2)}
+.ep-refcard ol{margin:0;padding-left:20px;font-size:13px;line-height:1.7;color:#c3d0e2}
+.ep-cfg{border:1px dashed var(--line);border-radius:12px;padding:12px;margin-top:12px;background:rgba(10,18,32,.4)}
+.ep-cfg label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin:8px 0 4px}
+.ep-cfg input{width:100%;min-height:40px;border:1px solid var(--line);border-radius:9px;padding:0 10px;font-size:14px;background:#0b1626;color:var(--text)}
+.ep-cfg-note{font-size:11.5px;line-height:1.6;color:var(--muted);margin-top:8px}
+.ep-toast{position:fixed;left:50%;bottom:86px;transform:translate(-50%,12px);background:#1a2b45;color:var(--text);font-size:13px;padding:9px 14px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:1000;max-width:80vw;text-align:center;border:1px solid var(--line)}
+.ep-toast.show{opacity:1;transform:translate(-50%,0)}
+.ep-loading{font-size:13px;color:var(--muted);padding:10px 0}
+.ep-empty{font-size:13px;line-height:1.8;color:var(--muted);text-align:center;padding:18px 8px}
+.ep-home-cta{display:flex;align-items:center;gap:14px;margin:14px 0 4px;padding:16px 18px;border-radius:16px;border:1px solid rgba(249,115,22,.24);background:linear-gradient(120deg,rgba(249,115,22,.12),rgba(21,35,56,.7));cursor:pointer}
+.ep-home-cta .ec-ic{width:44px;height:44px;flex:0 0 44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a1220;font-size:18px;font-weight:800}
+.ep-home-cta b{display:block;font-size:15px;color:var(--text)}
+.ep-home-cta span{display:block;font-size:12.5px;line-height:1.6;color:var(--muted);margin-top:2px}
+.ep-home-cta .ec-arrow{margin-left:auto;color:var(--accent2);font-size:18px;font-weight:700}
+@media(max-width:520px){
+  .ep-hero{padding:18px 16px;border-radius:18px}
+  .ep-hero h2{font-size:20px}
+  .ep-hero p{font-size:13px}
+  .ep-panel{padding:13px;border-radius:16px}
+  .ep-card{padding:13px}
+  .ep-q{font-size:16px}
+  .ep-textarea{min-height:170px}
+  .ep-actions{grid-template-columns:1fr 1fr}
+  .ep-btn.primary{grid-column:1/-1}
+  .ep-muted{display:none}
+  .ep-home-cta{padding:14px}
+}
+
 </style>
 </head>
 <body>
@@ -418,6 +515,7 @@ kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-
   <a class="nav-item" data-nav="#/recite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/><path d="M9 8h7M9 12h5"/></svg>背诵押题</a>
   <a class="nav-item" data-nav="#/terms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8.5 10.5 12 7l3.5 3.5"/></svg>名词解释</a>
   <a class="nav-item" data-nav="#/essays"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>简答背诵</a>
+  <a class="nav-item" data-nav="#/essay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/><path d="m14 3 6 6"/></svg>简答默写</a>
   <div class="nav-sec">资料</div>
   <a class="nav-item" data-nav="#/mind"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l3 9M16 7l-3 9M8.5 6H15.5"/></svg>思维导图</a>
   <a class="nav-item" data-nav="#/outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16M4 9h16M4 14h16M4 19h10"/><circle cx="8" cy="14" r="1.5" fill="currentColor" stroke="none"/></svg>知识提纲</a>
@@ -565,6 +663,11 @@ kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-
         <div class="rc-meta"><span id="rcEssayN">0</span><span>道高频简答</span><span style="color:var(--gold)" id="rcEssay3">0</span><span>道必背</span></div>
       </div>
     </div>
+    <div class="ep-home-cta" onclick="go('#/essay')">
+      <div class="ec-ic">写</div>
+      <div><b>简答默写 · AI 按踩分点打分</b><span>闭卷键盘默写，提交后逐点对照；答对一半也能拿部分分</span></div>
+      <div class="ec-arrow">→</div>
+    </div>
     <div class="sec-title"><h2>押题速览</h2><span>按章节查看押题密度</span></div>
     <div class="recite-ch" id="reciteCh"></div>
   </section>
@@ -595,6 +698,11 @@ kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-
     </div>
     <p style="color:var(--muted);font-size:13px;margin:14px 0 18px">先尝试口述答案，再点击“查看答案要点”逐条核对</p>
     <div class="essay-list" id="essayList"></div>
+  </section>
+
+  <!-- ===== 视图：简答默写 ===== -->
+  <section class="view" id="view-essay">
+    <div id="epRoot"></div>
   </section>
 
   <!-- ===== 视图：思维导图 ===== -->
@@ -725,6 +833,935 @@ const ESAYS = [
 {ch:"c3",q:"什么是二次硬化？其机理是什么？",ans:["定义：含Ti、V、Nb、Mo、W较高含量的合金钢淬火后在500～600℃回火，硬度反而升高的现象","机理：回火时从马氏体中弥散析出VC、W2C、Mo2C等特殊碳化物，产生沉淀强化","同时部分残余奥氏体在回火冷却时转变为马氏体（二次淬火），也有助于硬度提高","典型应用：高速钢、高合金模具钢依靠二次硬化获得红硬性和高硬度"],stars:3,tag:"高频"},
 {ch:"c10",q:"感应加热表面淬火按频率分哪几种？淬硬层深度如何？",ans:["高频（250～300kHz）：集肤效应强，淬硬层浅，约0.5～2mm，用于中小型零件","中频（2500～8000Hz）：淬硬层约2～10mm，用于较大零件","工频（50Hz）：淬硬层10～15mm，用于大型零件","电流频率越高，集肤效应越强，淬硬层越浅"],stars:2,tag:"重点"}
 ];
+const ESSAY_AI = [
+ {
+  "id": "m1",
+  "ch": "c12",
+  "chname": "期中真题专练",
+  "q": "简述淬透性与淬硬性的区别。",
+  "full": 6,
+  "pts": [
+   {
+    "t": "淬透性：钢在淬火时获得淬硬层深度（表面至半马氏体区）的能力，取决于奥氏体化学成分与晶粒度，即C曲线的位置（合金元素影响）",
+    "k": [
+     "淬透性",
+     "表面至半马氏体区",
+     "C曲线的位置",
+     "合金元素影响"
+    ]
+   },
+   {
+    "t": "淬硬性：钢在正常淬火条件下马氏体能达到的最高硬度，主要取决于马氏体的含碳量",
+    "k": [
+     "淬硬性",
+     "主要取决于马氏体的含碳量"
+    ]
+   },
+   {
+    "t": "淬透性决定淬硬层深度，淬硬性决定表面能达到的最高硬度，二者含义完全不同",
+    "k": [
+     "淬透性决定淬硬层深度",
+     "二者含义完全不同"
+    ]
+   }
+  ],
+  "tag": "真题",
+  "stars": 3
+ },
+ {
+  "id": "m2",
+  "ch": "c12",
+  "chname": "期中真题专练",
+  "q": "影响钢的淬透性、淬硬性及淬透层深度的因素有哪些？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "淬透性：奥氏体化学成分（除Co外合金元素溶入A使C曲线右移、Vk降低→淬透性提高）和晶粒度（晶粒粗大淬透性高）",
+    "k": [
+     "淬透性",
+     "淬透性：奥氏体化学成分",
+     "Vk降低→淬透性提高",
+     "和晶粒度",
+     "晶粒粗大淬透性高"
+    ]
+   },
+   {
+    "t": "淬硬性：主要取决于马氏体的含碳量，含碳量越高硬度越高",
+    "k": [
+     "淬硬性",
+     "含碳量越高硬度越高"
+    ]
+   },
+   {
+    "t": "淬透层深度：钢的淬透性（内在因素）＋冷却介质冷却能力＋零件尺寸（外在因素）共同决定",
+    "k": [
+     "淬透层深度",
+     "淬透层深度：钢的淬透性",
+     "内在因素",
+     "外在因素",
+     "共同决定"
+    ]
+   }
+  ],
+  "tag": "真题",
+  "stars": 3
+ },
+ {
+  "id": "m3",
+  "ch": "c3",
+  "chname": "钢的合金化基础",
+  "q": "简述钢的四种基本强化机制。",
+  "full": 8,
+  "pts": [
+   {
+    "t": "固溶强化：溶质原子造成晶格畸变，增大位错运动阻力，使强度硬度提高、塑韧性下降",
+    "k": [
+     "固溶强化",
+     "位错运动阻力",
+     "强度硬度提高",
+     "塑韧性下降"
+    ]
+   },
+   {
+    "t": "晶界（细晶）强化：细化晶粒增加晶界，阻碍位错运动，同时改善塑性和韧性",
+    "k": [
+     "晶界（细晶）强化",
+     "晶界",
+     "细晶",
+     "强化：细化晶粒增加晶界",
+     "阻碍位错运动"
+    ]
+   },
+   {
+    "t": "第二相强化：沉淀强化＋弥散强化，第二相粒子阻碍位错运动",
+    "k": [
+     "第二相强化",
+     "第二相粒子阻碍位错运动"
+    ]
+   },
+   {
+    "t": "位错强化：增加位错密度，位错交割形成割阶、缠结，阻碍进一步塑性变形",
+    "k": [
+     "位错强化",
+     "位错强化：增加位错密度",
+     "位错交割形成割阶",
+     "缠结",
+     "阻碍进一步塑性变形"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 3
+ },
+ {
+  "id": "m4",
+  "ch": "c3",
+  "chname": "钢的合金化基础",
+  "q": "合金元素溶入奥氏体后对过冷奥氏体转变（C曲线）和Ms点有什么影响？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "除Co外，合金元素降低原子扩散速度、增大奥氏体稳定性，使C曲线右移、临界冷却速度Vk降低，淬透性提高",
+    "k": [
+     "除Co外",
+     "合金元素降低原子扩散速度",
+     "奥氏体稳定性",
+     "C曲线右移",
+     "临界冷却速度Vk降低"
+    ]
+   },
+   {
+    "t": "碳化物形成元素Cr、Mo、W、V使C曲线分解成两个“鼻子”（P转变与B转变分离）",
+    "k": [
+     "碳化物形成元素Cr",
+     "Mo",
+     "P转变与B转变分离"
+    ]
+   },
+   {
+    "t": "Mn、Cr、Ni、Mo、W、Si使Ms、Mf点降低，淬火后残余奥氏体增多",
+    "k": [
+     "Mn",
+     "Cr",
+     "Ni",
+     "Mo",
+     "Si使Ms"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 3
+ },
+ {
+  "id": "m5",
+  "ch": "c10",
+  "chname": "钢的热处理",
+  "q": "第一类与第二类回火脆性有何区别？如何防止？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "第一类（低温）回火脆性：250～350℃回火产生，不可逆，任何方法不能消除，只能避开该温度范围回火",
+    "k": [
+     "第一类（低温）回火脆性",
+     "第一类",
+     "低温",
+     "不可逆",
+     "任何方法不能消除"
+    ]
+   },
+   {
+    "t": "第二类（高温）回火脆性：500～650℃回火后缓冷产生，可逆",
+    "k": [
+     "第二类（高温）回火脆性",
+     "第二类",
+     "高温",
+     "可逆"
+    ]
+   },
+   {
+    "t": "防止第二类回火脆性：回火后快冷（水冷、油冷），或在钢中加入W约1%、Mo约0.5%",
+    "k": [
+     "防止第二类回火脆性",
+     "水冷",
+     "油冷",
+     "或在钢中加入W约1%",
+     "Mo约0.5%"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m6",
+  "ch": "c3",
+  "chname": "钢的合金化基础",
+  "q": "为什么合金钢的淬透性一般高于碳钢？提高淬透性的常用元素有哪些？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "合金元素（除Co外）在淬火加热时溶入奥氏体，降低原子扩散速度，使过冷奥氏体稳定性增加",
+    "k": [
+     "合金元素",
+     "除Co外",
+     "淬火加热时溶入奥氏体",
+     "原子扩散速度",
+     "过冷奥氏体稳定性增加"
+    ]
+   },
+   {
+    "t": "C曲线右移、临界冷却速度降低，故淬透性提高",
+    "k": [
+     "C曲线右移",
+     "临界冷却速度降低",
+     "故淬透性提高"
+    ]
+   },
+   {
+    "t": "提高淬透性常用五元素：Cr、Mn、Si、Ni、B，遵循“多元少量”的合金化原则",
+    "k": [
+     "提高淬透性常用五元素",
+     "淬透性常用五元素：Cr",
+     "Mn",
+     "Si",
+     "Ni"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 2
+ },
+ {
+  "id": "m7",
+  "ch": "c5",
+  "chname": "机器零件用钢",
+  "q": "说明调质钢的成分特点及各合金元素的作用。",
+  "full": 8,
+  "pts": [
+   {
+    "t": "含碳量0.3%～0.5%（中碳），保证强度与塑韧性的配合",
+    "k": [
+     "含碳量0.3%～0.5%",
+     "中碳",
+     "强度与塑韧性的配合"
+    ]
+   },
+   {
+    "t": "主加元素Mn、Si、Cr、Ni、B：提高淬透性并强化铁素体",
+    "k": [
+     "主加元素Mn",
+     "Si",
+     "Cr",
+     "Ni"
+    ]
+   },
+   {
+    "t": "辅加元素：W、Mo防止第二类回火脆性，V、Ti细化晶粒、提高回火稳定性",
+    "k": [
+     "辅加元素",
+     "辅加元素：W",
+     "Mo防止第二类回火脆性",
+     "Ti细化晶粒",
+     "回火稳定性"
+    ]
+   },
+   {
+    "t": "典型牌号：40、45、40Cr、42CrMo、35CrMo等",
+    "k": [
+     "典型牌号",
+     "典型牌号：40",
+     "45",
+     "40Cr",
+     "42CrMo"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m8",
+  "ch": "c12",
+  "chname": "期中真题专练",
+  "q": "20CrMnTi钢制造高速重载齿轮的工艺路线是什么？各工序的目的是什么？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "工艺路线：下料→锻造→正火①→切削加工→渗碳②→淬火③→低温回火④→精加工",
+    "k": [
+     "工艺路线"
+    ]
+   },
+   {
+    "t": "正火：改善锻后组织、消除内应力、调整硬度便于切削、细化晶粒",
+    "k": [
+     "正火",
+     "正火：改善锻后组织",
+     "消除内应力",
+     "调整硬度便于切削",
+     "细化晶粒"
+    ]
+   },
+   {
+    "t": "渗碳（930℃）：使表层增碳至0.8%～1.05%C，缓冷后表层为珠光体＋网状碳化物，心部为铁素体＋珠光体",
+    "k": [
+     "渗碳（930℃",
+     "渗碳",
+     "930℃",
+     "缓冷后表层",
+     "珠光体＋网状碳化物"
+    ]
+   },
+   {
+    "t": "淬火＋低温回火：表层为细针状回火高碳马氏体＋粒状碳化物＋少量残余奥氏体（58～64HRC），心部为低碳马氏体或铁素体＋屈氏体（35～45HRC），实现“外硬内韧”",
+    "k": [
+     "淬火＋低温回火",
+     "淬火＋低温回火：表层",
+     "58～64HRC",
+     "心部",
+     "35～45HRC"
+    ]
+   }
+  ],
+  "tag": "真题",
+  "stars": 3
+ },
+ {
+  "id": "m9",
+  "ch": "c12",
+  "chname": "期中真题专练",
+  "q": "用GCr15钢制造千分尺的工艺路线是什么？冷处理和时效各起什么作用？",
+  "full": 10,
+  "pts": [
+   {
+    "t": "工艺路线：锻造→球化退火①→机械加工→淬火②→冷处理（-70～-80℃）③→低温回火④→精磨→时效（110～120℃×36h）⑤→研磨→时效3h⑥",
+    "k": [
+     "工艺路线",
+     "-70～-80℃",
+     "110～120℃×36h",
+     "⑤→研磨→时效3h⑥"
+    ]
+   },
+   {
+    "t": "球化退火：降低硬度便于切削，为淬火作组织准备（得球状珠光体，790℃最宜）",
+    "k": [
+     "球化退火",
+     "为淬火作组织准备",
+     "淬火作组织准备",
+     "得球状珠光体",
+     "790℃最宜"
+    ]
+   },
+   {
+    "t": "冷处理：消除残余奥氏体，稳定组织、提高尺寸精度",
+    "k": [
+     "冷处理",
+     "冷处理：消除残余奥氏体",
+     "稳定组织",
+     "尺寸精度"
+    ]
+   },
+   {
+    "t": "低温回火：消除淬火应力、稳定组织，保持高硬度（62～66HRC）",
+    "k": [
+     "低温回火",
+     "低温回火：消除淬火应力",
+     "稳定组织",
+     "保持高硬度",
+     "62～66HRC"
+    ]
+   },
+   {
+    "t": "时效：消除磨削应力、进一步稳定组织与尺寸",
+    "k": [
+     "时效",
+     "时效：消除磨削应力",
+     "进一步稳定组织与尺寸"
+    ]
+   }
+  ],
+  "tag": "真题",
+  "stars": 3
+ },
+ {
+  "id": "m10",
+  "ch": "c6",
+  "chname": "工具钢",
+  "q": "高速钢W18Cr4V为什么要高温淬火并进行多次回火？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "高温淬火（1260～1280℃）：使大量W、Cr、V碳化物溶入奥氏体，保证淬火回火后获得高红硬性",
+    "k": [
+     "高温淬火",
+     "1260～1280℃",
+     "使大量W",
+     "Cr",
+     "V碳化物溶入奥氏体"
+    ]
+   },
+   {
+    "t": "淬火组织：马氏体60%～65%＋残余奥氏体25%～30%＋未溶碳化物约10%",
+    "k": [
+     "淬火组织"
+    ]
+   },
+   {
+    "t": "多次回火（550～570℃×2～4次）：回火时析出W2C、Mo2C、VC弥散碳化物产生二次硬化",
+    "k": [
+     "多次回火",
+     "回火时析出W2C",
+     "Mo2C"
+    ]
+   },
+   {
+    "t": "每次回火冷却时残余奥氏体发生二次淬火转变为马氏体，多次回火逐步消除残余奥氏体，稳定组织并获得最高硬度",
+    "k": [
+     "马氏体",
+     "稳定组织并获得最高硬度"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m11",
+  "ch": "c6",
+  "chname": "工具钢",
+  "q": "为什么高速钢又称“风钢”？其红硬性如何获得？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "高速钢淬透性极高，空冷即可获得马氏体组织，故又称“风钢”或“锋钢”",
+    "k": [
+     "高速钢淬透性极高",
+     "空冷即可获得马氏体组织",
+     "空冷",
+     "可获得马氏体组织",
+     "故又称“风钢”或“锋钢"
+    ]
+   },
+   {
+    "t": "红硬性来源：①大量W（M6C）和Mo的固溶强化，高温回火时析出W2C、Mo2C、VC等弥散碳化物产生二次硬化",
+    "k": [
+     "红硬性来源",
+     "红硬性来源：①大量W",
+     "M6C",
+     "和Mo的固溶强化",
+     "高温回火时析出W2C"
+    ]
+   },
+   {
+    "t": "600℃时硬度仍大于55～60HRC，适合高速切削",
+    "k": [
+     "适合高速切削"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 2
+ },
+ {
+  "id": "m12",
+  "ch": "c7",
+  "chname": "不锈钢",
+  "q": "不锈钢为什么能“不锈”？其耐蚀性依靠什么？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "依靠表面形成致密、牢固的Cr2O3钝化膜，阻碍腐蚀介质与基体接触",
+    "k": [
+     "依靠表面形成致密",
+     "牢固的Cr2O3钝化膜",
+     "阻碍腐蚀介质与基体接触"
+    ]
+   },
+   {
+    "t": "按n/8规律，固溶体电极电位提高，最低含铬量11.7%；考虑C形成碳化物消耗Cr，实际加Cr量最小为13%",
+    "k": [
+     "按n/8规律",
+     "固溶体电极电位提高",
+     "最低含铬量11.7%",
+     "考虑C形成碳化物消耗Cr",
+     "实际加Cr量最小为13%"
+    ]
+   },
+   {
+    "t": "Al、Si也能形成致密氧化膜（Al2O3、SiO2），Mo、Cu可加剧钝化效果",
+    "k": [
+     "Al",
+     "Si也能形成致密氧化膜",
+     "Al2O3",
+     "SiO2",
+     "Mo"
+    ]
+   },
+   {
+    "t": "不锈钢并非绝对不腐蚀，只是腐蚀速度较慢（完全耐蚀＜0.01mm/年）",
+    "k": [
+     "不锈钢并非绝对不腐蚀",
+     "只是腐蚀速度较慢"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m13",
+  "ch": "c7",
+  "chname": "不锈钢",
+  "q": "防止奥氏体不锈钢晶间腐蚀的措施有哪些？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "降低含碳量至0.03%以下，使晶界不析出或少析出Cr23C6",
+    "k": [
+     "含碳量至0.03%以下"
+    ]
+   },
+   {
+    "t": "加入Ti、Nb等强碳化物形成元素，优先形成TiC、NbC，避免晶界贫Cr",
+    "k": [
+     "Ti",
+     "Nb等强碳化物形成元素",
+     "优先形成TiC",
+     "NbC",
+     "晶界贫Cr"
+    ]
+   },
+   {
+    "t": "固溶处理后进行稳定化处理（850～880℃保温），使Cr23C6溶解、保留TiC/NbC",
+    "k": [
+     "固溶处理后进行稳定化处理",
+     "850～880℃保温",
+     "Cr23C6溶解",
+     "保留TiC/NbC"
+    ]
+   },
+   {
+    "t": "采用奥氏体＋铁素体双相组织，提高抗晶间腐蚀能力",
+    "k": [
+     "奥氏体＋铁素体双相组织",
+     "抗晶间腐蚀能力"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m14",
+  "ch": "c7",
+  "chname": "不锈钢",
+  "q": "什么是铁素体不锈钢的475℃脆性？如何消除？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "铁素体不锈钢在400～525℃长时间加热或在该温度区间缓冷时，塑韧性显著下降、强度升高的现象",
+    "k": [
+     "塑韧性显著下降",
+     "强度升高的现象"
+    ]
+   },
+   {
+    "t": "产生原因：铁素体中Cr有序化，析出富Cr的体心立方α′相（共格析出）",
+    "k": [
+     "产生原因",
+     "原因：铁素体中Cr有序化",
+     "共格析出"
+    ]
+   },
+   {
+    "t": "消除方法：加热到700～800℃后快冷，使α′相重新溶解",
+    "k": [
+     "消除方法",
+     "α′相重新溶解"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 2
+ },
+ {
+  "id": "m15",
+  "ch": "c7",
+  "chname": "不锈钢",
+  "q": "奥氏体不锈钢固溶处理的目的是什么？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "加热到1050～1150℃保温，使Cr23C6等碳化物全部溶入奥氏体",
+    "k": [
+     "加热到1050～11"
+    ]
+   },
+   {
+    "t": "水淬快冷获得单一均匀的过饱和奥氏体组织",
+    "k": [
+     "水淬快冷获得单一均匀"
+    ]
+   },
+   {
+    "t": "消除冷加工硬化和应力，显著提高钢的耐蚀性（尤其是抗晶间腐蚀能力）",
+    "k": [
+     "消除冷加工硬化和应力",
+     "显著提高钢的耐蚀性",
+     "尤其是抗晶间腐蚀能力"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 2
+ },
+ {
+  "id": "m16",
+  "ch": "c10",
+  "chname": "钢的热处理",
+  "q": "退火与正火有何区别？各应用于什么场合？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "冷却方式不同：退火随炉缓冷，正火在空气中冷却，正火冷速较快",
+    "k": [
+     "冷却方式不同",
+     "正火在空气中冷却",
+     "正火冷速较快"
+    ]
+   },
+   {
+    "t": "组织性能不同：正火组织更细（索氏体型），强度、硬度比退火高",
+    "k": [
+     "组织性能不同",
+     "索氏体型",
+     "强度",
+     "硬度比退火高"
+    ]
+   },
+   {
+    "t": "应用：低碳钢正火改善切削加工性；中碳钢退火或正火作预备热处理；过共析钢正火（Accm＋30～50℃）消除网状二次渗碳体，为球化退火作准备",
+    "k": [
+     "应用",
+     "过共析钢正火",
+     "Accm＋30～50℃",
+     "消除网状二次渗碳体",
+     "为球化退火作准备"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m17",
+  "ch": "c10",
+  "chname": "钢的热处理",
+  "q": "为什么亚共析钢淬火加热到Ac3以上，而过共析钢只加热到Ac1以上？",
+  "full": 6,
+  "pts": [
+   {
+    "t": "亚共析钢加热到Ac3＋30～50℃：获得细小均匀奥氏体，淬火后得到细马氏体；若加热温度在Ac1～Ac3之间，则组织中有未转变的铁素体，淬火后形成软点",
+    "k": [
+     "淬火后得到细马氏体",
+     "则组织中有未转变的铁素体",
+     "淬火后形成软点"
+    ]
+   },
+   {
+    "t": "过共析钢加热到Ac1＋30～50℃：保留部分粒状渗碳体，提高硬度和耐磨性",
+    "k": [
+     "硬度和耐磨性"
+    ]
+   },
+   {
+    "t": "过共析钢若加热到Accm以上：渗碳体全部溶解、奥氏体晶粒粗大，淬火后马氏体粗大、残余奥氏体多、变形开裂倾向大",
+    "k": [
+     "奥氏体晶粒粗大",
+     "淬火后马氏体粗大",
+     "残余奥氏体多",
+     "变形开裂倾向大"
+    ]
+   }
+  ],
+  "tag": "必背",
+  "stars": 3
+ },
+ {
+  "id": "m18",
+  "ch": "c12",
+  "chname": "期中真题专练",
+  "q": "回火温度对钢的组织和性能有什么影响？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "150～250℃低温回火：回火马氏体（M＋细粒碳化物），保持高硬度耐磨，用于工具、轴承、渗碳件",
+    "k": [
+     "150～250℃低温回火",
+     "M＋细粒碳化物",
+     "保持高硬度耐磨",
+     "用于工具",
+     "轴承"
+    ]
+   },
+   {
+    "t": "350～500℃中温回火：回火屈氏体（F＋极细粒状碳化物），高弹性极限和屈强比，用于弹簧",
+    "k": [
+     "350～500℃中温回火",
+     "F＋极细粒状碳化物",
+     "高弹性极限和屈强比",
+     "用于弹簧"
+    ]
+   },
+   {
+    "t": "500～650℃高温回火：回火索氏体（F＋细粒状碳化物），综合力学性能好，用于调质件",
+    "k": [
+     "500～650℃高温回火",
+     "F＋细粒状碳化物",
+     "综合力学性能好",
+     "用于调质件"
+    ]
+   },
+   {
+    "t": "一般规律：回火温度升高，强度硬度降低、塑韧性提高；已稳定组织（如回火索氏体）再低温回火不能提高硬度",
+    "k": [
+     "一般规律",
+     "一般规律：回火温度升高",
+     "强度硬度降低",
+     "塑韧性提高",
+     "已稳定组织"
+    ]
+   }
+  ],
+  "tag": "真题",
+  "stars": 3
+ },
+ {
+  "id": "m19",
+  "ch": "c11",
+  "chname": "有色金属及其合金",
+  "q": "铝合金时效强化的原理是什么？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "固溶处理（淬火）：加热到固溶线以上获得均匀α相，快冷获得过饱和固溶体，此时强度不高、塑性好",
+    "k": [
+     "固溶处理（淬火",
+     "固溶处理",
+     "淬火",
+     "快冷获得过饱和固溶体",
+     "此时强度不高"
+    ]
+   },
+   {
+    "t": "时效：在室温（自然时效）或加热（人工时效）保温过程中，第二相（如Al-4%Cu合金的θ′相）从过饱和固溶体中析出",
+    "k": [
+     "时效",
+     "时效：在室温",
+     "自然时效",
+     "或加热",
+     "人工时效"
+    ]
+   },
+   {
+    "t": "强化实质：析出相与母相保持共格关系，造成晶格畸变，阻碍位错运动，使强度硬度显著提高",
+    "k": [
+     "强化实质",
+     "造成晶格畸变",
+     "阻碍位错运动",
+     "强度硬度显著提高"
+    ]
+   },
+   {
+    "t": "过时效后强化相聚集长大、与母相失去共格，强度降低",
+    "k": [
+     "过时效后强化相聚集长大",
+     "与母相失去共格",
+     "强度降低"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 2
+ },
+ {
+  "id": "m20",
+  "ch": "c9",
+  "chname": "固态相变理论",
+  "q": "固态相变有哪些特点？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "相变阻力大：除界面能外还存在弹性应变能（共格应变能＋比容差应变能），需要较大的过冷度（驱动力）",
+    "k": [
+     "相变阻力大",
+     "共格应变能＋比容差应变能",
+     "需要较大的过冷度",
+     "驱动力"
+    ]
+   },
+   {
+    "t": "相变阻力大、扩散困难，容易形成过渡相（中间亚稳相）",
+    "k": [
+     "相变阻力大",
+     "扩散困难",
+     "容易形成过渡相",
+     "中间亚稳相"
+    ]
+   },
+   {
+    "t": "新相往往沿母相特定晶面或方向长大，与母相保持一定的位向关系",
+    "k": [
+     "与母相保持一定的位向关系"
+    ]
+   },
+   {
+    "t": "晶体缺陷（位错、晶界）促进形核及相变",
+    "k": [
+     "晶体缺陷",
+     "位错",
+     "晶界",
+     "促进形核及相变"
+    ]
+   }
+  ],
+  "tag": "重点",
+  "stars": 2
+ },
+ {
+  "id": "m21",
+  "ch": "c3",
+  "chname": "钢的合金化基础",
+  "q": "什么是二次硬化？其机理是什么？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "定义：含Ti、V、Nb、Mo、W较高含量的合金钢淬火后在500～600℃回火，硬度反而升高的现象",
+    "k": [
+     "定义",
+     "定义：含Ti",
+     "Nb",
+     "Mo",
+     "硬度反而升高的现象"
+    ]
+   },
+   {
+    "t": "机理：回火时从马氏体中弥散析出VC、W2C、Mo2C等特殊碳化物，产生沉淀强化",
+    "k": [
+     "机理",
+     "W2C",
+     "Mo2C等特殊碳化物",
+     "沉淀强化"
+    ]
+   },
+   {
+    "t": "同时部分残余奥氏体在回火冷却时转变为马氏体（二次淬火），也有助于硬度提高",
+    "k": [
+     "马氏体",
+     "二次淬火",
+     "也有助于硬度提高"
+    ]
+   },
+   {
+    "t": "典型应用：高速钢、高合金模具钢依靠二次硬化获得红硬性和高硬度",
+    "k": [
+     "典型应用",
+     "典型应用：高速钢"
+    ]
+   }
+  ],
+  "tag": "高频",
+  "stars": 3
+ },
+ {
+  "id": "m22",
+  "ch": "c10",
+  "chname": "钢的热处理",
+  "q": "感应加热表面淬火按频率分哪几种？淬硬层深度如何？",
+  "full": 8,
+  "pts": [
+   {
+    "t": "高频（250～300kHz）：集肤效应强，淬硬层浅，约0.5～2mm，用于中小型零件",
+    "k": [
+     "高频",
+     "250～300kHz",
+     "集肤效应强",
+     "淬硬层浅",
+     "约0.5～2mm"
+    ]
+   },
+   {
+    "t": "中频（2500～8000Hz）：淬硬层约2～10mm，用于较大零件",
+    "k": [
+     "中频",
+     "2500～8000Hz",
+     "淬硬层约2～10mm",
+     "用于较大零件"
+    ]
+   },
+   {
+    "t": "工频（50Hz）：淬硬层10～15mm，用于大型零件",
+    "k": [
+     "工频（50Hz",
+     "工频",
+     "50Hz",
+     "淬硬层10～15mm",
+     "用于大型零件"
+    ]
+   },
+   {
+    "t": "电流频率越高，集肤效应越强，淬硬层越浅",
+    "k": [
+     "电流频率越高",
+     "集肤效应越强",
+     "淬硬层越浅"
+    ]
+   }
+  ],
+  "tag": "重点",
+  "stars": 2
+ }
+];
 /* ================================================================
  * 工程材料A · 刷题台 核心逻辑
  * ================================================================ */
@@ -795,8 +1832,339 @@ function typeTag(t){
   return '<span class="qtype qt-fill">填空题</span>';
 }
 
+/* ================= 简答默写 · AI 踩分 ================= */
+const ESSAY_KEY = 'meca_essay_v2';
+const GRADE_CFG_KEY = 'meca_grade_cfg_v1';
+const GRADE_API_DEFAULT = 'https://text.pollinations.ai/openai';
+const EP_AI_COOLDOWN = 46000;
+const EP_COURSE = '工程材料A';
+const EP_SITE = 'https://sanabesito.github.io/materials-shuati/';
+const EP_CH_LABEL = '章节按题库顺序排列，点击切换范围';
+
+function epLoad(key, fallback){
+  try { const raw = localStorage.getItem(key); if (raw) return JSON.parse(raw); } catch(e){}
+  return fallback;
+}
+function epSave(key, val){ try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} }
+let epRec = epLoad(ESSAY_KEY, {});
+let epCfg = epLoad(GRADE_CFG_KEY, { api: GRADE_API_DEFAULT, key: '', model: 'openai' });
+let epState = { ch: '全部', idx: 0, onlyWeak: false };
+
+const epEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const epNorm = s => String(s || '').replace(/[\s\u3000]/g, '').replace(/[，。；：、（）()“”"'·\-—~～]/g, '').toLowerCase();
+const epFull = item => item.full || Math.max(2, (item.pts || []).length * 2);
+const epChName = item => item.chname || item.ch || '未分章';
+function epChapters(){
+  const out = ['全部'];
+  ESSAY_AI.forEach(it => { const n = epChName(it); if (!out.includes(n)) out.push(n); });
+  return out;
+}
+function epList(){
+  let list = ESSAY_AI.filter(x => epState.ch === '全部' || epChName(x) === epState.ch);
+  if (epState.onlyWeak) list = list.filter(x => {
+    const r = epRec[x.id];
+    return !r || (r.best || 0) < epFull(x) * 0.6;
+  });
+  return list;
+}
+function epCur(){
+  const list = epList();
+  if (!list.length) return null;
+  if (epState.idx >= list.length) epState.idx = list.length - 1;
+  if (epState.idx < 0) epState.idx = 0;
+  return { list, cur: list[epState.idx] };
+}
+function epRecord(id){
+  return epRec[id] || { best: 0, tries: 0, last: 0, lastAns: '' };
+}
+function epToast(msg){
+  const t = $('ep-toast'); if (!t) return;
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(epToast.timer); epToast.timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+function epParse(text){
+  let s = String(text || '').trim();
+  s = s.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
+  const a = s.indexOf('{'), b = s.lastIndexOf('}');
+  if (a >= 0 && b > a) s = s.slice(a, b + 1);
+  try {
+    const o = JSON.parse(s);
+    if (o && o.points && !Array.isArray(o.points) && typeof o.points === 'object') {
+      o.points = Object.keys(o.points).map(k => Object.assign({ i: Number(k) }, o.points[k]));
+    }
+    return o;
+  } catch(e){ return null; }
+}
+function epLocal(item, ans){
+  const n = epNorm(ans);
+  const full = epFull(item);
+  const per = 2;
+  const points = item.pts.map(p => {
+    const ks = (p.k || []).map(epNorm).filter(k => k.length >= 2);
+    const hit = ks.filter(k => n.includes(k)).length;
+    let st = 'none';
+    if (hit > 0) st = (ks.length <= 1 || hit >= Math.ceil(ks.length * 0.6)) ? 'full' : 'partial';
+    return { status: st, note: hit ? ('命中 ' + hit + '/' + ks.length + ' 个关键词') : '未命中关键词' };
+  });
+  let score = points.reduce((s, p) => s + (p.status === 'full' ? per : p.status === 'partial' ? per / 2 : 0), 0);
+  if (n.length < 20) score = Math.min(score, full * 0.3);
+  score = Math.round(score * 2) / 2;
+  const hitAny = points.filter(p => p.status !== 'none').length;
+  let comment = '';
+  if (score >= full * 0.85) comment = '要点覆盖比较完整，关键概念基本到位。可以再检查一下逻辑顺序和结论表述。';
+  else if (score >= full * 0.6) comment = '主要采分点已经答到，但还有部分要点不完整。对照下方逐点反馈补齐。';
+  else if (score >= full * 0.3) comment = '答到了一部分关键概念，但采分点覆盖不足。建议按“概念—原因—结果”的顺序重建答案。';
+  else comment = '目前与采分点的对应较少。先看参考要点的分层，再闭卷重写一遍。';
+  comment += ' 本地评分只做关键词覆盖判断，联网提交会得到更接近老师阅卷的语义评分。';
+  return { score, points, comment, source: '本地评分', deduction: 0, fallback: true };
+}
+async function epRemote(item, ans){
+  const cfg = epCfg || {};
+  const api = (cfg.api || GRADE_API_DEFAULT).trim();
+  const model = (cfg.model || 'openai').trim();
+  const full = epFull(item);
+  const per = 2;
+  const sys = '你是' + EP_COURSE + '课程的阅卷老师，按采分点给简答题打分。评分要接近老师阅卷：优先看学生是否答到关键概念和逻辑关系，允许同义替换、合并回答、用自己的话表达，不要求出现原词原句。题目要求“区别/比较/关系”时，学生分别说明两者的定义、决定因素或结果，即视为完成对比，不要求出现“区别”二字。每个采分点都有一个核心判断，学生答出核心判断即给 full，缺少修饰语不扣分；只答对一部分给 partial，完全没答到或答错给 none。不要因为字数少就扣分，也不要因为写得多就给满分。每道题的满分是固定的，不要自行改动。只输出 JSON，不要输出 Markdown 或解释。';
+  const user = [
+    '【题目】' + item.q,
+    '【满分】' + full + ' 分，共 ' + item.pts.length + ' 个采分点，每个采分点 ' + per + ' 分。',
+    '【采分点】',
+    item.pts.map((p, i) => (i + 1) + '. ' + p.t).join('\n'),
+    '【学生答案】',
+    ans,
+    '',
+    '请逐点判断，输出：',
+    '{"points":[{"i":1,"status":"full|partial|none","note":"一句话说明该点答到什么、缺什么"}],"deduction":0,"comment":"给学生的总体反馈，指出最该补的1-2处"}',
+    '要求：points 的顺序和数量必须与采分点一一对应；deduction 是总体表达/逻辑扣分，0 到 3 分；comment 控制在 80 字以内。'
+  ].join('\n');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 120000);
+  try {
+    const headers = { 'Content-Type': 'application/json' };
+    if (cfg.key && cfg.key.trim()) headers.Authorization = 'Bearer ' + cfg.key.trim();
+    const body = { model: model, messages: [{ role: 'system', content: sys }, { role: 'user', content: user }], temperature: 0.2, max_tokens: 900 };
+    if (api.indexOf('pollinations') >= 0) body.referrer = EP_SITE;
+    const res = await fetch(api, { method: 'POST', headers: headers, body: JSON.stringify(body), signal: controller.signal });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    let content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if (Array.isArray(content)) content = content.map(x => x.text || '').join('');
+    const parsed = epParse(content);
+    if (!parsed || !parsed.points) throw new Error('评分格式不符');
+    const mapSt = s => {
+      const v = String(s || '').toLowerCase();
+      if (v === 'full' || v === '完全' || v === '完整' || v === '正确') return 'full';
+      if (v === 'partial' || v === '部分' || v === '一半') return 'partial';
+      return 'none';
+    };
+    const points = item.pts.map((p, i) => {
+      const got = parsed.points.find(x => Number(x.i) === i + 1) || {};
+      return { status: mapSt(got.status), note: String(got.note || '').slice(0, 80) };
+    });
+    // 对比题补偿：学生已分别说明两者定义/决定因素，却未写“区别”二字时，不把对比点判零。
+    if (/区别|比较|关系|异同|不同/.test(item.q)) {
+      const fullCount = points.filter(p => p.status === 'full').length;
+      const diffIdx = item.pts.map((p, i) => /区别|比较|关系|异同|不同|对比/.test(p.t) ? i : -1).filter(i => i >= 0);
+      diffIdx.forEach(i => {
+        if (points[i].status === 'none') {
+          if (fullCount >= item.pts.length - 1) {
+            points[i].status = 'full';
+            points[i].auto = true;
+            points[i].note = '已分别说明两者含义，视为完成对比';
+          } else if (fullCount >= 1) {
+            points[i].status = 'partial';
+            points[i].note = '已答出部分概念，对比关系还可以更明确';
+          }
+        }
+      });
+    }
+    // 采分点里含“取决于/决定/因为”等强因果时，只给定义、没解释决定因素的回答按部分分处理。
+    const causalRe = /取决于|决定|因为|由于|导致|所以|因此|由.{0,20}决定/;
+    const ansNorm = epNorm(ans);
+    points.forEach((p, i) => {
+      if (p.status === 'full' && !p.auto && causalRe.test(item.pts[i].t) && !causalRe.test(ansNorm)) {
+        p.status = 'partial';
+        p.note = (p.note ? p.note + '；' : '') + '缺少决定因素/因果关系的表述，按部分分';
+      }
+    });
+    let score = points.reduce((s, p) => s + (p.status === 'full' ? per : p.status === 'partial' ? per / 2 : 0), 0);
+    const deduction = Math.max(0, Math.min(full * 0.3, Number(parsed.deduction) || 0));
+    score = Math.max(0, Math.min(full, Math.round((score - deduction) * 2) / 2));
+    const comment = String(parsed.comment || '').slice(0, 160) || '已按采分点完成评分。';
+    return { score, points, comment, source: 'AI 评分', deduction, fallback: false };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+function epAiWait(){
+  const last = Number(localStorage.getItem(ESSAY_KEY + '_last_ai') || 0);
+  return Math.max(0, EP_AI_COOLDOWN - (Date.now() - last));
+}
+function epCount(){
+  const ta = $('ep-input'), c = $('ep-count');
+  if (ta && c) c.textContent = ta.value.trim().length + ' 字';
+}
+function epGo(delta){
+  const list = epList(); if (!list.length) return;
+  epState.idx = (epState.idx + delta + list.length) % list.length;
+  epRefresh();
+}
+function epNext(){ epGo(1); }
+function epPrev(){ epGo(-1); }
+function epRandom(){
+  const list = epList(); if (!list.length) return;
+  if (list.length > 1) {
+    let n = epState.idx;
+    while (n === epState.idx) n = Math.floor(Math.random() * list.length);
+    epState.idx = n;
+  }
+  epRefresh();
+}
+function epSetCh(ch){ epState.ch = ch; epState.idx = 0; epRefresh(); }
+function epToggleWeak(){ epState.onlyWeak = !epState.onlyWeak; epState.idx = 0; epRefresh(); }
+function epClearInput(){ const t = $('ep-input'); if (t) { t.value = ''; t.focus(); epCount(); } }
+function epRetry(){ const t = $('ep-input'); if (t) { t.value = ''; t.focus(); epCount(); } const r = $('ep-result'); if (r) r.innerHTML = ''; }
+function epShowRef(){
+  const got = epCur(); if (!got) return;
+  const box = $('ep-result'); if (!box) return;
+  box.innerHTML = '<div class="ep-refcard"><h4>参考要点 · 先自己写，再对照</h4><ol>' + got.cur.pts.map(p => '<li>' + epEsc(p.t) + '</li>').join('') + '</ol></div>';
+}
+function epFinish(item, ans, g){
+  const full = epFull(item);
+  const r = epRecord(item.id);
+  r.tries = (r.tries || 0) + 1;
+  r.last = g.score;
+  r.best = Math.max(r.best || 0, g.score);
+  r.lastAns = ans;
+  epRec[item.id] = r;
+  epSave(ESSAY_KEY, epRec);
+  const pct = full ? Math.round(g.score / full * 100) : 0;
+  const ico = { full: '✓', partial: '◐', none: '✗' };
+  const pts = item.pts.map((p, i) => {
+    const v = g.points[i] || { status: 'none', note: '' };
+    const per = 2;
+    return '<div class="ep-point ' + v.status + '"><div class="ep-point-head"><span class="ep-picon">' + ico[v.status] + '</span><span>采分点 ' + (i + 1) + '</span><span class="ep-pt">' + (v.status === 'full' ? per : v.status === 'partial' ? per / 2 : 0) + ' / ' + per + ' 分</span></div><div class="ep-ptext">' + epEsc(p.t) + '</div>' + (v.note ? '<div class="ep-pnote">' + epEsc(v.note) + '</div>' : '') + '</div>';
+  }).join('');
+  const scoreText = Number.isInteger(g.score) ? g.score : g.score.toFixed(1);
+  const box = $('ep-result');
+  if (!box) return;
+  box.innerHTML = '<div class="ep-score"><div><span>本次得分</span><b>' + scoreText + '<small> / ' + full + '</small></b><span class="ep-source">' + epEsc(g.source) + '</span></div><div><div class="ep-bar"><i style="width:' + pct + '%"></i></div><span style="display:block;margin-top:5px">得分率 ' + pct + '% · 最高 ' + r.best + ' 分 · 第 ' + r.tries + ' 次作答</span></div><div style="text-align:right"><span>最高分</span><b style="display:block;font-size:20px;color:var(--accent)">' + r.best + '</b></div></div>' +
+    '<div class="ep-comment">' + epEsc(g.comment) + '</div>' +
+    (g.deduction ? '<div class="ep-pnote" style="margin-top:6px">总体表达/逻辑扣分：-' + g.deduction + ' 分</div>' : '') +
+    '<div class="ep-points">' + pts + '</div>' +
+    '<div class="ep-actions" style="margin-top:10px"><button class="ep-btn primary" onclick="epRetry()">再默一遍</button><button class="ep-btn ghost" onclick="epNext()">下一题</button><button class="ep-btn ghost" onclick="epShowRef()">对照要点</button><button class="ep-btn ghost" onclick="epRandom()">随机换题</button></div>';
+}
+async function epSubmit(){
+  const got = epCur(); if (!got) return;
+  const item = got.cur;
+  const ta = $('ep-input'); const ans = ta ? ta.value.trim() : '';
+  if (!ans) { epToast('先写点内容再提交'); if (ta) ta.focus(); return; }
+  const btn = $('ep-submit');
+  if (btn) { btn.disabled = true; btn.textContent = '评分中…'; }
+  const box = $('ep-result'); if (box) box.innerHTML = '<div class="ep-loading">正在逐点对照采分点，通常几秒到十几秒…</div>';
+  let g = null;
+  const wait = epAiWait();
+  if (wait > 0) {
+    g = epLocal(item, ans);
+    g.source = '本地评分 · AI 冷却';
+    g.comment += ' 免费 AI 通道约 45 秒一次，还需约 ' + Math.ceil(wait / 1000) + ' 秒；下次提交会优先走 AI。';
+  } else {
+    try {
+      g = await epRemote(item, ans);
+      if (g) try { localStorage.setItem(ESSAY_KEY + '_last_ai', String(Date.now())); } catch(e){}
+    } catch(e){}
+    if (!g) {
+      g = epLocal(item, ans);
+      g.source = '本地评分 · AI 繁忙';
+      g.comment += ' AI 通道繁忙，已用本地关键词评分兜底；稍后重新提交可再走 AI。';
+    }
+  }
+  epFinish(item, ans, g);
+  if (btn) { btn.disabled = false; btn.textContent = '重新评分'; }
+}
+function epOpenCfg(){
+  const el = $('ep-cfg'); if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+function epSaveCfg(){
+  const api = $('ep-cfg-api'), model = $('ep-cfg-model'), key = $('ep-cfg-key');
+  epCfg = { api: (api && api.value.trim()) || GRADE_API_DEFAULT, model: (model && model.value.trim()) || 'openai', key: key ? key.value.trim() : '' };
+  epSave(GRADE_CFG_KEY, epCfg);
+  const el = $('ep-cfg'); if (el) el.style.display = 'none';
+  epToast('评分设置已保存');
+}
+function viewEssay(){
+  const list = epList();
+  const got = epCur();
+  const recs = Object.values(epRec);
+  const done = recs.length;
+  const avg = done ? (recs.reduce((s, r) => s + (r.best || 0), 0) / done) : 0;
+  const max = done ? Math.max.apply(null, recs.map(r => r.best || 0)) : 0;
+  const weak = ESSAY_AI.filter(x => { const r = epRec[x.id]; return !r || (r.best || 0) < epFull(x) * 0.6; }).length;
+  const chips = epChapters().map(c => {
+    const n = c === '全部' ? ESSAY_AI.length : ESSAY_AI.filter(x => epChName(x) === c).length;
+    return '<button class="ep-chip ' + (epState.ch === c ? 'on' : '') + '" data-ep-ch="' + epEsc(c) + '">' + epEsc(c) + '<em>' + n + '</em></button>';
+  }).join('');
+  let body = '';
+  if (!got) {
+    body = '<div class="ep-card"><div class="ep-empty">当前筛选下没有简答题。<br>换个章节，或关闭“只看未掌握”。</div></div>';
+  } else {
+    const item = got.cur;
+    const r = epRecord(item.id);
+    const full = epFull(item);
+    body = '<div class="ep-card">' +
+      '<div class="ep-cardhead"><span class="ep-badge">第 ' + (epState.idx + 1) + ' / ' + list.length + ' 题</span><span class="ep-badge soft">' + epEsc(epChName(item)) + '</span><span class="ep-badge soft">满分 ' + full + ' 分</span>' + (r.tries ? '<span class="ep-badge last">最高 ' + r.best + ' 分 · 已答 ' + r.tries + ' 次</span>' : '') + '</div>' +
+      '<div class="ep-q">' + epEsc(item.q) + '</div>' +
+      '<div class="ep-hint">闭卷默写，不用逐字背。写出关键概念、逻辑关系和结论即可；提交后按采分点逐条对照，允许同义替换。</div>' +
+      '<textarea id="ep-input" class="ep-textarea" placeholder="在这里默写答案…（Ctrl / ⌘ + Enter 提交）">' + epEsc(r.lastAns || '') + '</textarea>' +
+      '<div class="ep-countrow"><span id="ep-count">' + String((r.lastAns || '').trim().length) + ' 字</span><span>共 ' + item.pts.length + ' 个采分点 · 每点 2 分</span></div>' +
+      '<div class="ep-actions"><button class="ep-btn primary" id="ep-submit">提交评分</button><button class="ep-btn ghost" id="ep-ref">看参考要点</button><button class="ep-btn ghost" id="ep-prev">上一题</button><button class="ep-btn ghost" id="ep-next">下一题</button></div>' +
+      '<div class="ep-actions" style="margin-top:8px"><button class="ep-link" id="ep-random">随机换一题</button><button class="ep-link" id="ep-clear">清空输入</button><button class="ep-link" id="ep-open-cfg">评分设置</button></div>' +
+      '<div id="ep-result" class="ep-result">' + (r.lastAns ? '<div class="ep-pnote">已恢复上次作答，可直接修改后重新评分。</div>' : '') + '</div>' +
+      '<div class="ep-cfg" id="ep-cfg" style="display:none">' +
+        '<label>接口地址（OpenAI 兼容 /chat/completions）</label><input id="ep-cfg-api" value="' + epEsc(epCfg.api || GRADE_API_DEFAULT) + '">' +
+        '<label>模型</label><input id="ep-cfg-model" value="' + epEsc(epCfg.model || 'openai') + '">' +
+        '<label>API Key（可选，默认免费接口不需要）</label><input id="ep-cfg-key" type="password" value="' + epEsc(epCfg.key || '') + '" placeholder="留空即使用免费评分接口">' +
+        '<div class="ep-cfg-note">默认使用免费的 Pollinations 接口，无需 Key，约 45 秒一次；连续提交会自动用本地评分兜底。也可以在这里填 OpenRouter、Groq、Gemini 等兼容接口的免费 Key。</div>' +
+        '<button class="ep-btn primary" id="ep-cfg-save" style="width:100%;margin-top:10px">保存设置</button>' +
+      '</div>' +
+    '</div>';
+  }
+  return '<div class="ep-page">' +
+    '<div class="ep-hero"><div class="ep-kicker">AI 简答默写 · ' + epEsc(EP_COURSE) + '</div><h2>闭卷写一遍，按采分点给分</h2><p>先自己写，提交后由评分模型逐点对照；网络不可用时自动改用本地关键词评分。分数按采分点拆分，不固定满分 100，答对一半也能拿到部分分。</p>' +
+      '<div class="ep-stats"><div class="ep-stat"><b>' + ESSAY_AI.length + '</b><span>道简答题</span></div><div class="ep-stat"><b>' + done + '</b><span>已练题数</span></div><div class="ep-stat"><b>' + (done ? avg.toFixed(1) : '0') + '</b><span>平均最高分</span></div><div class="ep-stat"><b>' + max + '</b><span>单题最高分</span></div></div>' +
+    '</div>' +
+    '<div class="ep-panel"><div class="ep-chips">' + chips + '</div><div class="ep-toolrow"><button class="ep-toggle ' + (epState.onlyWeak ? 'on' : '') + '" id="ep-weak">只看未掌握 · ' + weak + '</button><span class="ep-muted">' + EP_CH_LABEL + '</span></div>' + body + '</div>' +
+    '<div class="ep-toast" id="ep-toast"></div>' +
+  '</div>';
+}
+function bindEssay(){
+  document.querySelectorAll('[data-ep-ch]').forEach(b => b.addEventListener('click', () => epSetCh(b.dataset.epCh)));
+  const weak = $('ep-weak'); if (weak) weak.onclick = epToggleWeak;
+  const sub = $('ep-submit'); if (sub) sub.onclick = epSubmit;
+  const ref = $('ep-ref'); if (ref) ref.onclick = epShowRef;
+  const prev = $('ep-prev'); if (prev) prev.onclick = epPrev;
+  const next = $('ep-next'); if (next) next.onclick = epNext;
+  const rnd = $('ep-random'); if (rnd) rnd.onclick = epRandom;
+  const clr = $('ep-clear'); if (clr) clr.onclick = epClearInput;
+  const cfg = $('ep-open-cfg'); if (cfg) cfg.onclick = epOpenCfg;
+  const save = $('ep-cfg-save'); if (save) save.onclick = epSaveCfg;
+  const ta = $('ep-input');
+  if (ta) {
+    ta.addEventListener('input', epCount);
+    ta.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); epSubmit(); } });
+  }
+}
+
+function renderEssayTrain(){
+  const root = $('epRoot'); if (!root) return;
+  root.innerHTML = viewEssay();
+  bindEssay();
+}
+function epRefresh(){ renderEssayTrain(); }
+
 /* ---- 路由 ---- */
-const views = ['home','chapters','chapter','quiz','cards','recite','terms','essays','mind','outline','wrong','fav','stats'];
+const views = ['home','chapters','chapter','quiz','cards','recite','terms','essays','essay','mind','outline','wrong','fav','stats'];
 function parseHash(){
   const h = location.hash || '#/home';
   const parts = h.replace(/^#\//,'').split('/');
@@ -824,6 +2192,7 @@ function route(){
   else if (view === 'recite') renderRecite();
   else if (view === 'terms') renderTerms();
   else if (view === 'essays') renderEssays();
+  else if (view === 'essay') renderEssayTrain();
   else if (view === 'mind') renderMind();
   else if (view === 'outline') renderOutline();
   else if (view === 'wrong') renderWrong();
