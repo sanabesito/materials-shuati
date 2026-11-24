@@ -565,6 +565,13 @@ kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-
 .sp-btn.on{background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.45);color:var(--ok)}
 .sp-btn.gold{background:linear-gradient(135deg,#f59e0b,#ea580c);border-color:transparent;color:#fff;box-shadow:0 6px 16px rgba(249,115,22,.28)}
 .sp-btn.gold:hover{color:#fff;transform:translateY(-1px)}
+
+.sp-badge.fig{color:#a78bfa;border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.08)}
+.sp-fig{margin:12px 0 4px;padding:10px 10px 6px;border:1px solid var(--line);border-radius:10px;background:#0a1020;overflow-x:auto}
+.sp-fig svg{display:block;width:100%;height:auto;min-width:520px}
+.sp-fig-cap{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
+@media(max-width:760px){.sp-fig svg{min-width:640px}.sp-fig{padding:20px 6px 5px;position:relative}
+.sp-fig::before{content:"← 左右滑动查看完整图 →";position:absolute;top:3px;left:0;right:0;text-align:center;font-size:10px;color:#94a3b8;letter-spacing:.5px}}
 .sp-group{margin-top:20px}
 .sp-group-h{display:flex;align-items:baseline;gap:9px;padding:0 2px 8px;border-bottom:1px solid var(--line);margin-bottom:0}
 .sp-group-h b{font-size:14px;color:var(--text);font-weight:800}
@@ -606,7 +613,8 @@ kbd{background:rgba(249,115,22,.15);color:var(--accent2);padding:1px 7px;border-
 .sp-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.7}
 .sp-empty{padding:40px 16px;text-align:center;color:var(--muted);font-size:13.5px;border:1px dashed var(--line);border-radius:14px;margin-top:14px}
 .compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
-.compare-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 17px}
+.compare-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 17px;min-width:0}
+.compare-card.has-fig{grid-column:1 / -1}
 .compare-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px}
 .compare-head b{font-size:13.5px;color:var(--text)}
 .compare-head .vs{font-size:10px;color:var(--gold);border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.08);border-radius:99px;padding:3px 7px}
@@ -2839,6 +2847,252 @@ function renderEssays(){
 function toggleEssayStar(){ essayStarOnly = !essayStarOnly; renderEssays(); }
 function toggleEssayMaster(){ essayUnmastered = !essayUnmastered; renderEssays(); }
 
+/* ===== 冲刺卡片图解（内联 SVG，字与比例可控） ===== */
+const SPRINT_SVG = {
+t1: `<div class="sp-fig"><svg viewBox="0 0 780 320" role="img" aria-label="淬透性与淬硬性对比">
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">淬透性：看“淬多深”</text>
+<text x="408" y="24" fill="#fbbf24" font-size="15" font-weight="700">淬硬性：看“表面多硬”</text>
+<line x1="55" y1="250" x2="345" y2="250" stroke="#475569" stroke-width="1.2"/>
+<line x1="55" y1="250" x2="55" y2="80" stroke="#475569" stroke-width="1.2"/>
+<line x1="55" y1="156" x2="345" y2="156" stroke="#f87171" stroke-width="1.2" stroke-dasharray="6 5"/>
+<text x="150" y="144" fill="#f87171" font-size="10.5">半马氏体线（50%M）</text>
+<text x="55" y="268" fill="#94a3b8" font-size="11">深度 / mm</text>
+<text x="8" y="170" fill="#94a3b8" font-size="11" transform="rotate(-90 8 170)">硬度 HRC</text>
+<text x="52" y="255" fill="#64748b" font-size="9">0</text><text x="149" y="255" fill="#64748b" font-size="9">10</text><text x="244" y="255" fill="#64748b" font-size="9">20</text><text x="341" y="255" fill="#64748b" font-size="9">30</text>
+<text x="38" y="254" fill="#64748b" font-size="9">20</text><text x="38" y="178" fill="#64748b" font-size="9">40</text><text x="38" y="103" fill="#64748b" font-size="9">60</text>
+<rect x="55" y="118" width="174" height="132" fill="#34d399" opacity="0.06"/>
+<rect x="55" y="118" width="58" height="132" fill="#f97316" opacity="0.10"/>
+<polyline points="55,118 171,118 229,156 268,205 345,231" fill="none" stroke="#34d399" stroke-width="2.6"/>
+<polyline points="55,118 84,129 113,156 152,205 229,242" fill="none" stroke="#f97316" stroke-width="2.6"/>
+<line x1="229" y1="80" x2="229" y2="250" stroke="#34d399" stroke-width="1" stroke-dasharray="4 4"/>
+<line x1="113" y1="80" x2="113" y2="250" stroke="#f97316" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="175" y="42" fill="#34d399" font-size="11">A（示意）：≈18mm</text>
+<text x="70" y="42" fill="#f97316" font-size="11">B（示意）：≈6mm</text>
+<line x1="445" y1="250" x2="735" y2="250" stroke="#475569" stroke-width="1.2"/>
+<line x1="445" y1="250" x2="445" y2="80" stroke="#475569" stroke-width="1.2"/>
+<text x="445" y="268" fill="#94a3b8" font-size="11">深度 / mm</text>
+<text x="398" y="170" fill="#94a3b8" font-size="11" transform="rotate(-90 398 170)">硬度 HRC</text>
+<text x="442" y="255" fill="#64748b" font-size="9">0</text><text x="536" y="255" fill="#64748b" font-size="9">6</text><text x="630" y="255" fill="#64748b" font-size="9">12</text><text x="725" y="255" fill="#64748b" font-size="9">18</text>
+<text x="428" y="254" fill="#64748b" font-size="9">20</text><text x="428" y="178" fill="#64748b" font-size="9">40</text><text x="428" y="103" fill="#64748b" font-size="9">60</text>
+<polyline points="445,99 526,106 606,137 687,193 735,231" fill="none" stroke="#60a5fa" stroke-width="2.6"/>
+<polyline points="445,156 526,163 606,186 687,220 735,242" fill="none" stroke="#fbbf24" stroke-width="2.6"/>
+<text x="520" y="42" fill="#60a5fa" font-size="11.5">高碳钢：表面 60HRC</text>
+<text x="520" y="60" fill="#fbbf24" font-size="11.5">低碳钢：表面 45HRC</text>
+<text x="20" y="300" fill="#cbd5e1" font-size="11">结论：同一深度下表面硬度由含碳量决定；同一硬度下淬硬层深度由 C 曲线位置决定。</text>
+</svg><div class="sp-fig-cap">图 1　左：同碳量、不同淬透性；右：不同碳量、不同淬硬性（18/6mm 为作图取值）</div></div>`,
+
+c5: `<div class="sp-fig"><svg viewBox="0 0 780 300" role="img" aria-label="珠光体索氏体屈氏体片层间距">
+<defs>
+<pattern id="fig2P" width="18" height="120" patternUnits="userSpaceOnUse"><rect width="12" height="120" fill="#cbd5e1"/><rect x="12" width="6" height="120" fill="#475569"/></pattern>
+<pattern id="fig2S" width="9" height="120" patternUnits="userSpaceOnUse"><rect width="6" height="120" fill="#cbd5e1"/><rect x="6" width="3" height="120" fill="#475569"/></pattern>
+<pattern id="fig2T" width="5" height="120" patternUnits="userSpaceOnUse"><rect width="3.2" height="120" fill="#cbd5e1"/><rect x="3.2" width="1.8" height="120" fill="#475569"/></pattern>
+</defs>
+<text x="24" y="28" fill="#fbbf24" font-size="15" font-weight="700">片层间距：P → S → T 越来越细</text>
+<rect x="24" y="45" width="220" height="125" fill="url(#fig2P)" stroke="#334155"/>
+<rect x="274" y="45" width="220" height="125" fill="url(#fig2S)" stroke="#334155"/>
+<rect x="524" y="45" width="220" height="125" fill="url(#fig2T)" stroke="#334155"/>
+<text x="86" y="198" fill="#e5e7eb" font-size="13" font-weight="700">珠光体 P</text>
+<text x="336" y="198" fill="#e5e7eb" font-size="13" font-weight="700">索氏体 S</text>
+<text x="586" y="198" fill="#e5e7eb" font-size="13" font-weight="700">屈氏体 T</text>
+<text x="86" y="220" fill="#34d399" font-size="12">S = 0.25～1.9μm</text>
+<text x="336" y="220" fill="#60a5fa" font-size="12">S = 30～80nm</text>
+<text x="586" y="220" fill="#f97316" font-size="12">S ＜30nm</text>
+<text x="24" y="252" fill="#cbd5e1" font-size="11">三者都是 F + Fe3C 片层，本质差别只是片层间距；图中条纹为示意，未按真实纳米比例。</text>
+<text x="24" y="274" fill="#fbbf24" font-size="11">S 越小 → 强度、硬度越高，塑韧性越低；转变温度越低，S 越小。</text>
+<rect x="24" y="282" width="10" height="8" fill="#cbd5e1"/><text x="39" y="290" fill="#94a3b8" font-size="10">铁素体 F</text>
+<rect x="108" y="282" width="10" height="8" fill="#475569"/><text x="123" y="290" fill="#94a3b8" font-size="10">渗碳体 Fe3C</text>
+</svg><div class="sp-fig-cap">图 2　P / S / T 的片层间距对比（示意，非等比例）</div></div>`,
+
+e1: `<div class="sp-fig"><svg viewBox="0 0 780 340" role="img" aria-label="上贝氏体与下贝氏体形貌">
+<text x="20" y="26" fill="#fbbf24" font-size="15" font-weight="700">上贝氏体（550～350℃）</text>
+<text x="405" y="26" fill="#fbbf24" font-size="15" font-weight="700">下贝氏体（350℃～Ms）</text>
+<line x1="30" y1="55" x2="370" y2="55" stroke="#94a3b8" stroke-width="2"/>
+<text x="30" y="48" fill="#94a3b8" font-size="10">原奥氏体晶界</text>
+<rect x="55" y="55" width="12" height="160" fill="#64748b"/><rect x="80" y="55" width="12" height="160" fill="#64748b"/><rect x="105" y="55" width="12" height="160" fill="#64748b"/><rect x="130" y="55" width="12" height="160" fill="#64748b"/><rect x="155" y="55" width="12" height="160" fill="#64748b"/><rect x="180" y="55" width="12" height="160" fill="#64748b"/><rect x="205" y="55" width="12" height="160" fill="#64748b"/><rect x="230" y="55" width="12" height="160" fill="#64748b"/><rect x="255" y="55" width="12" height="160" fill="#64748b"/><rect x="280" y="55" width="12" height="160" fill="#64748b"/><rect x="305" y="55" width="12" height="160" fill="#64748b"/><rect x="330" y="55" width="12" height="160" fill="#64748b"/>
+<rect x="67" y="62" width="5" height="45" fill="#f87171"/><rect x="92" y="62" width="5" height="45" fill="#f87171"/><rect x="117" y="62" width="5" height="45" fill="#f87171"/><rect x="142" y="62" width="5" height="45" fill="#f87171"/><rect x="167" y="62" width="5" height="45" fill="#f87171"/><rect x="192" y="62" width="5" height="45" fill="#f87171"/><rect x="217" y="62" width="5" height="45" fill="#f87171"/><rect x="242" y="62" width="5" height="45" fill="#f87171"/><rect x="267" y="62" width="5" height="45" fill="#f87171"/><rect x="292" y="62" width="5" height="45" fill="#f87171"/><rect x="317" y="62" width="5" height="45" fill="#f87171"/>
+<text x="55" y="238" fill="#94a3b8" font-size="11">F 板条平行排列，Fe3C 在板条间（粗大）</text>
+<text x="55" y="258" fill="#f87171" font-size="11">裂纹沿板条界扩展 → 强度低、韧性差</text>
+<text x="55" y="280" fill="#cbd5e1" font-size="10.5">形貌：羽毛状</text>
+<rect x="415" y="55" width="340" height="180" fill="#0b1220" stroke="#334155"/>
+<line x1="430" y1="80" x2="520" y2="215" stroke="#64748b" stroke-width="13" stroke-linecap="round"/>
+<line x1="475" y1="70" x2="565" y2="205" stroke="#64748b" stroke-width="13" stroke-linecap="round"/>
+<line x1="520" y1="65" x2="610" y2="200" stroke="#64748b" stroke-width="13" stroke-linecap="round"/>
+<line x1="565" y1="62" x2="655" y2="197" stroke="#64748b" stroke-width="13" stroke-linecap="round"/>
+<line x1="610" y1="60" x2="700" y2="195" stroke="#64748b" stroke-width="13" stroke-linecap="round"/>
+<line x1="655" y1="58" x2="745" y2="193" stroke="#64748b" stroke-width="13" stroke-linecap="round"/>
+<line x1="450" y1="80" x2="540" y2="215" stroke="#94a3b8" stroke-width="13" stroke-linecap="round"/>
+<line x1="495" y1="70" x2="585" y2="205" stroke="#94a3b8" stroke-width="13" stroke-linecap="round"/>
+<line x1="540" y1="65" x2="630" y2="200" stroke="#94a3b8" stroke-width="13" stroke-linecap="round"/>
+<line x1="585" y1="62" x2="675" y2="197" stroke="#94a3b8" stroke-width="13" stroke-linecap="round"/>
+<line x1="630" y1="60" x2="720" y2="195" stroke="#94a3b8" stroke-width="13" stroke-linecap="round"/>
+<circle cx="468" cy="120" r="2.2" fill="#f87171"/><circle cx="505" cy="155" r="2.2" fill="#f87171"/><circle cx="540" cy="130" r="2.2" fill="#f87171"/><circle cx="575" cy="170" r="2.2" fill="#f87171"/><circle cx="610" cy="140" r="2.2" fill="#f87171"/><circle cx="645" cy="180" r="2.2" fill="#f87171"/><circle cx="680" cy="150" r="2.2" fill="#f87171"/><circle cx="700" cy="110" r="2.2" fill="#f87171"/>
+<text x="415" y="258" fill="#94a3b8" font-size="11">F 针内弥散细小 Fe3C</text>
+<text x="415" y="278" fill="#34d399" font-size="11">无粗大板条界碳化物 → 强韧性好</text>
+<text x="415" y="300" fill="#cbd5e1" font-size="10.5">形貌：竹叶状 / 针状</text>
+</svg><div class="sp-fig-cap">图 3　上贝与下贝的碳化物分布差异（示意）</div></div>`,
+
+d4: `<div class="sp-fig"><svg viewBox="0 0 780 320" role="img" aria-label="板条马氏体与片状马氏体">
+<text x="20" y="26" fill="#fbbf24" font-size="15" font-weight="700">板条马氏体（C＜0.2%）</text>
+<text x="405" y="26" fill="#fbbf24" font-size="15" font-weight="700">片状马氏体（C＞1.0%）</text>
+<g stroke="#334155" fill="#64748b">
+<rect x="35" y="45" width="10" height="150"/><rect x="50" y="45" width="10" height="150"/><rect x="65" y="45" width="10" height="150"/><rect x="80" y="45" width="10" height="150"/><rect x="95" y="45" width="10" height="150"/><rect x="110" y="45" width="10" height="150"/>
+<rect x="135" y="55" width="10" height="140"/><rect x="150" y="55" width="10" height="140"/><rect x="165" y="55" width="10" height="140"/><rect x="180" y="55" width="10" height="140"/><rect x="195" y="55" width="10" height="140"/><rect x="210" y="55" width="10" height="140"/>
+<rect x="235" y="45" width="10" height="150"/><rect x="250" y="45" width="10" height="150"/><rect x="265" y="45" width="10" height="150"/><rect x="280" y="45" width="10" height="150"/><rect x="295" y="45" width="10" height="150"/><rect x="310" y="45" width="10" height="150"/>
+</g>
+<text x="42" y="72" fill="#fbbf24" font-size="12">⊥</text><text x="57" y="108" fill="#fbbf24" font-size="12">⊥</text><text x="72" y="145" fill="#fbbf24" font-size="12">⊥</text><text x="142" y="80" fill="#fbbf24" font-size="12">⊥</text><text x="157" y="120" fill="#fbbf24" font-size="12">⊥</text><text x="242" y="95" fill="#fbbf24" font-size="12">⊥</text><text x="257" y="135" fill="#fbbf24" font-size="12">⊥</text><text x="272" y="170" fill="#fbbf24" font-size="12">⊥</text>
+<text x="35" y="220" fill="#94a3b8" font-size="11">板条成束、平行排列；亚结构为高密度位错</text>
+<text x="35" y="242" fill="#34d399" font-size="11">强度高、韧性好；0.2～1.0%C 为混合组织</text>
+<g fill="none" stroke="#94a3b8" stroke-width="8">
+<path d="M430 70 Q500 40 570 70 Q500 100 430 70 Z"/><path d="M495 120 Q565 90 635 120 Q565 150 495 120 Z"/><path d="M560 170 Q630 140 700 170 Q630 200 560 170 Z"/>
+</g>
+<g stroke="#fbbf24" stroke-width="1.4">
+<line x1="445" y1="66" x2="555" y2="66"/><line x1="450" y1="74" x2="560" y2="74"/><line x1="455" y1="82" x2="565" y2="82"/>
+<line x1="510" y1="116" x2="620" y2="116"/><line x1="515" y1="124" x2="625" y2="124"/><line x1="520" y1="132" x2="630" y2="132"/>
+<line x1="575" y1="166" x2="685" y2="166"/><line x1="580" y1="174" x2="690" y2="174"/><line x1="585" y1="182" x2="695" y2="182"/>
+</g>
+<text x="430" y="220" fill="#94a3b8" font-size="11">透镜状 / 针状片，片内为孪晶亚结构</text>
+<text x="430" y="242" fill="#f87171" font-size="11">硬度高、脆性大，易淬裂，需低温回火</text>
+<text x="35" y="286" fill="#94a3b8" font-size="10">⊥ = 位错（示意）</text>
+</svg><div class="sp-fig-cap">图 4　板条 M 与片状 M 的亚结构差异（示意）</div></div>`,
+
+t2: `<div class="sp-fig"><svg viewBox="0 0 800 360" role="img" aria-label="42CrMo两次回火硬度对比">
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">42CrMo 回火：200℃ vs 600℃</text>
+<rect x="90" y="70" width="128" height="230" fill="#60a5fa" opacity="0.08"/>
+<rect x="346" y="70" width="192" height="230" fill="#fbbf24" opacity="0.07"/>
+<rect x="538" y="70" width="192" height="230" fill="#34d399" opacity="0.07"/>
+<rect x="218" y="70" width="128" height="230" fill="#f87171" opacity="0.10"/>
+<text x="112" y="62" fill="#60a5fa" font-size="11">M 回</text>
+<text x="400" y="62" fill="#fbbf24" font-size="11">T 回</text>
+<text x="590" y="62" fill="#34d399" font-size="11">S 回</text>
+<text x="232" y="62" fill="#f87171" font-size="10.5">第一类脆性区</text>
+<line x1="90" y1="300" x2="730" y2="300" stroke="#475569"/>
+<line x1="90" y1="300" x2="90" y2="70" stroke="#475569"/>
+<text x="70" y="255" fill="#64748b" font-size="9">30</text><text x="70" y="206" fill="#64748b" font-size="9">40</text><text x="70" y="157" fill="#64748b" font-size="9">50</text><text x="70" y="108" fill="#64748b" font-size="9">60</text>
+<text x="340" y="330" fill="#94a3b8" font-size="11">回火温度 / ℃</text>
+<text x="8" y="190" fill="#94a3b8" font-size="11" transform="rotate(-90 8 190)">硬度 HRC</text>
+<text x="84" y="305" fill="#64748b" font-size="9">150</text><text x="212" y="305" fill="#64748b" font-size="9">250</text><text x="340" y="305" fill="#64748b" font-size="9">350</text><text x="468" y="305" fill="#64748b" font-size="9">450</text><text x="596" y="305" fill="#64748b" font-size="9">550</text><text x="716" y="305" fill="#64748b" font-size="9">650</text>
+<polyline points="90,114 154,129 346,178 538,236 666,285 730,290" fill="none" stroke="#fbbf24" stroke-width="2.8"/>
+<circle cx="154" cy="129" r="4.2" fill="#f97316"/>
+<circle cx="666" cy="285" r="4.2" fill="#f97316"/>
+<text x="160" y="116" fill="#f97316" font-size="10.5">200℃：55HRC</text>
+<text x="600" y="250" fill="#f97316" font-size="10.5">600℃：240HB（约23HRC）</text>
+<text x="310" y="112" fill="#94a3b8" font-size="10">再200℃：组织已稳定，硬度不升</text>
+<text x="560" y="225" fill="#94a3b8" font-size="10">再600℃：回火S，硬度显著降</text>
+<text x="20" y="350" fill="#cbd5e1" font-size="10.5">硬度值按题目给定；曲线为趋势示意，不是实测曲线。</text>
+</svg><div class="sp-fig-cap">图 5　42CrMo 两次回火对比（200℃不提高，600℃显著降低）</div></div>`,
+
+f1: `<div class="sp-fig"><svg viewBox="0 0 780 300" role="img" aria-label="感应加热频率与淬硬层深度">
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">频率越高，电流透入越浅，淬硬层越薄</text>
+<line x1="90" y1="250" x2="740" y2="250" stroke="#475569"/>
+<line x1="90" y1="250" x2="90" y2="50" stroke="#475569"/>
+<text x="380" y="282" fill="#94a3b8" font-size="11">加热方式 / 频率</text>
+<text x="18" y="160" fill="#94a3b8" font-size="11" transform="rotate(-90 18 160)">淬硬层深度 / mm</text>
+<text x="84" y="255" fill="#64748b" font-size="9">0</text><text x="84" y="190" fill="#64748b" font-size="9">5</text><text x="84" y="128" fill="#64748b" font-size="9">10</text><text x="84" y="65" fill="#64748b" font-size="9">15</text>
+<rect x="110" y="62" width="120" height="63" fill="#60a5fa" opacity="0.55" stroke="#60a5fa"/>
+<text x="118" y="58" fill="#60a5fa" font-size="11">工频 50Hz</text>
+<text x="118" y="96" fill="#e5e7eb" font-size="11">10～15mm</text>
+<rect x="290" y="125" width="150" height="100" fill="#fbbf24" opacity="0.45" stroke="#fbbf24"/>
+<text x="298" y="120" fill="#fbbf24" font-size="11">中频 2500～8000Hz</text>
+<text x="298" y="176" fill="#e5e7eb" font-size="11">2～10mm</text>
+<rect x="500" y="225" width="180" height="19" fill="#f97316" opacity="0.55" stroke="#f97316"/>
+<text x="508" y="220" fill="#f97316" font-size="11">高频 250～300kHz</text>
+<text x="508" y="240" fill="#e5e7eb" font-size="10.5">0.5～2mm</text>
+<line x1="500" y1="231" x2="720" y2="231" stroke="#34d399" stroke-width="1.4" stroke-dasharray="6 4"/>
+<text x="620" y="200" fill="#34d399" font-size="10.5">本题 1.5mm → 高频</text>
+<text x="20" y="300" fill="#cbd5e1" font-size="10.5">选择顺序：先定硬层深度 → 再选频率 → 最后定设备功率与感应圈尺寸。</text>
+</svg><div class="sp-fig-cap">图 6　感应加热频率—淬硬层深度对应（课件数值）</div></div>`,
+
+t3: `<div class="sp-fig"><svg viewBox="0 0 920 390" role="img" aria-label="GCr15千分尺工艺路线">
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">GCr15 千分尺：温度—工序路线</text>
+<line x1="60" y1="330" x2="880" y2="330" stroke="#475569"/>
+<line x1="60" y1="330" x2="60" y2="55" stroke="#475569"/>
+<text x="8" y="200" fill="#94a3b8" font-size="11" transform="rotate(-90 8 200)">温度 / ℃</text>
+<text x="46" y="80" fill="#64748b" font-size="9">840</text><text x="46" y="145" fill="#64748b" font-size="9">600</text><text x="46" y="253" fill="#64748b" font-size="9">200</text><text x="46" y="302" fill="#64748b" font-size="9">20</text><text x="42" y="327" fill="#64748b" font-size="9">-75</text>
+<path d="M60 70 L120 70 L120 90 L190 90 L240 141 L280 298 L320 298 L340 76 L370 76 L395 298 L420 298 L420 323 L450 323 L470 298 L490 298 L490 249 L530 249 L560 298 L590 298 L640 298 L650 298 L650 272 L690 272 L710 298 L740 298 L780 298 L790 298 L790 272 L830 272 L860 272" fill="none" stroke="#fbbf24" stroke-width="2.6"/>
+<circle cx="120" cy="90" r="5" fill="#34d399"/><circle cx="340" cy="76" r="5" fill="#f97316"/><circle cx="420" cy="323" r="5" fill="#60a5fa"/><circle cx="490" cy="249" r="5" fill="#fbbf24"/><circle cx="650" cy="272" r="5" fill="#a78bfa"/><circle cx="790" cy="272" r="5" fill="#a78bfa"/>
+<text x="128" y="80" fill="#34d399" font-size="11">① 790℃</text>
+<text x="322" y="66" fill="#f97316" font-size="11">② 840℃</text>
+<text x="432" y="315" fill="#60a5fa" font-size="10.5">③ -70～-80℃</text>
+<text x="470" y="241" fill="#fbbf24" font-size="11">④ 200℃</text>
+<text x="628" y="264" fill="#a78bfa" font-size="10">⑤ 110～120℃×36h</text>
+<text x="774" y="264" fill="#a78bfa" font-size="10">⑥ 110～120℃×3h</text>
+<text x="60" y="352" fill="#94a3b8" font-size="10">锻造</text><text x="120" y="352" fill="#94a3b8" font-size="10">球化退火</text><text x="295" y="352" fill="#94a3b8" font-size="10">机加</text><text x="338" y="352" fill="#94a3b8" font-size="10">淬火</text><text x="416" y="352" fill="#94a3b8" font-size="10">冷处理</text><text x="488" y="352" fill="#94a3b8" font-size="10">回火</text><text x="588" y="352" fill="#94a3b8" font-size="10">精磨</text><text x="648" y="352" fill="#94a3b8" font-size="10">时效</text><text x="736" y="352" fill="#94a3b8" font-size="10">研磨</text><text x="788" y="352" fill="#94a3b8" font-size="10">时效</text>
+<text x="20" y="384" fill="#cbd5e1" font-size="10.5">参数按试卷给定；①球化退火 ②淬火 ③冷处理 ④低温回火 ⑤⑥两次时效。</text>
+</svg><div class="sp-fig-cap">图 7　GCr15 千分尺六步热处理（温度按试卷；③取范围中值绘）</div></div>`,
+
+c12: `<div class="sp-fig"><svg viewBox="0 0 800 390" role="img" aria-label="TTT曲线与临界冷却速度">
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">TTT（IT）图：C 曲线与临界冷却速度 Vk</text>
+<line x1="90" y1="330" x2="730" y2="330" stroke="#475569"/>
+<line x1="90" y1="330" x2="90" y2="60" stroke="#475569"/>
+<line x1="90" y1="85" x2="730" y2="85" stroke="#94a3b8" stroke-dasharray="5 4"/>
+<line x1="90" y1="229" x2="730" y2="229" stroke="#f87171" stroke-dasharray="5 4"/>
+<text x="96" y="80" fill="#94a3b8" font-size="10.5">A1</text><text x="96" y="224" fill="#f87171" font-size="10.5">Ms</text>
+<path d="M90 85 Q280 100 320 144 Q340 220 500 229" fill="none" stroke="#f97316" stroke-width="2.6"/>
+<path d="M150 85 Q360 110 430 144 Q470 220 590 229" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="5 4"/>
+<line x1="336" y1="182" x2="321" y2="148" stroke="#f97316" stroke-width="1.2"/>
+<text x="235" y="188" fill="#f97316" font-size="10.5">鼻尖（约550℃）</text>
+<path d="M90 85 Q260 110 420 144 Q500 200 600 250" fill="none" stroke="#60a5fa" stroke-width="2.2"/>
+<path d="M90 85 Q240 120 370 150 Q400 190 430 230" fill="none" stroke="#34d399" stroke-width="2.2"/>
+<path d="M90 85 L150 300" fill="none" stroke="#f87171" stroke-width="2.2"/>
+<text x="540" y="272" fill="#60a5fa" font-size="10.5">炉冷 → P</text>
+<text x="380" y="250" fill="#34d399" font-size="10.5">空冷 → S/T</text>
+<text x="152" y="292" fill="#f87171" font-size="10.5">水/油冷 → M</text>
+<line x1="90" y1="85" x2="320" y2="144" stroke="#fbbf24" stroke-width="1.6" stroke-dasharray="3 4"/>
+<text x="330" y="110" fill="#fbbf24" font-size="10.5">Vk：刚好避开鼻尖的最小冷速</text>
+<text x="620" y="160" fill="#94a3b8" font-size="10">P / S / T 转变区</text>
+<text x="552" y="248" fill="#94a3b8" font-size="10">B 区</text>
+<text x="600" y="275" fill="#94a3b8" font-size="10">M 转变区</text>
+<text x="250" y="345" fill="#64748b" font-size="9">1s</text><text x="410" y="345" fill="#64748b" font-size="9">10s</text><text x="570" y="345" fill="#64748b" font-size="9">100s</text>
+<text x="380" y="366" fill="#94a3b8" font-size="11">时间 / s（对数坐标）</text>
+<text x="60" y="65" fill="#64748b" font-size="9">800</text><text x="60" y="130" fill="#64748b" font-size="9">600</text><text x="60" y="198" fill="#64748b" font-size="9">400</text><text x="60" y="265" fill="#64748b" font-size="9">200</text>
+<text x="8" y="200" fill="#94a3b8" font-size="11" transform="rotate(-90 8 200)">温度 / ℃</text>
+<text x="20" y="384" fill="#cbd5e1" font-size="10.5">冷速曲线与 C 曲线鼻尖相切 → 该冷速即 Vk；冷速大于 Vk 才能完全得到 M。</text>
+</svg><div class="sp-fig-cap">图 8　TTT 曲线、C 曲线鼻尖与临界冷却速度（A1 727℃、Ms 约300℃、鼻尖约550℃，示意）</div></div>`,
+
+};
+
+const COMPARE_SVG = {
+"渗碳 vs 渗氮": `<div class="sp-fig"><svg viewBox="0 0 780 340" role="img" aria-label="渗碳与渗氮层对比">
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">渗碳：930℃，渗层深，需淬火</text>
+<text x="405" y="24" fill="#fbbf24" font-size="15" font-weight="700">渗氮：500～570℃，层薄，不淬火</text>
+<defs><linearGradient id="fig9L" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f97316"/><stop offset="0.35" stop-color="#fbbf24"/><stop offset="1" stop-color="#64748b"/></linearGradient><linearGradient id="fig9R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="0.18" stop-color="#a78bfa"/><stop offset="1" stop-color="#64748b"/></linearGradient></defs>
+<rect x="30" y="55" width="320" height="120" fill="url(#fig9L)" stroke="#334155"/>
+<rect x="30" y="55" width="320" height="38" fill="#f97316" opacity="0.55"/>
+<text x="38" y="80" fill="#fff" font-size="11">表层 0.8～1.05%C</text>
+<text x="38" y="150" fill="#e5e7eb" font-size="11">心部 35～45HRC</text>
+<text x="38" y="194" fill="#94a3b8" font-size="11">硬度梯度：58～64HRC → 35～45HRC</text>
+<text x="38" y="216" fill="#cbd5e1" font-size="10.5">渗层较深，承载能力高；变形相对大</text>
+<rect x="415" y="55" width="320" height="120" fill="url(#fig9R)" stroke="#334155"/>
+<rect x="415" y="55" width="320" height="16" fill="#60a5fa" opacity="0.8"/>
+<rect x="415" y="71" width="320" height="26" fill="#a78bfa" opacity="0.55"/>
+<text x="423" y="68" fill="#fff" font-size="10.5">化合物层</text>
+<text x="423" y="92" fill="#fff" font-size="10.5">扩散层</text>
+<text x="423" y="150" fill="#e5e7eb" font-size="11">心部组织不变</text>
+<text x="423" y="194" fill="#94a3b8" font-size="11">表面 HV1000～2000，变形很小</text>
+<text x="423" y="216" fill="#cbd5e1" font-size="10.5">渗层薄，耐磨/疲劳好；不够深承载</text>
+<text x="20" y="260" fill="#cbd5e1" font-size="11">共同点：都是化学热处理，靠“分解 → 表面吸收 → 内部扩散”形成渗层。</text>
+<text x="20" y="284" fill="#fbbf24" font-size="11">差别：渗碳靠 C 提高表层含碳量；渗氮靠 N 形成氮化物，硬度更高、温度更低。</text>
+<text x="20" y="308" fill="#94a3b8" font-size="10.5">图中层厚为示意，未按真实比例。</text>
+</svg><div class="sp-fig-cap">图 9　渗碳层与渗氮层结构、硬度梯度对比（示意）</div></div>`,
+
+"珠光体 vs 索氏体/托氏体": `<div class="sp-fig"><svg viewBox="0 0 780 240" role="img" aria-label="珠光体索氏体屈氏体片层对比">
+<defs>
+<pattern id="fig10P" width="20" height="100" patternUnits="userSpaceOnUse"><rect width="14" height="100" fill="#cbd5e1"/><rect x="14" width="6" height="100" fill="#475569"/></pattern>
+<pattern id="fig10S" width="10" height="100" patternUnits="userSpaceOnUse"><rect width="7" height="100" fill="#cbd5e1"/><rect x="7" width="3" height="100" fill="#475569"/></pattern>
+<pattern id="fig10T" width="5" height="100" patternUnits="userSpaceOnUse"><rect width="3.4" height="100" fill="#cbd5e1"/><rect x="3.4" width="1.6" height="100" fill="#475569"/></pattern>
+</defs>
+<text x="20" y="24" fill="#fbbf24" font-size="15" font-weight="700">本质区别：片层间距</text>
+<rect x="30" y="40" width="210" height="100" fill="url(#fig10P)" stroke="#334155"/>
+<rect x="280" y="40" width="210" height="100" fill="url(#fig10S)" stroke="#334155"/>
+<rect x="530" y="40" width="210" height="100" fill="url(#fig10T)" stroke="#334155"/>
+<text x="44" y="168" fill="#34d399" font-size="12">珠光体 P　0.25～1.9μm</text>
+<text x="330" y="168" fill="#60a5fa" font-size="12">索氏体 S　30～80nm</text>
+<text x="580" y="168" fill="#f97316" font-size="12">屈氏体 T　＜30nm</text>
+<text x="30" y="205" fill="#cbd5e1" font-size="11">片层越细，强度硬度越高；图中条纹为示意，未按真实比例。</text>
+<text x="30" y="226" fill="#94a3b8" font-size="10">注：屈氏体又称托氏体，同一组织两种译名。</text>
+</svg><div class="sp-fig-cap">图 10　P / S / T 片层间距（示意）</div></div>`
+};
+
 /* ===== 冲刺清单与闪背 ===== */
 TERMS.push(...EXTRA_TERMS);
 const SPRINT_CHS = ['全部','固态相变','奥氏体形成与晶粒长大','珠光体转变与退火正火','马氏体转变','贝氏体转变','表面淬火','工艺设计','期中真题'];
@@ -2871,13 +3125,14 @@ function sprintTabCount(id){
   if (id === 'must') return SPRINT_ITEMS.filter(x => x.stars === 3).length;
   if (id === 'process') return SPRINT_ITEMS.filter(x => x.type === '工艺' || x.type === '计算').length;
   if (id === 'compare') return SPRINT_COMPARE.length;
+  if (id === 'fig') return SPRINT_ITEMS.filter(x => SPRINT_SVG[x.id]).length;
   return 0;
 }
 
 function renderSprintTabs(){
   const box = $('sprintTabs'); if (!box) return;
   const tabs = [
-    ['all','全部'],['exam','真题原卷'],['exercise','课后习题'],['must','必背 ★★★'],['process','工艺/计算'],['compare','易混对比']
+    ['all','全部'],['exam','真题原卷'],['exercise','课后习题'],['must','必背 ★★★'],['process','工艺/计算'],['fig','图解'],['compare','易混对比']
   ];
   box.innerHTML = tabs.map(([id,label]) => `<button class="sp-tab${sprintTab===id?' active':''}" data-sp-tab="${id}">${label} ${sprintTabCount(id)}</button>`).join('');
   box.querySelectorAll('[data-sp-tab]').forEach(b => b.onclick = () => { sprintTab = b.dataset.spTab; renderSprint(); });
@@ -2885,7 +3140,7 @@ function renderSprintTabs(){
 
 function renderSprintChips(){
   const box = $('sprintChips'); if (!box) return;
-  if (sprintTab === 'exam' || sprintTab === 'compare'){ box.innerHTML = ''; return; }
+  if (sprintTab === 'exam' || sprintTab === 'compare' || sprintTab === 'fig'){ box.innerHTML = ''; return; }
   const counts = {};
   SPRINT_ITEMS.forEach(x => { counts[x.ch] = (counts[x.ch]||0)+1; });
   box.innerHTML = SPRINT_CHS.filter(ch => ch === '全部' || counts[ch]).map(ch => {
@@ -2901,6 +3156,7 @@ function sprintFiltered(){
   else if (sprintTab === 'exercise') list = list.filter(x => x.kind === 'exercise');
   else if (sprintTab === 'must') list = list.filter(x => x.stars === 3);
   else if (sprintTab === 'process') list = list.filter(x => x.type === '工艺' || x.type === '计算');
+  else if (sprintTab === 'fig') list = list.filter(x => SPRINT_SVG[x.id]);
   if (sprintCh !== '全部') list = list.filter(x => x.ch === sprintCh);
   if (sprintType !== '全部') list = list.filter(x => x.type === sprintType);
   if (sprintOnlyNew) list = list.filter(x => !sprintMasters[x.id]);
@@ -2930,6 +3186,7 @@ function sprintCardHtml(x){
         <span class="sp-badge type">${esc(x.type)}</span>
         <span class="sp-badge stars">${starsHtml(x.stars)}</span>
         <span class="sp-badge">${esc(x.ch)}</span>
+        ${SPRINT_SVG[x.id] ? '<span class="sp-badge fig">图解</span>' : ''}
         ${miss ? `<span class="sp-badge" style="color:var(--err);border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.08)">还不熟 ×${miss}</span>` : ''}
         <span class="sp-badge done-badge" style="margin-left:auto;${done?'':'display:none'};color:var(--ok);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08)">已背住 ✓</span>
       </div>
@@ -2938,6 +3195,7 @@ function sprintCardHtml(x){
       <div class="sp-ans">
         <h5>答案骨架</h5>
         <ul>${x.ans.map(a => `<li>${esc(a)}</li>`).join('')}</ul>
+        ${SPRINT_SVG[x.id] || ''}
         <div class="sp-tip"><b>一句话记：</b>${esc(x.tip)}</div>
       </div>
       <div class="sp-actions">
@@ -2990,9 +3248,10 @@ function sprintGroupHtml(list, showGroup){
 }
 
 function compareCardHtml(c){
-  return `<div class="compare-card">
+  return `<div class="compare-card${COMPARE_SVG[c.a + ' vs ' + c.b] ? ' has-fig' : ''}">
     <div class="compare-head"><b>${esc(c.a)}</b><span class="vs">VS</span><b>${esc(c.b)}</b><span class="tag">${esc(c.tag)} ${starsHtml(c.stars)}</span></div>
     <div class="compare-diff">${esc(c.diff)}</div>
+    ${COMPARE_SVG[c.a + ' vs ' + c.b] || ''}
   </div>`;
 }
 
@@ -3043,7 +3302,9 @@ function startDrill(n){
 function renderDrill(){
   const body = $('drillBody'); if (!body) return;
   if (!drillQueue.length){
-    drillQueue = SPRINT_ITEMS.slice(0, 20);
+    const visualPool = SPRINT_ITEMS.filter(x => SPRINT_SVG[x.id]);
+    const otherPool = SPRINT_ITEMS.filter(x => !SPRINT_SVG[x.id]);
+    drillQueue = visualPool.concat(otherPool).slice(0, 20);
     drillIdx = 0; drillAnswer = false; drillHint = false; drillDone = 0; drillStarted = drillQueue.length;
   }
   if (drillIdx >= drillQueue.length){
@@ -3069,7 +3330,7 @@ function renderDrill(){
       </div>
       <div class="sp-q">${esc(x.q)}</div>
       ${drillHint ? `<div class="sp-hint" style="display:block"><b>关键词：</b>${x.hint.map(esc).join(' · ')}</div>` : ''}
-      ${drillAnswer ? `<div class="sp-ans" style="display:block"><h5>答案骨架</h5><ul>${x.ans.map(a=>`<li>${esc(a)}</li>`).join('')}</ul><div class="sp-tip"><b>一句话记：</b>${esc(x.tip)}</div></div>`:''}
+      ${drillAnswer ? `<div class="sp-ans" style="display:block"><h5>答案骨架</h5><ul>${x.ans.map(a=>`<li>${esc(a)}</li>`).join('')}</ul>${SPRINT_SVG[x.id] || ''}<div class="sp-tip"><b>一句话记：</b>${esc(x.tip)}</div></div>`:''}
       <div class="drill-actions">
         <button class="sp-btn" id="drillHintBtn" onclick="drillHint=!drillHint;renderDrill()">${drillHint?'收起关键词':'给关键词'}</button>
         <button class="sp-btn" id="drillAnsBtn" onclick="drillAnswer=!drillAnswer;renderDrill()">${drillAnswer?'收起答案':'看答案'}</button>
